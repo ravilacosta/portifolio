@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio Estelar | Java & Three.js</title>
+    <title>Portfólio Dreamy | Java & Estrelas</title>
     <style>
-        /* Reset e estilo base */
+        /* Reset e estilo base - fundo claro e sonhador */
         body {
             margin: 0;
             overflow: hidden;
-            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
+            font-family: 'Quicksand', 'Poppins', sans-serif;
+            color: #2d1b3c;
         }
 
         /* Canvas Three.js ocupa toda a tela */
@@ -23,501 +23,510 @@
             z-index: 1;
         }
 
-        /* Interface do usuário sobreposta ao canvas */
+        /* Interface do usuário - scroll suave e cards orgânicos */
         .ui-content {
             position: relative;
             z-index: 10;
             width: 100%;
             height: 100vh;
             overflow-y: auto;
-            pointer-events: none; /* permite clicar através das áreas vazias, mas os cards precisam de eventos */
+            pointer-events: none;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
             box-sizing: border-box;
-            backdrop-filter: blur(2px);
         }
 
-        /* Estilo dos cards e containers - com vidro fosco e bordas suaves */
-        .glass-panel {
-            background: rgba(20, 10, 30, 0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 200, 240, 0.3);
-            border-radius: 32px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 180, 220, 0.2) inset;
-            padding: 25px;
+        /* Cards com formas orgânicas e cores claras */
+        .dream-card {
+            background: rgba(255, 245, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 60px 40px 80px 50px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(170, 130, 200, 0.2), 
+                        0 0 0 2px rgba(255, 200, 240, 0.5) inset,
+                        0 0 30px #ffb3e6;
+            padding: 35px;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             margin-bottom: 30px;
-            pointer-events: auto; /* habilita interação nos cards */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: #f0e6ff;
+            pointer-events: auto;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #3a2255;
+            transform: rotate(0deg);
         }
 
-        .glass-panel:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 160, 210, 0.4) inset;
+        .dream-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 30px 50px rgba(150, 100, 200, 0.3), 
+                        0 0 0 3px rgba(255, 160, 210, 0.7) inset,
+                        0 0 50px #ffc0ff;
+            background: rgba(255, 240, 255, 0.8);
         }
 
-        /* Cabeçalho com nome e foto */
+        /* Perfil com formato mais fluido */
         .profile-header {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 30px;
-            margin-top: 20px;
+            gap: 40px;
+            margin: 10px 0;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
+            width: 140px;
+            height: 140px;
+            border-radius: 70% 30% 60% 40% / 40% 60% 30% 70%;
             object-fit: cover;
-            border: 4px solid rgba(255, 200, 240, 0.8);
-            box-shadow: 0 0 30px #ff99cc88;
-            background: #b87eb0; /* fallback lilás */
+            border: 4px solid white;
+            box-shadow: 0 0 40px #d5a1ff, 0 10px 20px rgba(0,0,0,0.1);
+            background: linear-gradient(145deg, #a0c4ff, #ffb3c6, #d9b3ff);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 4rem;
             color: white;
-            background: linear-gradient(145deg, #a974bc, #d2a5d9);
+            animation: floatAvatar 6s ease-in-out infinite;
+        }
+
+        @keyframes floatAvatar {
+            0% { border-radius: 70% 30% 60% 40% / 40% 60% 30% 70%; }
+            50% { border-radius: 40% 60% 30% 70% / 60% 40% 70% 30%; }
+            100% { border-radius: 70% 30% 60% 40% / 40% 60% 30% 70%; }
         }
 
         .name-title h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin: 0;
-            font-weight: 600;
-            text-shadow: 0 0 20px #a884ff, 0 0 40px #ffa3fd;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #fff, #ffccee);
+            font-weight: 700;
+            background: linear-gradient(135deg, #4a6fa5, #b980b0, #a678b5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 10px rgba(255,255,255,0.8);
+            letter-spacing: 1px;
+        }
+
+        .name-title p {
+            font-size: 1.6rem;
+            margin: 8px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #5d3f6b;
+            font-weight: 500;
+        }
+
+        /* Badge de habilidade mais suave e orgânico */
+        .skill-bubble {
+            background: rgba(255, 225, 250, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 200px 100px 200px 100px;
+            padding: 20px 45px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #482a5c;
+            border: 3px solid white;
+            box-shadow: 0 15px 30px #c99be6, 0 0 30px #aac4ff;
+            margin: 15px 0 5px;
+            transform: rotate(-1deg);
+        }
+
+        .skill-bubble span {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 8px #ffb3d9);
+        }
+
+        /* Grid de projetos com cards assimétricos */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .project-bubble {
+            background: rgba(250, 235, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 70px 30px 60px 40px;
+            padding: 25px;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+            color: #3a2550;
+            box-shadow: 0 15px 25px rgba(170, 140, 200, 0.2);
+        }
+
+        .project-bubble:nth-child(odd) {
+            border-radius: 40px 70px 30px 60px;
+        }
+
+        .project-bubble:hover {
+            background: rgba(255, 240, 255, 0.9);
+            transform: scale(1.03) rotate(0.5deg);
+            box-shadow: 0 25px 40px #d9b0ff;
+        }
+
+        .project-bubble h3 {
+            font-size: 1.8rem;
+            margin: 0 0 12px;
+            background: linear-gradient(135deg, #5f7eb0, #b87cb0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .name-title p {
-            font-size: 1.5rem;
-            margin: 5px 0 0;
-            opacity: 0.9;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #e0c0ff;
-        }
-
-        /* Tag de habilidade */
-        .skill-badge {
-            background: rgba(50, 20, 60, 0.7);
-            border: 2px solid #c97bda;
-            border-radius: 60px;
-            padding: 12px 28px;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffe7ff;
-            box-shadow: 0 0 30px #b77fd4;
-            backdrop-filter: blur(5px);
-            margin: 15px 0 5px;
-        }
-
-        .skill-badge span {
-            font-size: 2.8rem;
-            filter: drop-shadow(0 0 8px #f2a6ff);
-        }
-
-        /* Grid de projetos */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .project-card {
-            background: rgba(45, 25, 55, 0.6);
-            backdrop-filter: blur(8px);
-            border-radius: 24px;
-            padding: 20px;
-            border: 1px solid rgba(215, 150, 235, 0.5);
-            transition: all 0.2s;
-            color: #f3d9ff;
-        }
-
-        .project-card h3 {
-            font-size: 1.6rem;
-            margin: 0 0 8px;
-            color: #ffc8f0;
-        }
-
-        .project-card p {
-            margin: 5px 0;
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
         .project-tag {
             display: inline-block;
-            background: #723c82;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            margin-top: 12px;
-            color: white;
-            border: 1px solid #d895ff;
-        }
-
-        /* Espaçamento e responsividade */
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            border-left: 6px solid #ff99dd;
-            padding-left: 20px;
-            text-shadow: 0 0 15px #c27ef0;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
+            background: rgba(170, 130, 200, 0.3);
+            backdrop-filter: blur(4px);
+            padding: 6px 16px;
+            border-radius: 50px;
             font-size: 0.9rem;
-            color: #ddbbff;
+            margin: 5px 8px 0 0;
+            border: 1px solid white;
+            color: #452f5a;
+            font-weight: 600;
         }
 
-        /* Ajustes para mobile */
-        @media (max-width: 600px) {
+        /* Título das seções */
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: inline-block;
+            padding: 0 20px 10px 0;
+            border-bottom: 4px dotted #c28fda;
+            color: #5b3e70;
+        }
+
+        /* Rodapé estiloso */
+        .footer-bubble {
+            background: rgba(240, 220, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 100px 100px 50px 50px;
+            padding: 15px 30px;
+            max-width: 400px;
+            border: 2px solid white;
+            color: #4a3163;
+            font-weight: 500;
+        }
+
+        /* Responsividade */
+        @media (max-width: 700px) {
             .profile-header {
                 justify-content: center;
                 text-align: center;
             }
             .name-title h1 {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
+            }
+            .dream-card {
+                padding: 25px;
             }
         }
 
-        /* Estrelas extras via css só para dar um charme (mas three cuida das principais) */
-        .css-star {
+        /* Estrelas extras decorativas (CSS) */
+        .star-css {
             position: absolute;
             pointer-events: none;
             background: white;
             border-radius: 50%;
-            opacity: 0.5;
-            filter: blur(1px);
+            box-shadow: 0 0 20px currentColor;
+            animation: twinkle 4s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
         }
     </style>
-    <!-- Fonte Poppins (opcional) -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Fonte suave -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Container para o Three.js -->
+    <!-- Container Three.js -->
     <div id="canvas-container"></div>
 
-    <!-- Conteúdo da interface -->
+    <!-- Conteúdo com cards orgânicos e claros -->
     <div class="ui-content">
-        <!-- Espaço para apresentação pessoal -->
-        <div class="glass-panel">
+        <!-- Apresentação pessoal - nome, foto, estudante -->
+        <div class="dream-card">
             <div class="profile-header">
                 <div class="avatar">
-                    <!-- Inicial ou ícone representando foto (você pode substituir por uma imagem) -->
-                    <span>✨</span>
+                    🌸
                 </div>
                 <div class="name-title">
-                    <h1>ANA BEATRIZ</h1>
-                    <p>👩‍💻 Estudante de Engenharia de Software & apaixonada por Java</p>
-                    <p>📍 São Paulo, Brasil</p>
+                    <h1>SOFIA MENDES</h1>
+                    <p>✨ Estudante de Ciência da Computação  |  apaixonada por Java</p>
+                    <p>🌙 Rio de Janeiro, Brasil  •  22 anos</p>
                 </div>
             </div>
         </div>
 
-        <!-- Destaque Habilidade: JAVA -->
-        <div class="glass-panel" style="text-align: center;">
-            <div class="skill-badge">
-                <span>☕</span> JAVA DEVELOPER <span>✨</span>
+        <!-- Habilidade: JAVA em destaque -->
+        <div class="dream-card" style="text-align: center; max-width: 700px;">
+            <div class="skill-bubble">
+                <span>☕</span> JAVA CORE <span>🌟</span>
             </div>
-            <p style="font-size: 1.2rem; max-width: 600px; margin: 10px auto;">
-                Experiência com Spring Boot, Java EE, Microsserviços, e aplicações desktop. 
-                Sempre buscando escrever código limpo e eficiente.
+            <p style="font-size: 1.3rem; margin: 20px auto 10px; max-width: 550px; color: #4f3570;">
+                Desenvolvimento back-end com Spring Boot, Microsserviços, APIs REST, 
+                e aplicações desktop JavaFX. Sempre explorando o universo Java.
             </p>
         </div>
 
         <!-- Espaço para projetos -->
-        <div class="glass-panel">
-            <h2 class="section-title">📌 Projetos Recentes</h2>
+        <div class="dream-card">
+            <h2 class="section-title">📁 Meus Projetos Estelares</h2>
             <div class="projects-grid">
-                <div class="project-card">
-                    <h3>🌌 API Galaxy</h3>
-                    <p>Backend em Java + Spring Boot. Sistema de cadastro de estrelas e planetas com autenticação JWT.</p>
+                <div class="project-bubble">
+                    <h3>🔭 Nebulosa API</h3>
+                    <p>API em Java/Spring com cache Redis e autenticação OAuth2. Gerencia dados astronômicos.</p>
                     <span class="project-tag">Spring Boot</span>
-                    <span class="project-tag">JPA</span>
+                    <span class="project-tag">Redis</span>
+                    <span class="project-tag">JWT</span>
                 </div>
-                <div class="project-card">
-                    <h3>📱 Estrela Social</h3>
-                    <p>Aplicação mobile (Android Java) para conectar astrônomos amadores. Consome dados de APIs astronômicas.</p>
-                    <span class="project-tag">Android</span>
-                    <span class="project-tag">Retrofit</span>
+                <div class="project-bubble">
+                    <h3>🪐 Planeta JavaFX</h3>
+                    <p>Aplicativo desktop para visualização de órbitas planetárias usando JavaFX e animações 3D.</p>
+                    <span class="project-tag">JavaFX</span>
+                    <span class="project-tag">3D</span>
+                    <span class="project-tag">Animação</span>
                 </div>
-                <div class="project-card">
-                    <h3>🪐 E-commerce Cósmico</h3>
-                    <p>Microsserviços em Java com Kafka, Docker e AWS. Catálogo de produtos espaciais.</p>
+                <div class="project-bubble">
+                    <h3>☄️ Cometa Service</h3>
+                    <p>Microsserviço de processamento de imagens espaciais com Spring Cloud e Kafka.</p>
                     <span class="project-tag">Microsserviços</span>
                     <span class="project-tag">Kafka</span>
+                    <span class="project-tag">Docker</span>
                 </div>
-                <div class="project-card">
-                    <h3>☄️ Bootcamp NASA</h3>
-                    <p>Desafio técnico: processamento de imagens espaciais com Java e algoritmos de filtro.</p>
-                    <span class="project-tag">Processamento</span>
-                    <span class="project-tag">JavaFX</span>
+                <div class="project-bubble">
+                    <h3>🌠 Estrela Social</h3>
+                    <p>Backend para rede social de astrofotografia com Java e MongoDB. Escalável e reativo.</p>
+                    <span class="project-tag">WebFlux</span>
+                    <span class="project-tag">MongoDB</span>
+                    <span class="project-tag">Reactive</span>
                 </div>
             </div>
         </div>
 
-        <!-- Rodapé simples -->
-        <footer class="glass-panel" style="background: rgba(20,5,30,0.3); max-width: 400px;">
-            🌠 Três estrelas: Azul, Rosa Claro e Lilás | Three.js + Java ☕
-        </footer>
+        <!-- Rodapé suave -->
+        <div class="footer-bubble">
+            <p style="margin: 0;">💫 três.js | estrelas azul, rosa claro & lilás | java ☕</p>
+        </div>
     </div>
 
-    <!-- Script Three.js -->
+    <!-- Three.js com estrelas suaves e coloridas -->
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.126.0/build/three.module.js"
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
             }
         }
     </script>
 
     <script type="module">
         import * as THREE from 'three';
-        import { OrbitControls } from 'https://unpkg.com/three@0.126.0/examples/jsm/controls/OrbitControls.js';
 
-        // --- Configuração da cena, câmera, renderizador ---
+        // --- Cena clara e sonhadora ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x050510); // azul muito escuro como base
+        // Fundo gradiente suave (azul bem clarinho pra rosa claro)
+        scene.background = new THREE.Color(0xf0e6ff); // lilás bem clarinho como fallback
+        // Mas vamos colocar um gradiente via CSS? Melhor: usar uma textura de gradiente ou deixar a cor clara e as estrelas brilharem.
+        // Vou deixar um azul bem clarinho pra destacar as estrelas coloridas.
+        scene.background = new THREE.Color(0xd9c9ff); // tom pastel médio
         
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 15);
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 2, 18);
         
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.shadowMap.enabled = false; // não necessário
+        renderer.setClearColor(0xf5eaff); // cor de fundo rosada/lilás clara
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // Controles leves para permitir interação com drag (opcional, descomente se quiser)
-        // const controls = new OrbitControls(camera, renderer.domElement);
-        // controls.enableDamping = true;
-        // controls.autoRotate = false;
-        // controls.enableZoom = true;
-        // controls.enablePan = false;
-        // controls.maxPolarAngle = Math.PI / 2;
-
-        // --- Iluminação suave ---
-        const ambientLight = new THREE.AmbientLight(0x404060);
+        // Iluminação suave para realçar as cores
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
         scene.add(ambientLight);
         
-        const pointLight1 = new THREE.PointLight(0xaaaaff, 1, 30);
-        pointLight1.position.set(5, 5, 10);
-        scene.add(pointLight1);
+        // Pequenas luzes coloridas para dar reflexos
+        const light1 = new THREE.PointLight(0xaaccff, 1.5, 30);
+        light1.position.set(5, 5, 10);
+        scene.add(light1);
         
-        const pointLight2 = new THREE.PointLight(0xffaaff, 0.8, 30);
-        pointLight2.position.set(-5, -3, 8);
-        scene.add(pointLight2);
+        const light2 = new THREE.PointLight(0xffb3d9, 1.5, 30);
+        light2.position.set(-5, -3, 8);
+        scene.add(light2);
+        
+        const light3 = new THREE.PointLight(0xd9b3ff, 1.5, 30);
+        light3.position.set(3, -4, 12);
+        scene.add(light3);
 
-        // --- Estrelas: Partículas nas cores azul, rosa claro, lilás ---
-        const starsGeometry = new THREE.BufferGeometry();
-        const starsCount = 2500;
-
-        const positions = new Float32Array(starsCount * 3);
-        const colors = new Float32Array(starsCount * 3);
-
-        // Paleta: azul (0.4,0.6,1.0), rosa claro (1.0,0.75,0.9), lilás (0.8,0.6,1.0)
-        const colorPalette = [
-            new THREE.Color(0x66aaff), // azul médio
-            new THREE.Color(0xffb6c1), // rosa claro
-            new THREE.Color(0xc8a2ff)  // lilás
-        ];
-
-        for (let i = 0; i < starsCount; i++) {
-            // Posições em uma esfera grande com alguma aleatoriedade
-            const r = 12 + Math.random() * 15; // distância radial entre 12 e 27
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1); // distribuição esférica
+        // --- Estrelas (partículas) nas cores: azul, rosa claro, lilás ---
+        function createStars(count, sizeRange, baseRadius) {
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
             
-            const x = r * Math.sin(phi) * Math.cos(theta);
-            const y = r * Math.sin(phi) * Math.sin(theta);
-            const z = r * Math.cos(phi);
+            // Paleta atualizada: azul céu, rosa bebê, lilás pastel
+            const palette = [
+                new THREE.Color(0x9ac0ff), // azul clarinho
+                new THREE.Color(0xffb3c6), // rosa claro
+                new THREE.Color(0xd9b3ff)  // lilás
+            ];
+
+            for (let i = 0; i < count; i++) {
+                // Distribuição esférica com raio variável
+                const r = baseRadius + (Math.random() - 0.5) * 6;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos((Math.random() * 2) - 1);
+                
+                positions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+                positions[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+                positions[i*3+2] = r * Math.cos(phi);
+                
+                const col = palette[Math.floor(Math.random() * palette.length)];
+                colors[i*3] = col.r;
+                colors[i*3+1] = col.g;
+                colors[i*3+2] = col.b;
+            }
             
-            positions[i*3] = x;
-            positions[i*3+1] = y;
-            positions[i*3+2] = z;
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
             
-            // Selecionar cor aleatória da paleta
-            const col = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-            colors[i*3] = col.r;
-            colors[i*3+1] = col.g;
-            colors[i*3+2] = col.b;
+            const material = new THREE.PointsMaterial({
+                size: sizeRange,
+                vertexColors: true,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                sizeAttenuation: true,
+                opacity: 0.9,
+                depthWrite: false
+            });
+            
+            return new THREE.Points(geometry, material);
         }
 
-        starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        starsGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-        // Criar material com tamanho variado e brilho
-        const starsMaterial = new THREE.PointsMaterial({
-            size: 0.25,
-            vertexColors: true, // usa as cores definidas
-            transparent: true,
-            blending: THREE.AdditiveBlending, // efeito brilhante
-            sizeAttenuation: true,
-            opacity: 0.9
-        });
-
-        const stars = new THREE.Points(starsGeometry, starsMaterial);
-        scene.add(stars);
-
-        // Adicionar algumas estrelas maiores (núcleos brilhantes)
-        const bigStarsGeo = new THREE.BufferGeometry();
-        const bigCount = 150;
-        const bigPositions = new Float32Array(bigCount * 3);
-        const bigColors = new Float32Array(bigCount * 3);
-
-        for (let i = 0; i < bigCount; i++) {
-            const r = 8 + Math.random() * 20;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            bigPositions[i*3] = r * Math.sin(phi) * Math.cos(theta);
-            bigPositions[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-            bigPositions[i*3+2] = r * Math.cos(phi);
-            
-            const col = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-            bigColors[i*3] = col.r * 1.2; // mais intenso
-            bigColors[i*3+1] = col.g * 1.2;
-            bigColors[i*3+2] = col.b * 1.2;
-        }
-        bigStarsGeo.setAttribute('position', new THREE.BufferAttribute(bigPositions, 3));
-        bigStarsGeo.setAttribute('color', new THREE.BufferAttribute(bigColors, 3));
+        // Criar várias camadas de estrelas
+        const stars1 = createStars(1200, 0.15, 12); // mais próximas
+        const stars2 = createStars(800, 0.25, 18); // médias
+        const stars3 = createStars(500, 0.35, 24); // maiores e mais distantes
         
-        const bigStarsMat = new THREE.PointsMaterial({
-            size: 0.5,
+        scene.add(stars1);
+        scene.add(stars2);
+        scene.add(stars3);
+
+        // --- Anel de estrelas dançante ---
+        const ringCount = 300;
+        const ringGeo = new THREE.BufferGeometry();
+        const ringPos = new Float32Array(ringCount * 3);
+        const ringCol = new Float32Array(ringCount * 3);
+        
+        for (let i = 0; i < ringCount; i++) {
+            const angle = (i / ringCount) * Math.PI * 2;
+            const radius = 7 + Math.sin(i * 0.3) * 1.5;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius * 0.4;
+            const z = Math.sin(angle * 2) * 2;
+            
+            ringPos[i*3] = x;
+            ringPos[i*3+1] = y;
+            ringPos[i*3+2] = z;
+            
+            // alternar cores
+            if (i % 3 === 0) {
+                ringCol[i*3] = 0.6; ringCol[i*3+1] = 0.75; ringCol[i*3+2] = 1.0; // azul
+            } else if (i % 3 === 1) {
+                ringCol[i*3] = 1.0; ringCol[i*3+1] = 0.7; ringCol[i*3+2] = 0.8; // rosa
+            } else {
+                ringCol[i*3] = 0.85; ringCol[i*3+1] = 0.6; ringCol[i*3+2] = 1.0; // lilás
+            }
+        }
+        
+        ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPos, 3));
+        ringGeo.setAttribute('color', new THREE.BufferAttribute(ringCol, 3));
+        
+        const ringMat = new THREE.PointsMaterial({
+            size: 0.3,
             vertexColors: true,
             blending: THREE.AdditiveBlending,
             sizeAttenuation: true,
             transparent: true,
-            opacity: 1
+            opacity: 0.8
         });
-        const bigStars = new THREE.Points(bigStarsGeo, bigStarsMat);
-        scene.add(bigStars);
-
-        // Adicionar algumas nuvens de partículas extras (efeito de nebulosa) - mas só pontos suaves
-        const nebulaGeo = new THREE.BufferGeometry();
-        const nebulaCount = 800;
-        const nebulaPositions = new Float32Array(nebulaCount * 3);
-        for (let i = 0; i < nebulaCount; i++) {
-            // posições mais próximas e difusas
-            const r = 5 + Math.random() * 10;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            nebulaPositions[i*3] = r * Math.sin(phi) * Math.cos(theta);
-            nebulaPositions[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-            nebulaPositions[i*3+2] = r * Math.cos(phi);
-        }
-        nebulaGeo.setAttribute('position', new THREE.BufferAttribute(nebulaPositions, 3));
-        const nebulaMat = new THREE.PointsMaterial({
-            color: 0xa58bff,
-            size: 0.15,
-            blending: THREE.AdditiveBlending,
-            transparent: true,
-            opacity: 0.3,
-            sizeAttenuation: true
-        });
-        const nebula = new THREE.Points(nebulaGeo, nebulaMat);
-        scene.add(nebula);
-
-        // --- Anel de estrelas giratório (destaque especial) ---
-        const ringStarCount = 400;
-        const ringGeo = new THREE.BufferGeometry();
-        const ringPositions = new Float32Array(ringStarCount * 3);
-        const ringColors = new Float32Array(ringStarCount * 3);
         
-        for (let i = 0; i < ringStarCount; i++) {
-            const angle = (i / ringStarCount) * Math.PI * 2;
-            const radius = 8 + Math.sin(i * 0.5) * 1.5; // variação suave
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius * 0.3; // achatado
-            const z = Math.sin(angle) * 2.5; // profundidade ondulada
-            
-            ringPositions[i*3] = x;
-            ringPositions[i*3+1] = y;
-            ringPositions[i*3+2] = z;
-            
-            // alternar cores entre azul, rosa e lilás
-            const choice = i % 3;
-            if (choice === 0) ringColors[i*3] = 0.4, ringColors[i*3+1] = 0.7, ringColors[i*3+2] = 1.0; // azul
-            else if (choice === 1) ringColors[i*3] = 1.0, ringColors[i*3+1] = 0.75, ringColors[i*3+2] = 0.9; // rosa
-            else ringColors[i*3] = 0.8, ringColors[i*3+1] = 0.6, ringColors[i*3+2] = 1.0; // lilás
-        }
-        ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPositions, 3));
-        ringGeo.setAttribute('color', new THREE.BufferAttribute(ringColors, 3));
-        const ringMat = new THREE.PointsMaterial({ size: 0.3, vertexColors: true, blending: THREE.AdditiveBlending, sizeAttenuation: true });
         const ring = new THREE.Points(ringGeo, ringMat);
         scene.add(ring);
 
-        // Suave rotação para o anel
-        let ringAngle = 0;
+        // Algumas estrelas cadentes (pequenos rastros) - partículas lineares
+        const fallingGeo = new THREE.BufferGeometry();
+        const fallingCount = 80;
+        const fallingPos = new Float32Array(fallingCount * 3);
+        for (let i = 0; i < fallingCount; i++) {
+            fallingPos[i*3] = (Math.random() - 0.5) * 30;
+            fallingPos[i*3+1] = (Math.random() - 0.5) * 20;
+            fallingPos[i*3+2] = (Math.random() - 0.5) * 30;
+        }
+        fallingGeo.setAttribute('position', new THREE.BufferAttribute(fallingPos, 3));
+        const fallingMat = new THREE.PointsMaterial({ color: 0xffb3d9, size: 0.2, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.4 });
+        const fallingStars = new THREE.Points(fallingGeo, fallingMat);
+        scene.add(fallingStars);
 
-        // --- Animar ---
+        // --- Animação suave ---
+        let time = 0;
+
         function animate() {
             requestAnimationFrame(animate);
-
-            // Rotação lenta do conjunto de estrelas para dar movimento
-            stars.rotation.y += 0.0002;
-            stars.rotation.x += 0.0001;
             
-            bigStars.rotation.y += 0.0005;
-            bigStars.rotation.x += 0.0003;
+            time += 0.002;
             
-            nebula.rotation.y += 0.0003;
-            nebula.rotation.z += 0.0001;
-
-            // Anel rotaciona mais rapidamente
-            ringAngle += 0.005;
-            ring.rotation.y = ringAngle;
-            ring.rotation.x = Math.sin(ringAngle * 0.5) * 0.1;
-
-            // Controles opcionais
-            // controls.update();
-
+            // Rotação lenta e flutuante
+            stars1.rotation.y += 0.0005;
+            stars1.rotation.x += 0.0002;
+            
+            stars2.rotation.y -= 0.0003;
+            stars2.rotation.z += 0.0001;
+            
+            stars3.rotation.y += 0.0004;
+            stars3.rotation.x += 0.0003;
+            
+            // Anel dançante
+            ring.rotation.y += 0.002;
+            ring.rotation.x = Math.sin(time * 0.5) * 0.1;
+            ring.rotation.z += 0.001;
+            
+            // Estrelas cadentes se movem levemente
+            fallingStars.rotation.y += 0.0002;
+            
+            // Leve movimento de câmera (respiração)
+            camera.position.x = Math.sin(time * 0.3) * 1;
+            camera.position.y = 2 + Math.sin(time * 0.5) * 0.5;
+            camera.lookAt(0, 0, 0);
+            
             renderer.render(scene, camera);
         }
-
+        
         animate();
 
-        // --- Ajustar ao redimensionar a tela ---
-        window.addEventListener('resize', onWindowResize, false);
-        function onWindowResize() {
+        // Resize
+        window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        // Movimento sutil com mouse (parallax) - opcional
-        document.addEventListener('mousemove', (event) => {
-            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-            
-            // Deslocar a posição das estrelas de fundo muito suavemente
-            stars.rotation.y += mouseX * 0.0005;
-            stars.rotation.x += mouseY * 0.0003;
-            
-            bigStars.rotation.y += mouseX * 0.0008;
-            bigStars.rotation.x += mouseY * 0.0005;
         });
 
-        // Pequeno toque: criar algumas partículas CSS extras (complemento)
-        function createCSSStars() {
-            // não necessário, mas poderia. Vamos deixar só o Three.
-        }
+        // Interação suave com mouse
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+            
+            // Inclinação sutil
+            stars1.rotation.y += mouseX * 0.0002;
+            stars2.rotation.x += mouseY * 0.0002;
+            ring.rotation.y += mouseX * 0.0005;
+        });
     </script>
 </body>
 </html>
