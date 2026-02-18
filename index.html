@@ -1,1 +1,251 @@
-<h1>Que incrivel meu portifolio🤩</h1> 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Java | Portfólio Espacial</title>
+    <style>
+        /* CSS INTEGRADO */
+        body {
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
+            overflow-x: hidden;
+        }
+
+        #bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 800px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        h1 { font-size: 4rem; margin-bottom: 0.5rem; color: #f89820; /* Cor Java */ }
+        h2 { font-size: 2.5rem; border-bottom: 2px solid #f89820; display: inline-block; }
+
+        .skills-tag {
+            display: inline-block;
+            background: #f89820;
+            color: black;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        .grid-projetos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 2rem;
+        }
+
+        .projeto-card {
+            height: 250px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #444;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+
+        .projeto-card:hover {
+            transform: translateY(-10px);
+            border-color: #f89820;
+        }
+
+        .instrucao {
+            position: fixed;
+            bottom: 20px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg"></canvas>
+
+    <main>
+        <section id="home">
+            <div class="glass-card">
+                <h1>SEU NOME</h1>
+                <p>Backend Developer Especialista em</p>
+                <div class="skills-tag">JAVA / SPRING BOOT</div>
+                <p style="margin-top: 20px;">Clique no espaço para gerar supernovas 💥</p>
+            </div>
+        </section>
+
+        <section id="projetos">
+            <h2>Meus Projetos</h2>
+            <div class="grid-projetos">
+                <div class="projeto-card"><h3>API Rest Java</h3><p>Spring Boot & MySQL</p></div>
+                <div class="projeto-card"><h3>Microserviços</h3><p>Kafka & Docker</p></div>
+                <div class="projeto-card"><h3>Algoritmos</h3><p>Estrutura de Dados</p></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="instrucao">Scroll para navegar | Clique para explodir</div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // CONFIGURAÇÃO BÁSICA
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('#bg'), antialias: true });
+
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.setZ(30);
+
+        // ESTRELAS DE FUNDO
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 1500;
+        const posArray = new Float32Array(starsCount * 3);
+
+        for(let i = 0; i < starsCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 200;
+        }
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const starsMaterial = new THREE.PointsMaterial({ size: 0.1, color: 0xffffff });
+        const starField = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(starField);
+
+        // SISTEMA DE EXPLOSÃO (PARTÍCULAS)
+        let explosions = [];
+
+        function createExplosion(x, y, z) {
+            const particleCount = 50;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const velocities = [];
+
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = x;
+                positions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z;
+                
+                velocities.push({
+                    x: (Math.random() - 0.5) * 0.5,
+                    y: (Math.random() - 0.5) * 0.5,
+                    z: (Math.random() - 0.5) * 0.5
+                });
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const material = new THREE.PointsMaterial({ size: 0.2, color: 0xf89820, transparent: true, opacity: 1 });
+            const particles = new THREE.Points(geometry, material);
+
+            scene.add(particles);
+            explosions.push({ mesh: particles, vels: velocities, life: 1.0 });
+        }
+
+        // INTERAÇÃO DE CLIQUE
+        window.addEventListener('mousedown', (event) => {
+            const vector = new THREE.Vector3(
+                (event.clientX / window.innerWidth) * 2 - 1,
+                -(event.clientY / window.innerHeight) * 2 + 1,
+                0.5
+            );
+            vector.unproject(camera);
+            const dir = vector.sub(camera.position).normalize();
+            const distance = -camera.position.z / dir.z;
+            const pos = camera.position.clone().add(dir.multiplyScalar(distance));
+            
+            createExplosion(pos.x, pos.y, pos.z);
+        });
+
+        // MOVIMENTAÇÃO AO SCROLL
+        document.body.onscroll = () => {
+            const t = document.body.getBoundingClientRect().top;
+            camera.position.z = 30 + t * 0.05;
+            camera.rotation.y = t * 0.0008;
+        };
+
+        // LOOP DE ANIMAÇÃO
+        function animate() {
+            requestAnimationFrame(animate);
+
+            starField.rotation.y += 0.001;
+
+            // Animar explosões
+            explosions.forEach((exp, index) => {
+                const positions = exp.mesh.geometry.attributes.position.array;
+                exp.life -= 0.02;
+                exp.mesh.material.opacity = exp.life;
+
+                for (let i = 0; i < exp.vels.length; i++) {
+                    positions[i * 3] += exp.vels[i].x;
+                    positions[i * 3 + 1] += exp.vels[i].y;
+                    positions[i * 3 + 2] += exp.vels[i].z;
+                }
+                exp.mesh.geometry.attributes.position.needsUpdate = true;
+
+                if (exp.life <= 0) {
+                    scene.remove(exp.mesh);
+                    explosions.splice(index, 1);
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // REDIMENSIONAMENTO
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
