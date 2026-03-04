@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Portfólio | Azul & Cinza</title>
+    <title>✨ Mundo Encantado | Boneca Mágica ✨</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600;700&display=swap');
 
         * {
             margin: 0;
@@ -14,12 +14,11 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             overflow: hidden;
-            color: #2c3e50;
+            color: white;
         }
 
-        /* Container do Three.js */
         #canvas-container {
             position: fixed;
             top: 0;
@@ -29,356 +28,373 @@
             z-index: 1;
         }
 
-        /* Overlay sutil para melhor legibilidade */
-        .overlay {
+        /* Overlay com gradiente mágico */
+        .magic-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.3) 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(75, 0, 130, 0.3) 100%);
             pointer-events: none;
             z-index: 2;
         }
 
-        /* Conteúdo principal */
-        .content {
+        /* Interface do usuário */
+        .ui-content {
             position: relative;
             z-index: 3;
             height: 100vh;
             width: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-between;
             padding: 2rem;
             pointer-events: none;
         }
 
-        /* Card principal */
-        .hero-card {
-            background: rgba(255, 255, 255, 0.75);
+        /* Header com título estilizado */
+        .magic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(75, 0, 130, 0.2);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 32px;
-            padding: 3rem;
-            max-width: 900px;
-            width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            border: 1px solid rgba(230, 230, 250, 0.3);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
             pointer-events: auto;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Layout da apresentação */
-        .presentation {
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        /* Espaço para foto - formato circular moderno */
-        .photo-frame {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #a8d8ff, #7ab8ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 20px 30px -10px rgba(52, 152, 219, 0.3);
-            border: 4px solid white;
-            transition: transform 0.3s ease;
-        }
-
-        .photo-frame:hover {
-            transform: scale(1.05);
-        }
-
-        .photo-placeholder {
+            max-width: 1200px;
+            margin: 0 auto;
             width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #e0f0ff, #b8d9ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: #2c3e50;
-            font-weight: 300;
         }
 
-        /* Informações de nome e título */
-        .name-info {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .name-info h1 {
-            font-size: 3.5rem;
+        .game-title {
+            font-size: 1.8rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, #b19cd9, #9370db, #8a2be2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
+            text-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
         }
 
-        .name-info .title {
-            font-size: 1.25rem;
-            color: #4a5568;
-            font-weight: 400;
-            margin-bottom: 1rem;
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(230, 230, 250, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .star-icon {
+            color: #ffd700;
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 10px gold);
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 15px #b19cd9;
+        }
+
+        /* Card de apresentação */
+        .profile-card {
+            background: rgba(75, 0, 130, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 40px;
+            padding: 2.5rem;
+            border: 2px solid rgba(230, 230, 250, 0.3);
+            box-shadow: 0 20px 50px rgba(138, 43, 226, 0.4),
+                        0 0 0 2px rgba(147, 112, 219, 0.3) inset;
+            max-width: 500px;
+            margin: 0 auto;
+            pointer-events: auto;
+            transform: translateY(0);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Espaço para foto/avatar */
+        .magic-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9370db, #8a2be2, #4b0082);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 40px #9370db;
+            animation: avatarGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes avatarGlow {
+            0%, 100% { box-shadow: 0 0 40px #9370db; }
+            50% { box-shadow: 0 0 70px #b19cd9; }
+        }
+
+        .avatar-placeholder {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 10px white);
+        }
+
+        .name-section h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e6e6fa, #d8bfd8, #b19cd9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .name-section p {
+            color: #e6e6fa;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .title-line {
-            width: 50px;
-            height: 2px;
-            background: linear-gradient(90deg, #7ab8ff, transparent);
-        }
-
-        .tags {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: #2c3e50;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-        }
-
-        /* Seção de estatísticas */
-        .stats {
+        .magic-stats {
             display: flex;
             justify-content: space-around;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            margin: 1.5rem 0;
+            padding: 1rem 0;
+            border-top: 2px dashed rgba(230, 230, 250, 0.3);
+            border-bottom: 2px dashed rgba(230, 230, 250, 0.3);
         }
 
-        .stat-item {
+        .stat {
             text-align: center;
         }
 
-        .stat-number {
-            font-size: 2rem;
+        .stat-value {
+            font-size: 1.8rem;
             font-weight: 700;
-            color: #1e3c72;
+            color: #e6e6fa;
+            text-shadow: 0 0 15px #9370db;
         }
 
         .stat-label {
-            font-size: 0.9rem;
-            color: #64748b;
+            font-size: 0.8rem;
+            color: #b19cd9;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Cards de habilidades */
-        .skills-section {
-            margin-top: 2rem;
-        }
-
-        .skills-title {
-            font-size: 1.1rem;
-            color: #4a5568;
-            margin-bottom: 1rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        .skills-grid {
+        .magic-powers {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .power {
+            background: rgba(147, 112, 219, 0.2);
+            border: 1px solid rgba(230, 230, 250, 0.3);
+            border-radius: 20px;
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #e6e6fa;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .power:hover {
+            background: rgba(138, 43, 226, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #9370db;
+        }
+
+        .power span {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #9370db, #8a2be2);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 30px #9370db;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 1rem;
         }
 
-        .skill-card {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding: 1rem;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
-            cursor: default;
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px #b19cd9;
+            background: linear-gradient(135deg, #8a2be2, #4b0082);
         }
 
-        .skill-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 10px 20px -10px rgba(52, 152, 219, 0.3);
-        }
-
-        .skill-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-name {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #2c3e50;
-        }
-
-        /* Botão de ação */
-        .action-button {
-            margin-top: 2rem;
+        /* Controles do jogo */
+        .game-controls {
             display: flex;
+            gap: 1rem;
             justify-content: center;
-        }
-
-        .btn {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #1e3c72;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
+            margin-top: 1rem;
             pointer-events: auto;
         }
 
-        .btn:hover {
-            background: white;
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px -10px rgba(52, 152, 219, 0.4);
+        .control-btn {
+            background: rgba(75, 0, 130, 0.4);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(230, 230, 250, 0.3);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .control-btn:hover {
+            background: rgba(138, 43, 226, 0.6);
+            transform: scale(1.1);
+            box-shadow: 0 0 40px #9370db;
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Footer */
+        .magic-footer {
+            text-align: center;
+            color: #b19cd9;
+            font-size: 0.9rem;
+            text-shadow: 0 0 10px #8a2be2;
+            pointer-events: auto;
         }
 
         /* Responsividade */
         @media (max-width: 768px) {
-            .hero-card {
-                padding: 2rem;
+            .profile-card {
+                padding: 1.5rem;
             }
             
-            .name-info h1 {
-                font-size: 2.5rem;
+            .name-section h2 {
+                font-size: 1.8rem;
             }
             
-            .photo-frame {
-                width: 140px;
-                height: 140px;
-            }
-            
-            .stats {
-                flex-direction: column;
-                gap: 1rem;
+            .game-title {
+                font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
     <div id="canvas-container"></div>
-    <div class="overlay"></div>
-    
-    <div class="content">
-        <div class="hero-card">
-            <!-- Apresentação com foto e nome -->
-            <div class="presentation">
-                <div class="photo-frame">
-                    <div class="photo-placeholder">
-                        👤
-                    </div>
+    <div class="magic-overlay"></div>
+
+    <div class="ui-content">
+        <!-- Header com pontuação -->
+        <header class="magic-header">
+            <div class="game-title">✨ REINO ENCANTADO ✨</div>
+            <div class="score-display">
+                <span class="star-icon">⭐</span>
+                <span class="score-value" id="scoreDisplay">0</span>
+            </div>
+        </header>
+
+        <!-- Card principal com apresentação -->
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="magic-avatar">
+                    <div class="avatar-placeholder">🧚‍♀️</div>
                 </div>
-                
-                <div class="name-info">
-                    <h1>SEU NOME AQUI</h1>
-                    <div class="title">
-                        <span class="title-line"></span>
-                        <span>Desenvolvedor Full Stack</span>
-                    </div>
-                    <div class="tags">
-                        <span class="tag">React</span>
-                        <span class="tag">Node.js</span>
-                        <span class="tag">TypeScript</span>
-                        <span class="tag">Python</span>
-                    </div>
+                <div class="name-section">
+                    <h2>Luna Estrelar</h2>
+                    <p>✨ Fada Guardiã · Nível 8 ✨</p>
+                    <p style="font-size: 0.9rem;">🌸 Poder mágico: 2500 ✨</p>
                 </div>
             </div>
 
-            <!-- Estatísticas rápidas -->
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number">5+</div>
-                    <div class="stat-label">Anos de experiência</div>
+            <!-- Estatísticas mágicas -->
+            <div class="magic-stats">
+                <div class="stat">
+                    <div class="stat-value">150</div>
+                    <div class="stat-label">Missões</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">20+</div>
-                    <div class="stat-label">Projetos completos</div>
+                <div class="stat">
+                    <div class="stat-value">34</div>
+                    <div class="stat-label">Estrelas</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">10+</div>
-                    <div class="stat-label">Clientes satisfeitos</div>
+                <div class="stat">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Feitiços</div>
                 </div>
             </div>
 
-            <!-- Habilidades -->
-            <div class="skills-section">
-                <div class="skills-title">PRINCIPAIS HABILIDADES</div>
-                <div class="skills-grid">
-                    <div class="skill-card">
-                        <div class="skill-icon">⚛️</div>
-                        <div class="skill-name">React</div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">📱</div>
-                        <div class="skill-name">React Native</div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">🟢</div>
-                        <div class="skill-name">Node.js</div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">📊</div>
-                        <div class="skill-name">MongoDB</div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">🎨</div>
-                        <div class="skill-name">UI/UX</div>
-                    </div>
+            <!-- Poderes mágicos -->
+            <div class="magic-powers">
+                <div class="power">
+                    <span>✨</span> Voo Mágico
+                </div>
+                <div class="power">
+                    <span>💫</span> Escudo Astral
+                </div>
+                <div class="power">
+                    <span>🌙</span> Luz Lunar
+                </div>
+                <div class="power">
+                    <span>⭐</span> Estrelas Cadentes
                 </div>
             </div>
 
             <!-- Botão de ação -->
-            <div class="action-button">
-                <a href="#" class="btn">
-                    <span>Ver projetos</span>
-                    <span>→</span>
-                </a>
+            <button class="play-button" id="collectStarsBtn">
+                <span>✨</span>
+                COLETAR ESTRELAS
+                <span>✨</span>
+            </button>
+
+            <!-- Controles interativos -->
+            <div class="game-controls">
+                <button class="control-btn" id="moveLeft">←</button>
+                <button class="control-btn" id="moveRight">→</button>
+                <button class="control-btn" id="moveUp">↑</button>
+                <button class="control-btn" id="moveDown">↓</button>
+                <button class="control-btn" id="jumpBtn">⭐</button>
             </div>
         </div>
+
+        <!-- Footer -->
+        <footer class="magic-footer">
+            <p>🌟 Três mundos · Uma aventura · Magia sem limites 🌟</p>
+        </footer>
     </div>
 
     <script type="importmap">
@@ -392,153 +408,404 @@
     <script type="module">
         import * as THREE from 'three';
 
-        // Configuração da cena
+        // --- CONFIGURAÇÃO DA CENA ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf0f7ff); // Azul muito claro
+        scene.background = new THREE.Color(0x0a0a2a); // Azul escuro noturno
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 15);
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(5, 3, 12);
+        camera.lookAt(0, 1, 0);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setClearColor(0xf0f7ff);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.setClearColor(0x0a0a2a);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // Iluminação suave
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        // --- ILUMINAÇÃO MÁGICA ---
+        // Luz ambiente suave
+        const ambientLight = new THREE.AmbientLight(0x404060);
         scene.add(ambientLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(5, 5, 5);
-        scene.add(directionalLight);
+        // Luz principal com cor roxa
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+        mainLight.position.set(5, 10, 7);
+        mainLight.castShadow = true;
+        mainLight.receiveShadow = true;
+        mainLight.shadow.mapSize.width = 1024;
+        mainLight.shadow.mapSize.height = 1024;
+        scene.add(mainLight);
 
-        // Pontos de luz coloridos sutis
-        const colors = [0xa8d8ff, 0xb8d9ff, 0xc0e0ff, 0xd0e8ff];
+        // Luzes coloridas mágicas
+        const purpleLight = new THREE.PointLight(0x8a2be2, 1.5, 15);
+        purpleLight.position.set(3, 2, 4);
+        scene.add(purpleLight);
+
+        const blueLight = new THREE.PointLight(0x4169e1, 1.5, 15);
+        blueLight.position.set(-3, 1, 5);
+        scene.add(blueLight);
+
+        const lilacLight = new THREE.PointLight(0xb19cd9, 1.5, 15);
+        lilacLight.position.set(0, 4, 2);
+        scene.add(lilacLight);
+
+        // --- CRIAÇÃO DA BONECA MÁGICA ---
+        const dollGroup = new THREE.Group();
+
+        // Corpo (vestido)
+        const bodyGeometry = new THREE.ConeGeometry(0.8, 1.5, 32);
+        const bodyMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x9370db, 
+            emissive: 0x301050,
+            roughness: 0.3,
+            metalness: 0.1
+        });
+        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        body.position.y = 0.75;
+        body.castShadow = true;
+        body.receiveShadow = true;
+        dollGroup.add(body);
+
+        // Cabeça
+        const headGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const headMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xffdbdb,
+            roughness: 0.4
+        });
+        const head = new THREE.Mesh(headGeometry, headMaterial);
+        head.position.y = 1.8;
+        head.castShadow = true;
+        head.receiveShadow = true;
+        dollGroup.add(head);
+
+        // Olhos
+        const eyeGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+        const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0x4b0082 });
+        const eyeMaterialWhite = new THREE.MeshStandardMaterial({ color: 0xffffff });
         
-        for (let i = 0; i < 4; i++) {
-            const light = new THREE.PointLight(colors[i], 0.8, 20);
-            light.position.set(
-                Math.sin(i * Math.PI / 2) * 8,
-                Math.cos(i * Math.PI / 2) * 8,
-                5
+        // Branco dos olhos
+        const eyeWhite1 = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16), eyeMaterialWhite);
+        eyeWhite1.position.set(-0.15, 1.95, 0.4);
+        dollGroup.add(eyeWhite1);
+        
+        const eyeWhite2 = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16), eyeMaterialWhite);
+        eyeWhite2.position.set(0.15, 1.95, 0.4);
+        dollGroup.add(eyeWhite2);
+        
+        // Pupilas
+        const pupil1 = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        pupil1.position.set(-0.15, 1.95, 0.5);
+        dollGroup.add(pupil1);
+        
+        const pupil2 = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        pupil2.position.set(0.15, 1.95, 0.5);
+        dollGroup.add(pupil2);
+
+        // Boca (estrelinha)
+        const mouthGeometry = new THREE.TorusGeometry(0.1, 0.03, 8, 16, Math.PI);
+        const mouthMaterial = new THREE.MeshStandardMaterial({ color: 0xff69b4 });
+        const mouth = new THREE.Mesh(mouthGeometry, mouthMaterial);
+        mouth.rotation.x = Math.PI / 2;
+        mouth.rotation.z = Math.PI;
+        mouth.position.set(0, 1.8, 0.45);
+        dollGroup.add(mouth);
+
+        // Cabelo
+        const hairGeometry = new THREE.ConeGeometry(0.6, 0.4, 16);
+        const hairMaterial = new THREE.MeshStandardMaterial({ color: 0x8a2be2 });
+        const hair = new THREE.Mesh(hairGeometry, hairMaterial);
+        hair.position.y = 2.15;
+        hair.castShadow = true;
+        dollGroup.add(hair);
+
+        // Chapéu mágico
+        const hatConeGeometry = new THREE.ConeGeometry(0.5, 1, 16);
+        const hatConeMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x4b0082,
+            emissive: 0x1a0033
+        });
+        const hatCone = new THREE.Mesh(hatConeGeometry, hatConeMaterial);
+        hatCone.position.y = 2.6;
+        hatCone.castShadow = true;
+        dollGroup.add(hatCone);
+
+        const hatBallGeometry = new THREE.SphereGeometry(0.15, 8);
+        const hatBallMaterial = new THREE.MeshStandardMaterial({ color: 0xffd700 });
+        const hatBall = new THREE.Mesh(hatBallGeometry, hatBallMaterial);
+        hatBall.position.y = 3.1;
+        hatBall.castShadow = true;
+        dollGroup.add(hatBall);
+
+        // Asas mágicas
+        const wingMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xb19cd9,
+            transparent: true,
+            opacity: 0.7,
+            emissive: 0x330066
+        });
+
+        const wingGeometry = new THREE.SphereGeometry(0.5, 16);
+        
+        const wing1 = new THREE.Mesh(wingGeometry, wingMaterial);
+        wing1.position.set(-0.8, 1.5, -0.2);
+        wing1.scale.set(0.5, 0.8, 0.2);
+        wing1.castShadow = true;
+        dollGroup.add(wing1);
+        
+        const wing2 = new THREE.Mesh(wingGeometry, wingMaterial);
+        wing2.position.set(0.8, 1.5, -0.2);
+        wing2.scale.set(0.5, 0.8, 0.2);
+        wing2.castShadow = true;
+        dollGroup.add(wing2);
+
+        // Varinha mágica
+        const wandGroup = new THREE.Group();
+        const wandHandle = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.05, 0.05, 1),
+            new THREE.MeshStandardMaterial({ color: 0x8b4513 })
+        );
+        wandHandle.position.y = 0.5;
+        wandGroup.add(wandHandle);
+        
+        const wandStar = new THREE.Mesh(
+            new THREE.OctahedronGeometry(0.15),
+            new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x442200 })
+        );
+        wandStar.position.y = 1;
+        wandGroup.add(wandStar);
+        
+        wandGroup.position.set(1, 1.2, 0.5);
+        wandGroup.rotation.z = -0.3;
+        dollGroup.add(wandGroup);
+
+        dollGroup.position.y = 0;
+        scene.add(dollGroup);
+
+        // --- CENÁRIO MÁGICO ---
+        // Chão com efeito de estrelas
+        const groundGeometry = new THREE.CircleGeometry(15, 32);
+        const groundMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x1a0033,
+            emissive: 0x0a001a
+        });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -0.01;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // Cristais mágicos
+        const crystalColors = [0x9370db, 0x8a2be2, 0x4b0082, 0x4169e1];
+        
+        for (let i = 0; i < 12; i++) {
+            const crystalGroup = new THREE.Group();
+            
+            const crystalHeight = 0.5 + Math.random() * 0.8;
+            const crystalGeo = new THREE.ConeGeometry(0.15, crystalHeight, 6);
+            const crystalMat = new THREE.MeshStandardMaterial({ 
+                color: crystalColors[Math.floor(Math.random() * crystalColors.length)],
+                emissive: 0x220044,
+                transparent: true,
+                opacity: 0.8
+            });
+            const crystal = new THREE.Mesh(crystalGeo, crystalMat);
+            crystal.castShadow = true;
+            crystal.receiveShadow = true;
+            crystal.position.y = crystalHeight / 2;
+            crystalGroup.add(crystal);
+            
+            const angle = (i / 12) * Math.PI * 2;
+            const radius = 3 + Math.random() * 2;
+            crystalGroup.position.set(
+                Math.cos(angle) * radius,
+                0,
+                Math.sin(angle) * radius
             );
-            scene.add(light);
+            
+            crystalGroup.rotation.y = Math.random() * Math.PI;
+            
+            scene.add(crystalGroup);
         }
 
-        // Criar partículas flutuantes
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 2000;
-        
-        const posArray = new Float32Array(particlesCount * 3);
-        const colorArray = new Float32Array(particlesCount * 3);
+        // Estrelas flutuantes
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 300;
+        const starsPositions = new Float32Array(starsCount * 3);
+        const starsColors = new Float32Array(starsCount * 3);
 
-        for (let i = 0; i < particlesCount * 3; i += 3) {
-            // Posições em uma esfera
-            const radius = 12 + Math.random() * 5;
+        for (let i = 0; i < starsCount; i++) {
+            const r = 5 + Math.random() * 8;
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos((Math.random() * 2) - 1);
             
-            posArray[i] = radius * Math.sin(phi) * Math.cos(theta);
-            posArray[i+1] = radius * Math.sin(phi) * Math.sin(theta);
-            posArray[i+2] = radius * Math.cos(phi);
-
-            // Cores: tons de azul, branco e cinza claro
+            starsPositions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+            starsPositions[i*3+1] = r * Math.sin(phi) * Math.sin(theta) + 2;
+            starsPositions[i*3+2] = r * Math.cos(phi);
+            
             const colorChoice = Math.random();
-            let r, g, b;
-            
-            if (colorChoice < 0.6) { // Azul claro
-                r = 0.7 + Math.random() * 0.3;
-                g = 0.8 + Math.random() * 0.2;
-                b = 1.0;
-            } else if (colorChoice < 0.85) { // Branco
-                r = 0.95 + Math.random() * 0.05;
-                g = 0.95 + Math.random() * 0.05;
-                b = 1.0;
-            } else { // Cinza claro
-                r = 0.85 + Math.random() * 0.1;
-                g = 0.85 + Math.random() * 0.1;
-                b = 0.9 + Math.random() * 0.1;
+            if (colorChoice < 0.33) {
+                starsColors[i*3] = 0.5; starsColors[i*3+1] = 0.5; starsColors[i*3+2] = 1.0; // Azul
+            } else if (colorChoice < 0.66) {
+                starsColors[i*3] = 0.8; starsColors[i*3+1] = 0.6; starsColors[i*3+2] = 1.0; // Lilás
+            } else {
+                starsColors[i*3] = 0.6; starsColors[i*3+1] = 0.3; starsColors[i*3+2] = 1.0; // Roxo
             }
-            
-            colorArray[i] = r;
-            colorArray[i+1] = g;
-            colorArray[i+2] = b;
         }
 
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+        starsGeometry.setAttribute('color', new THREE.BufferAttribute(starsColors, 3));
 
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.1,
+        const starsMaterial = new THREE.PointsMaterial({
+            size: 0.15,
             vertexColors: true,
             transparent: true,
-            opacity: 0.7,
             blending: THREE.AdditiveBlending,
             sizeAttenuation: true
         });
 
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
+        const stars = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(stars);
 
-        // Adicionar algumas linhas geométricas suaves
-        const linesGeometry = new THREE.BufferGeometry();
-        const linesCount = 50;
-        const linesPositions = [];
+        // Círculo mágico no chão
+        const ringGeometry = new THREE.TorusGeometry(2.5, 0.05, 16, 64);
+        const ringMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x8a2be2,
+            emissive: 0x330066,
+            transparent: true,
+            opacity: 0.6
+        });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = 0.01;
+        scene.add(ring);
 
-        for (let i = 0; i < linesCount; i++) {
-            const startAngle = (i / linesCount) * Math.PI * 2;
-            const endAngle = startAngle + Math.PI / 4;
+        const ring2 = new THREE.Mesh(
+            new THREE.TorusGeometry(3, 0.03, 16, 64),
+            new THREE.MeshStandardMaterial({ color: 0x9370db, emissive: 0x220044, transparent: true, opacity: 0.4 })
+        );
+        ring2.rotation.x = Math.PI / 2;
+        ring2.position.y = 0.02;
+        scene.add(ring2);
+
+        // --- VARIÁVEIS DO JOGO ---
+        let score = 0;
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const collectBtn = document.getElementById('collectStarsBtn');
+        
+        // Estrelas coletáveis
+        const collectibles = [];
+        
+        for (let i = 0; i < 8; i++) {
+            const starGeo = new THREE.OctahedronGeometry(0.2);
+            const starMat = new THREE.MeshStandardMaterial({ 
+                color: 0xffd700,
+                emissive: 0x442200
+            });
+            const star = new THREE.Mesh(starGeo, starMat);
             
-            const radius1 = 10;
-            const radius2 = 12;
+            const angle = (i / 8) * Math.PI * 2;
+            const radius = 2;
+            star.position.set(
+                Math.cos(angle) * radius,
+                1,
+                Math.sin(angle) * radius
+            );
             
-            const x1 = Math.cos(startAngle) * radius1;
-            const y1 = Math.sin(startAngle) * radius1;
-            const z1 = Math.sin(startAngle) * 2;
-            
-            const x2 = Math.cos(endAngle) * radius2;
-            const y2 = Math.sin(endAngle) * radius2;
-            const z2 = Math.cos(endAngle) * 2;
-            
-            linesPositions.push(x1, y1, z1);
-            linesPositions.push(x2, y2, z2);
+            star.castShadow = true;
+            star.receiveShadow = true;
+            scene.add(star);
+            collectibles.push(star);
         }
 
-        linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linesPositions, 3));
+        // --- CONTROLES ---
+        document.getElementById('moveLeft').addEventListener('click', () => {
+            dollGroup.position.x -= 0.5;
+        });
         
-        const linesMaterial = new THREE.LineBasicMaterial({ color: 0xa8d8ff, opacity: 0.1, transparent: true });
-        const lines = new THREE.LineSegments(linesGeometry, linesMaterial);
-        scene.add(lines);
+        document.getElementById('moveRight').addEventListener('click', () => {
+            dollGroup.position.x += 0.5;
+        });
+        
+        document.getElementById('moveUp').addEventListener('click', () => {
+            dollGroup.position.z -= 0.5;
+        });
+        
+        document.getElementById('moveDown').addEventListener('click', () => {
+            dollGroup.position.z += 0.5;
+        });
+        
+        document.getElementById('jumpBtn').addEventListener('click', () => {
+            // Animação de pulo simples
+            dollGroup.position.y = 1;
+            setTimeout(() => {
+                dollGroup.position.y = 0;
+            }, 200);
+        });
 
-        // Animação
+        collectBtn.addEventListener('click', () => {
+            collectibles.forEach(star => {
+                star.material.emissive.setHex(0x884400);
+                setTimeout(() => {
+                    star.material.emissive.setHex(0x442200);
+                }, 200);
+            });
+            score += 10;
+            scoreDisplay.textContent = score;
+        });
+
+        // --- ANIMAÇÃO ---
         let clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
-
-            const delta = clock.getDelta();
-            const elapsedTime = performance.now() / 1000;
-
-            // Rotação suave das partículas
-            particlesMesh.rotation.y = elapsedTime * 0.05;
-            particlesMesh.rotation.x = Math.sin(elapsedTime * 0.1) * 0.1;
             
-            // Rotação das linhas
-            lines.rotation.y = elapsedTime * 0.02;
-            lines.rotation.x = Math.sin(elapsedTime * 0.2) * 0.05;
+            const delta = clock.getDelta();
+            const time = performance.now() / 1000;
 
-            // Movimento sutil da câmera
-            camera.position.x = Math.sin(elapsedTime * 0.2) * 2;
-            camera.position.y = Math.cos(elapsedTime * 0.3) * 1;
-            camera.lookAt(0, 0, 0);
+            // Animação da boneca
+            dollGroup.rotation.y = Math.sin(time * 0.5) * 0.2;
+            dollGroup.position.y = Math.sin(time * 2) * 0.1;
+            
+            // Rotação das asas
+            dollGroup.children.forEach(child => {
+                if (child.position.x === -0.8 && child.position.y === 1.5) {
+                    child.rotation.z = Math.sin(time * 3) * 0.2;
+                }
+                if (child.position.x === 0.8 && child.position.y === 1.5) {
+                    child.rotation.z = -Math.sin(time * 3) * 0.2;
+                }
+            });
+
+            // Rotação da varinha
+            wandGroup.rotation.y += 0.02;
+
+            // Estrelas girando
+            stars.rotation.y += 0.001;
+            stars.rotation.x = Math.sin(time * 0.1) * 0.1;
+
+            // Coletáveis girando
+            collectibles.forEach((star, index) => {
+                star.rotation.x += 0.02;
+                star.rotation.y += 0.03;
+                star.position.y = 1 + Math.sin(time * 2 + index) * 0.2;
+            });
+
+            // Anéis girando
+            ring.rotation.z += 0.005;
+            ring2.rotation.z -= 0.003;
+
+            // Movimento suave da câmera
+            camera.position.x = 5 + Math.sin(time * 0.2) * 2;
+            camera.lookAt(dollGroup.position);
 
             renderer.render(scene, camera);
         }
 
         animate();
 
-        // Ajuste de resize
+        // Resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -546,13 +813,13 @@
         });
 
         // Interação com mouse
-        document.addEventListener('mousemove', (event) => {
-            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
             
-            // Movimento sutil baseado no mouse
-            particlesMesh.rotation.y += mouseX * 0.0005;
-            particlesMesh.rotation.x += mouseY * 0.0005;
+            // Inclinação suave da cabeça
+            head.rotation.x = mouseY * 0.1;
+            head.rotation.y = mouseX * 0.1;
         });
     </script>
 </body>
