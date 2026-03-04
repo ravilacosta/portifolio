@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Mundo Encantado | Boneca Mágica ✨</title>
+    <title>Rávila Costa | Portfólio Mágico</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
         * {
             margin: 0;
@@ -14,9 +14,9 @@
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Poppins', sans-serif;
             overflow: hidden;
-            color: white;
+            color: #fff;
         }
 
         #canvas-container {
@@ -35,282 +35,274 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, rgba(75, 0, 130, 0.3) 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(75, 0, 130, 0.4) 100%);
             pointer-events: none;
             z-index: 2;
         }
 
-        /* Interface do usuário */
-        .ui-content {
+        /* Conteúdo principal com scroll */
+        .content {
             position: relative;
             z-index: 3;
             height: 100vh;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            overflow-y: auto;
             padding: 2rem;
-            pointer-events: none;
+            scroll-behavior: smooth;
         }
 
-        /* Header com título estilizado */
-        .magic-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(75, 0, 130, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 50px;
-            padding: 1rem 2rem;
-            border: 1px solid rgba(230, 230, 250, 0.3);
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
-            pointer-events: auto;
+        /* Container dos cards */
+        .cards-container {
             max-width: 1200px;
             margin: 0 auto;
-            width: 100%;
-        }
-
-        .game-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #b19cd9, #9370db, #8a2be2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
-        }
-
-        .score-display {
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: rgba(230, 230, 250, 0.2);
-            padding: 0.5rem 1.5rem;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-direction: column;
+            gap: 2rem;
+            padding: 1rem 0 3rem;
         }
 
-        .star-icon {
-            color: #ffd700;
-            font-size: 1.5rem;
-            filter: drop-shadow(0 0 10px gold);
-        }
-
-        .score-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            text-shadow: 0 0 15px #b19cd9;
-        }
-
-        /* Card de apresentação */
-        .profile-card {
-            background: rgba(75, 0, 130, 0.25);
+        /* Card base com efeito mágico */
+        .magic-card {
+            background: rgba(26, 0, 51, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 40px;
             padding: 2.5rem;
-            border: 2px solid rgba(230, 230, 250, 0.3);
-            box-shadow: 0 20px 50px rgba(138, 43, 226, 0.4),
-                        0 0 0 2px rgba(147, 112, 219, 0.3) inset;
-            max-width: 500px;
-            margin: 0 auto;
-            pointer-events: auto;
-            transform: translateY(0);
-            animation: float 3s ease-in-out infinite;
+            border: 2px solid rgba(147, 112, 219, 0.3);
+            box-shadow: 0 20px 50px rgba(138, 43, 226, 0.3),
+                        0 0 0 2px rgba(180, 130, 255, 0.2) inset;
+            transition: all 0.4s ease;
+            animation: cardAppear 0.8s ease-out;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
+        .magic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(138, 43, 226, 0.5),
+                        0 0 0 3px rgba(147, 112, 219, 0.4) inset;
+            background: rgba(40, 0, 70, 0.7);
+        }
+
+        /* Header do perfil */
         .profile-header {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            gap: 2.5rem;
+            flex-wrap: wrap;
         }
 
-        /* Espaço para foto/avatar */
+        /* Avatar mágico */
         .magic-avatar {
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             background: linear-gradient(135deg, #9370db, #8a2be2, #4b0082);
             display: flex;
             align-items: center;
             justify-content: center;
             border: 4px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 40px #9370db;
-            animation: avatarGlow 2s ease-in-out infinite;
+            box-shadow: 0 0 50px #9370db;
+            animation: avatarPulse 3s ease-in-out infinite;
         }
 
-        @keyframes avatarGlow {
-            0%, 100% { box-shadow: 0 0 40px #9370db; }
-            50% { box-shadow: 0 0 70px #b19cd9; }
+        @keyframes avatarPulse {
+            0%, 100% { box-shadow: 0 0 50px #9370db; }
+            50% { box-shadow: 0 0 80px #b19cd9; }
         }
 
         .avatar-placeholder {
-            font-size: 3rem;
-            filter: drop-shadow(0 0 10px white);
+            font-size: 4rem;
+            filter: drop-shadow(0 0 20px white);
         }
 
-        .name-section h2 {
-            font-size: 2.2rem;
+        /* Informações do nome */
+        .name-info {
+            flex: 1;
+        }
+
+        .name-info h1 {
+            font-size: 3.2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #e6e6fa, #d8bfd8, #b19cd9);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.3rem;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(180, 130, 255, 0.5);
         }
 
-        .name-section p {
-            color: #e6e6fa;
-            font-size: 1rem;
+        .hello-icon {
+            display: inline-block;
+            animation: wave 2s infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #d8bfd8;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Tags */
+        .tags-container {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .magic-stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 1.5rem 0;
-            padding: 1rem 0;
-            border-top: 2px dashed rgba(230, 230, 250, 0.3);
-            border-bottom: 2px dashed rgba(230, 230, 250, 0.3);
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #e6e6fa;
-            text-shadow: 0 0 15px #9370db;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: #b19cd9;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .magic-powers {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
             gap: 0.8rem;
+            flex-wrap: wrap;
             margin: 1.5rem 0;
         }
 
-        .power {
-            background: rgba(147, 112, 219, 0.2);
-            border: 1px solid rgba(230, 230, 250, 0.3);
-            border-radius: 20px;
-            padding: 0.8rem;
-            text-align: center;
+        .magic-tag {
+            background: rgba(147, 112, 219, 0.3);
+            backdrop-filter: blur(5px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
             font-size: 0.9rem;
             color: #e6e6fa;
-            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
             transition: all 0.3s ease;
         }
 
-        .power:hover {
-            background: rgba(138, 43, 226, 0.4);
+        .magic-tag:hover {
+            background: rgba(138, 43, 226, 0.5);
             transform: scale(1.05);
-            box-shadow: 0 0 30px #9370db;
+            box-shadow: 0 0 25px #9370db;
         }
 
-        .power span {
-            display: block;
-            font-size: 1.5rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .play-button {
-            background: linear-gradient(135deg, #9370db, #8a2be2);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            color: white;
-            font-weight: 700;
-            font-size: 1.2rem;
-            cursor: pointer;
-            width: 100%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 30px #9370db;
-            transition: all 0.3s ease;
+        /* Título das seções */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.8rem;
+            color: #e6e6fa;
+            text-shadow: 0 0 20px #8a2be2;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Grid de disciplinas */
+        .disciplines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
         }
 
-        .play-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 50px #b19cd9;
-            background: linear-gradient(135deg, #8a2be2, #4b0082);
-        }
-
-        /* Controles do jogo */
-        .game-controls {
+        .discipline-item {
+            background: rgba(75, 0, 130, 0.3);
+            border: 1px solid rgba(147, 112, 219, 0.3);
+            border-radius: 20px;
+            padding: 1.2rem;
             display: flex;
+            align-items: center;
             gap: 1rem;
-            justify-content: center;
-            margin-top: 1rem;
-            pointer-events: auto;
+            transition: all 0.3s ease;
         }
 
-        .control-btn {
-            background: rgba(75, 0, 130, 0.4);
-            backdrop-filter: blur(5px);
-            border: 2px solid rgba(230, 230, 250, 0.3);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        .discipline-item:hover {
+            background: rgba(138, 43, 226, 0.4);
+            transform: translateX(10px);
+            box-shadow: 0 0 30px #9370db;
         }
 
-        .control-btn:hover {
-            background: rgba(138, 43, 226, 0.6);
-            transform: scale(1.1);
-            box-shadow: 0 0 40px #9370db;
+        .check-icon {
+            color: #00ff88;
+            font-size: 1.3rem;
+            text-shadow: 0 0 15px #00ff88;
         }
 
-        .control-btn:active {
-            transform: scale(0.95);
+        /* Tabela de tecnologias */
+        .tech-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 1rem;
+        }
+
+        .tech-table tr {
+            background: rgba(75, 0, 130, 0.2);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .tech-table tr:hover {
+            background: rgba(138, 43, 226, 0.3);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px #8a2be2;
+        }
+
+        .tech-table td {
+            padding: 1.2rem 1.5rem;
+            border: 1px solid rgba(147, 112, 219, 0.2);
+        }
+
+        .tech-table td:first-child {
+            border-radius: 20px 0 0 20px;
+            font-weight: 600;
+            color: #b19cd9;
+            width: 150px;
+        }
+
+        .tech-table td:last-child {
+            border-radius: 0 20px 20px 0;
+            color: #e6e6fa;
         }
 
         /* Footer */
         .magic-footer {
             text-align: center;
+            padding: 1rem;
             color: #b19cd9;
             font-size: 0.9rem;
-            text-shadow: 0 0 10px #8a2be2;
-            pointer-events: auto;
+            text-shadow: 0 0 15px #8a2be2;
+            margin-top: 1rem;
         }
 
         /* Responsividade */
         @media (max-width: 768px) {
-            .profile-card {
+            .profile-header {
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .name-info h1 {
+                font-size: 2.2rem;
+            }
+            
+            .magic-card {
                 padding: 1.5rem;
             }
             
-            .name-section h2 {
-                font-size: 1.8rem;
+            .tech-table td {
+                display: block;
+                width: 100%;
+                text-align: center;
             }
             
-            .game-title {
-                font-size: 1.2rem;
+            .tech-table td:first-child {
+                border-radius: 20px 20px 0 0;
+            }
+            
+            .tech-table td:last-child {
+                border-radius: 0 0 20px 20px;
             }
         }
     </style>
@@ -319,82 +311,127 @@
     <div id="canvas-container"></div>
     <div class="magic-overlay"></div>
 
-    <div class="ui-content">
-        <!-- Header com pontuação -->
-        <header class="magic-header">
-            <div class="game-title">✨ REINO ENCANTADO ✨</div>
-            <div class="score-display">
-                <span class="star-icon">⭐</span>
-                <span class="score-value" id="scoreDisplay">0</span>
-            </div>
-        </header>
-
-        <!-- Card principal com apresentação -->
-        <div class="profile-card">
-            <div class="profile-header">
-                <div class="magic-avatar">
-                    <div class="avatar-placeholder">🧚‍♀️</div>
-                </div>
-                <div class="name-section">
-                    <h2>Luna Estrelar</h2>
-                    <p>✨ Fada Guardiã · Nível 8 ✨</p>
-                    <p style="font-size: 0.9rem;">🌸 Poder mágico: 2500 ✨</p>
-                </div>
-            </div>
-
-            <!-- Estatísticas mágicas -->
-            <div class="magic-stats">
-                <div class="stat">
-                    <div class="stat-value">150</div>
-                    <div class="stat-label">Missões</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">34</div>
-                    <div class="stat-label">Estrelas</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">12</div>
-                    <div class="stat-label">Feitiços</div>
+    <div class="content">
+        <div class="cards-container">
+            <!-- Card de Apresentação Principal -->
+            <div class="magic-card">
+                <div class="profile-header">
+                    <div class="magic-avatar">
+                        <div class="avatar-placeholder">👩‍💻</div>
+                    </div>
+                    <div class="name-info">
+                        <h1>
+                            <span class="hello-icon">👋</span> Rávila Costa
+                        </h1>
+                        <p class="subtitle">
+                            Estudante do curso Técnico em Desenvolvimento de Sistemas (4º semestre) 
+                            em busca da minha primeira oportunidade como estagiária para aplicar 
+                            conhecimentos teóricos em projetos reais.
+                        </p>
+                        <div class="tags-container">
+                            <span class="magic-tag">🌟 IoT</span>
+                            <span class="magic-tag">📱 Implantação de Sistemas</span>
+                            <span class="magic-tag">🎯 Foco em Estágio</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Poderes mágicos -->
-            <div class="magic-powers">
-                <div class="power">
-                    <span>✨</span> Voo Mágico
+            <!-- Card de Atuação e Foco -->
+            <div class="magic-card">
+                <div class="section-title">
+                    <span class="section-icon">🔭</span>
+                    Atuação e Foco Atual
                 </div>
-                <div class="power">
-                    <span>💫</span> Escudo Astral
-                </div>
-                <div class="power">
-                    <span>🌙</span> Luz Lunar
-                </div>
-                <div class="power">
-                    <span>⭐</span> Estrelas Cadentes
+                <div style="font-size: 1.2rem; color: #e6e6fa; background: rgba(138, 43, 226, 0.2); padding: 1.5rem; border-radius: 30px; text-align: center;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">✨</span>
+                    <strong>Internet das Coisas (IoT)</strong> e <strong>Implantação de Sistemas</strong>
                 </div>
             </div>
 
-            <!-- Botão de ação -->
-            <button class="play-button" id="collectStarsBtn">
-                <span>✨</span>
-                COLETAR ESTRELAS
-                <span>✨</span>
-            </button>
+            <!-- Card de Formação e Disciplinas -->
+            <div class="magic-card">
+                <div class="section-title">
+                    <span class="section-icon">📒</span>
+                    Formação e Disciplinas Cursadas
+                </div>
+                <p style="color: #d8bfd8; margin-bottom: 1.5rem;">
+                    Possuo uma base construída através das seguintes disciplinas:
+                </p>
+                <div class="disciplines-grid">
+                    <div class="discipline-item">
+                        <span class="check-icon">✅</span>
+                        Lógica de Programação
+                    </div>
+                    <div class="discipline-item">
+                        <span class="check-icon">✅</span>
+                        Programação de Aplicativos
+                    </div>
+                    <div class="discipline-item">
+                        <span class="check-icon">✅</span>
+                        Banco de Dados (Relacionais)
+                    </div>
+                    <div class="discipline-item">
+                        <span class="check-icon">✅</span>
+                        Modelagem de Sistemas
+                    </div>
+                    <div class="discipline-item">
+                        <span class="check-icon">✅</span>
+                        Desenvolvimento de Sistemas
+                    </div>
+                    <div class="discipline-item">
+                        <span class="check-icon">✅</span>
+                        Teste de Sistemas (QA)
+                    </div>
+                </div>
+            </div>
 
-            <!-- Controles interativos -->
-            <div class="game-controls">
-                <button class="control-btn" id="moveLeft">←</button>
-                <button class="control-btn" id="moveRight">→</button>
-                <button class="control-btn" id="moveUp">↑</button>
-                <button class="control-btn" id="moveDown">↓</button>
-                <button class="control-btn" id="jumpBtn">⭐</button>
+            <!-- Card de Tecnologias e Ferramentas -->
+            <div class="magic-card">
+                <div class="section-title">
+                    <span class="section-icon">🛠️</span>
+                    Tecnologias e Ferramentas
+                </div>
+                
+                <table class="tech-table">
+                    <tr>
+                        <td>Categoria</td>
+                        <td>Tecnologias</td>
+                    </tr>
+                    <tr>
+                        <td>Linguagens</td>
+                        <td>☕ Java | 📜 JavaScript (Básico)</td>
+                    </tr>
+                    <tr>
+                        <td>Banco de Dados</td>
+                        <td>🐬 MySQL | 🐘 PostgreSQL</td>
+                    </tr>
+                    <tr>
+                        <td>Ferramentas</td>
+                        <td>📌 Git | 🐙 GitHub | 📝 VS Code</td>
+                    </tr>
+                </table>
+
+                <!-- Tags adicionais -->
+                <div style="margin-top: 2rem;">
+                    <div class="tags-container">
+                        <span class="magic-tag">☕ Java</span>
+                        <span class="magic-tag">📜 JavaScript</span>
+                        <span class="magic-tag">🐬 MySQL</span>
+                        <span class="magic-tag">🐘 PostgreSQL</span>
+                        <span class="magic-tag">📌 Git</span>
+                        <span class="magic-tag">🐙 GitHub</span>
+                        <span class="magic-tag">📝 VS Code</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="magic-footer">
+                <p>✨ Rávila Costa · Desenvolvimento de Sistemas · 4º Semestre ✨</p>
+                <p style="font-size: 0.8rem; margin-top: 0.5rem;">🌟 Aberta a oportunidades de estágio 🌟</p>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="magic-footer">
-            <p>🌟 Três mundos · Uma aventura · Magia sem limites 🌟</p>
-        </footer>
     </div>
 
     <script type="importmap">
@@ -408,352 +445,174 @@
     <script type="module">
         import * as THREE from 'three';
 
-        // --- CONFIGURAÇÃO DA CENA ---
+        // --- CENA PRINCIPAL ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a0a2a); // Azul escuro noturno
+        scene.background = new THREE.Color(0x0a051a); // Roxo escuro profundo
 
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(5, 3, 12);
-        camera.lookAt(0, 1, 0);
+        camera.position.set(0, 2, 15);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.setClearColor(0x0a0a2a);
+        renderer.setClearColor(0x0a051a);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // --- ILUMINAÇÃO MÁGICA ---
-        // Luz ambiente suave
-        const ambientLight = new THREE.AmbientLight(0x404060);
+        // --- LUZES MÁGICAS ---
+        // Luz ambiente
+        const ambientLight = new THREE.AmbientLight(0x40406b);
         scene.add(ambientLight);
 
-        // Luz principal com cor roxa
-        const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+        // Luz principal
+        const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
         mainLight.position.set(5, 10, 7);
         mainLight.castShadow = true;
-        mainLight.receiveShadow = true;
-        mainLight.shadow.mapSize.width = 1024;
-        mainLight.shadow.mapSize.height = 1024;
         scene.add(mainLight);
 
-        // Luzes coloridas mágicas
-        const purpleLight = new THREE.PointLight(0x8a2be2, 1.5, 15);
-        purpleLight.position.set(3, 2, 4);
-        scene.add(purpleLight);
-
-        const blueLight = new THREE.PointLight(0x4169e1, 1.5, 15);
-        blueLight.position.set(-3, 1, 5);
-        scene.add(blueLight);
-
-        const lilacLight = new THREE.PointLight(0xb19cd9, 1.5, 15);
-        lilacLight.position.set(0, 4, 2);
-        scene.add(lilacLight);
-
-        // --- CRIAÇÃO DA BONECA MÁGICA ---
-        const dollGroup = new THREE.Group();
-
-        // Corpo (vestido)
-        const bodyGeometry = new THREE.ConeGeometry(0.8, 1.5, 32);
-        const bodyMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0x9370db, 
-            emissive: 0x301050,
-            roughness: 0.3,
-            metalness: 0.1
-        });
-        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-        body.position.y = 0.75;
-        body.castShadow = true;
-        body.receiveShadow = true;
-        dollGroup.add(body);
-
-        // Cabeça
-        const headGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-        const headMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xffdbdb,
-            roughness: 0.4
-        });
-        const head = new THREE.Mesh(headGeometry, headMaterial);
-        head.position.y = 1.8;
-        head.castShadow = true;
-        head.receiveShadow = true;
-        dollGroup.add(head);
-
-        // Olhos
-        const eyeGeometry = new THREE.SphereGeometry(0.1, 16, 16);
-        const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0x4b0082 });
-        const eyeMaterialWhite = new THREE.MeshStandardMaterial({ color: 0xffffff });
+        // Luzes coloridas
+        const colors = [0x8a2be2, 0x4b0082, 0x9370db, 0x6a5acd];
+        const lights = [];
         
-        // Branco dos olhos
-        const eyeWhite1 = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16), eyeMaterialWhite);
-        eyeWhite1.position.set(-0.15, 1.95, 0.4);
-        dollGroup.add(eyeWhite1);
-        
-        const eyeWhite2 = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16), eyeMaterialWhite);
-        eyeWhite2.position.set(0.15, 1.95, 0.4);
-        dollGroup.add(eyeWhite2);
-        
-        // Pupilas
-        const pupil1 = new THREE.Mesh(eyeGeometry, eyeMaterial);
-        pupil1.position.set(-0.15, 1.95, 0.5);
-        dollGroup.add(pupil1);
-        
-        const pupil2 = new THREE.Mesh(eyeGeometry, eyeMaterial);
-        pupil2.position.set(0.15, 1.95, 0.5);
-        dollGroup.add(pupil2);
-
-        // Boca (estrelinha)
-        const mouthGeometry = new THREE.TorusGeometry(0.1, 0.03, 8, 16, Math.PI);
-        const mouthMaterial = new THREE.MeshStandardMaterial({ color: 0xff69b4 });
-        const mouth = new THREE.Mesh(mouthGeometry, mouthMaterial);
-        mouth.rotation.x = Math.PI / 2;
-        mouth.rotation.z = Math.PI;
-        mouth.position.set(0, 1.8, 0.45);
-        dollGroup.add(mouth);
-
-        // Cabelo
-        const hairGeometry = new THREE.ConeGeometry(0.6, 0.4, 16);
-        const hairMaterial = new THREE.MeshStandardMaterial({ color: 0x8a2be2 });
-        const hair = new THREE.Mesh(hairGeometry, hairMaterial);
-        hair.position.y = 2.15;
-        hair.castShadow = true;
-        dollGroup.add(hair);
-
-        // Chapéu mágico
-        const hatConeGeometry = new THREE.ConeGeometry(0.5, 1, 16);
-        const hatConeMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0x4b0082,
-            emissive: 0x1a0033
-        });
-        const hatCone = new THREE.Mesh(hatConeGeometry, hatConeMaterial);
-        hatCone.position.y = 2.6;
-        hatCone.castShadow = true;
-        dollGroup.add(hatCone);
-
-        const hatBallGeometry = new THREE.SphereGeometry(0.15, 8);
-        const hatBallMaterial = new THREE.MeshStandardMaterial({ color: 0xffd700 });
-        const hatBall = new THREE.Mesh(hatBallGeometry, hatBallMaterial);
-        hatBall.position.y = 3.1;
-        hatBall.castShadow = true;
-        dollGroup.add(hatBall);
-
-        // Asas mágicas
-        const wingMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xb19cd9,
-            transparent: true,
-            opacity: 0.7,
-            emissive: 0x330066
-        });
-
-        const wingGeometry = new THREE.SphereGeometry(0.5, 16);
-        
-        const wing1 = new THREE.Mesh(wingGeometry, wingMaterial);
-        wing1.position.set(-0.8, 1.5, -0.2);
-        wing1.scale.set(0.5, 0.8, 0.2);
-        wing1.castShadow = true;
-        dollGroup.add(wing1);
-        
-        const wing2 = new THREE.Mesh(wingGeometry, wingMaterial);
-        wing2.position.set(0.8, 1.5, -0.2);
-        wing2.scale.set(0.5, 0.8, 0.2);
-        wing2.castShadow = true;
-        dollGroup.add(wing2);
-
-        // Varinha mágica
-        const wandGroup = new THREE.Group();
-        const wandHandle = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.05, 0.05, 1),
-            new THREE.MeshStandardMaterial({ color: 0x8b4513 })
-        );
-        wandHandle.position.y = 0.5;
-        wandGroup.add(wandHandle);
-        
-        const wandStar = new THREE.Mesh(
-            new THREE.OctahedronGeometry(0.15),
-            new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x442200 })
-        );
-        wandStar.position.y = 1;
-        wandGroup.add(wandStar);
-        
-        wandGroup.position.set(1, 1.2, 0.5);
-        wandGroup.rotation.z = -0.3;
-        dollGroup.add(wandGroup);
-
-        dollGroup.position.y = 0;
-        scene.add(dollGroup);
-
-        // --- CENÁRIO MÁGICO ---
-        // Chão com efeito de estrelas
-        const groundGeometry = new THREE.CircleGeometry(15, 32);
-        const groundMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0x1a0033,
-            emissive: 0x0a001a
-        });
-        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-        ground.rotation.x = -Math.PI / 2;
-        ground.position.y = -0.01;
-        ground.receiveShadow = true;
-        scene.add(ground);
-
-        // Cristais mágicos
-        const crystalColors = [0x9370db, 0x8a2be2, 0x4b0082, 0x4169e1];
-        
-        for (let i = 0; i < 12; i++) {
-            const crystalGroup = new THREE.Group();
-            
-            const crystalHeight = 0.5 + Math.random() * 0.8;
-            const crystalGeo = new THREE.ConeGeometry(0.15, crystalHeight, 6);
-            const crystalMat = new THREE.MeshStandardMaterial({ 
-                color: crystalColors[Math.floor(Math.random() * crystalColors.length)],
-                emissive: 0x220044,
-                transparent: true,
-                opacity: 0.8
-            });
-            const crystal = new THREE.Mesh(crystalGeo, crystalMat);
-            crystal.castShadow = true;
-            crystal.receiveShadow = true;
-            crystal.position.y = crystalHeight / 2;
-            crystalGroup.add(crystal);
-            
-            const angle = (i / 12) * Math.PI * 2;
-            const radius = 3 + Math.random() * 2;
-            crystalGroup.position.set(
-                Math.cos(angle) * radius,
-                0,
-                Math.sin(angle) * radius
+        for (let i = 0; i < 4; i++) {
+            const light = new THREE.PointLight(colors[i], 1, 20);
+            light.position.set(
+                Math.sin(i * Math.PI / 2) * 6,
+                2 + Math.random() * 2,
+                Math.cos(i * Math.PI / 2) * 6
             );
-            
-            crystalGroup.rotation.y = Math.random() * Math.PI;
-            
-            scene.add(crystalGroup);
+            scene.add(light);
+            lights.push(light);
         }
 
-        // Estrelas flutuantes
-        const starsGeometry = new THREE.BufferGeometry();
-        const starsCount = 300;
-        const starsPositions = new Float32Array(starsCount * 3);
-        const starsColors = new Float32Array(starsCount * 3);
+        // --- PARTÍCULAS MÁGICAS (Estrelas) ---
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 1500;
+        const posArray = new Float32Array(particlesCount * 3);
+        const colorArray = new Float32Array(particlesCount * 3);
 
-        for (let i = 0; i < starsCount; i++) {
-            const r = 5 + Math.random() * 8;
+        for (let i = 0; i < particlesCount * 3; i += 3) {
+            // Posição em esfera
+            const radius = 10 + Math.random() * 8;
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos((Math.random() * 2) - 1);
             
-            starsPositions[i*3] = r * Math.sin(phi) * Math.cos(theta);
-            starsPositions[i*3+1] = r * Math.sin(phi) * Math.sin(theta) + 2;
-            starsPositions[i*3+2] = r * Math.cos(phi);
-            
+            posArray[i] = radius * Math.sin(phi) * Math.cos(theta);
+            posArray[i+1] = radius * Math.sin(phi) * Math.sin(theta);
+            posArray[i+2] = radius * Math.cos(phi);
+
+            // Cores: roxo, lilás, azul
             const colorChoice = Math.random();
-            if (colorChoice < 0.33) {
-                starsColors[i*3] = 0.5; starsColors[i*3+1] = 0.5; starsColors[i*3+2] = 1.0; // Azul
-            } else if (colorChoice < 0.66) {
-                starsColors[i*3] = 0.8; starsColors[i*3+1] = 0.6; starsColors[i*3+2] = 1.0; // Lilás
+            if (colorChoice < 0.4) {
+                // Roxo
+                colorArray[i] = 0.6; colorArray[i+1] = 0.3; colorArray[i+2] = 1.0;
+            } else if (colorChoice < 0.7) {
+                // Lilás
+                colorArray[i] = 0.8; colorArray[i+1] = 0.6; colorArray[i+2] = 1.0;
             } else {
-                starsColors[i*3] = 0.6; starsColors[i*3+1] = 0.3; starsColors[i*3+2] = 1.0; // Roxo
+                // Azul
+                colorArray[i] = 0.4; colorArray[i+1] = 0.5; colorArray[i+2] = 1.0;
             }
         }
 
-        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
-        starsGeometry.setAttribute('color', new THREE.BufferAttribute(starsColors, 3));
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
 
-        const starsMaterial = new THREE.PointsMaterial({
-            size: 0.15,
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.1,
             vertexColors: true,
             transparent: true,
             blending: THREE.AdditiveBlending,
             sizeAttenuation: true
         });
 
-        const stars = new THREE.Points(starsGeometry, starsMaterial);
-        scene.add(stars);
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
 
-        // Círculo mágico no chão
-        const ringGeometry = new THREE.TorusGeometry(2.5, 0.05, 16, 64);
-        const ringMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0x8a2be2,
-            emissive: 0x330066,
-            transparent: true,
-            opacity: 0.6
-        });
-        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-        ring.rotation.x = Math.PI / 2;
-        ring.position.y = 0.01;
-        scene.add(ring);
-
-        const ring2 = new THREE.Mesh(
-            new THREE.TorusGeometry(3, 0.03, 16, 64),
-            new THREE.MeshStandardMaterial({ color: 0x9370db, emissive: 0x220044, transparent: true, opacity: 0.4 })
-        );
-        ring2.rotation.x = Math.PI / 2;
-        ring2.position.y = 0.02;
-        scene.add(ring2);
-
-        // --- VARIÁVEIS DO JOGO ---
-        let score = 0;
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        const collectBtn = document.getElementById('collectStarsBtn');
+        // --- CRISTAIS FLUTUANTES ---
+        const crystalGroup = new THREE.Group();
         
-        // Estrelas coletáveis
-        const collectibles = [];
-        
-        for (let i = 0; i < 8; i++) {
-            const starGeo = new THREE.OctahedronGeometry(0.2);
-            const starMat = new THREE.MeshStandardMaterial({ 
-                color: 0xffd700,
-                emissive: 0x442200
+        for (let i = 0; i < 12; i++) {
+            const crystalHeight = 0.3 + Math.random() * 0.5;
+            const crystalGeo = new THREE.ConeGeometry(0.1, crystalHeight, 6);
+            const crystalMat = new THREE.MeshStandardMaterial({
+                color: colors[Math.floor(Math.random() * colors.length)],
+                emissive: 0x220044,
+                transparent: true,
+                opacity: 0.7
             });
-            const star = new THREE.Mesh(starGeo, starMat);
             
-            const angle = (i / 8) * Math.PI * 2;
-            const radius = 2;
-            star.position.set(
+            const crystal = new THREE.Mesh(crystalGeo, crystalMat);
+            
+            const angle = (i / 12) * Math.PI * 2;
+            const radius = 4 + Math.random() * 2;
+            const yOffset = Math.random() * 4;
+            
+            crystal.position.set(
                 Math.cos(angle) * radius,
-                1,
+                yOffset,
                 Math.sin(angle) * radius
             );
             
-            star.castShadow = true;
-            star.receiveShadow = true;
-            scene.add(star);
-            collectibles.push(star);
+            crystal.castShadow = true;
+            crystal.receiveShadow = true;
+            crystalGroup.add(crystal);
         }
+        
+        scene.add(crystalGroup);
 
-        // --- CONTROLES ---
-        document.getElementById('moveLeft').addEventListener('click', () => {
-            dollGroup.position.x -= 0.5;
-        });
+        // --- LIVROS FLUTUANTES (representando estudos) ---
+        const bookGroup = new THREE.Group();
         
-        document.getElementById('moveRight').addEventListener('click', () => {
-            dollGroup.position.x += 0.5;
-        });
-        
-        document.getElementById('moveUp').addEventListener('click', () => {
-            dollGroup.position.z -= 0.5;
-        });
-        
-        document.getElementById('moveDown').addEventListener('click', () => {
-            dollGroup.position.z += 0.5;
-        });
-        
-        document.getElementById('jumpBtn').addEventListener('click', () => {
-            // Animação de pulo simples
-            dollGroup.position.y = 1;
-            setTimeout(() => {
-                dollGroup.position.y = 0;
-            }, 200);
-        });
-
-        collectBtn.addEventListener('click', () => {
-            collectibles.forEach(star => {
-                star.material.emissive.setHex(0x884400);
-                setTimeout(() => {
-                    star.material.emissive.setHex(0x442200);
-                }, 200);
+        for (let i = 0; i < 5; i++) {
+            const bookGeometry = new THREE.BoxGeometry(0.4, 0.1, 0.3);
+            const bookMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x9370db,
+                emissive: 0x1a0033
             });
-            score += 10;
-            scoreDisplay.textContent = score;
-        });
+            const book = new THREE.Mesh(bookGeometry, bookMaterial);
+            
+            const angle = (i / 5) * Math.PI * 2;
+            book.position.set(
+                Math.cos(angle) * 2,
+                1.5 + Math.sin(i * 2) * 0.5,
+                Math.sin(angle) * 2
+            );
+            
+            book.rotation.y = angle;
+            book.rotation.z = Math.sin(i) * 0.2;
+            
+            book.castShadow = true;
+            book.receiveShadow = true;
+            bookGroup.add(book);
+        }
+        
+        scene.add(bookGroup);
+
+        // --- ELEMENTOS DE TECNOLOGIA (ícones 3D simples) ---
+        const techGroup = new THREE.Group();
+        
+        // Pequenos cubos representando tecnologias
+        for (let i = 0; i < 8; i++) {
+            const techGeo = new THREE.BoxGeometry(0.15, 0.15, 0.15);
+            const techMat = new THREE.MeshStandardMaterial({ 
+                color: 0xffd700,
+                emissive: 0x442200
+            });
+            const tech = new THREE.Mesh(techGeo, techMat);
+            
+            const angle = (i / 8) * Math.PI * 2;
+            tech.position.set(
+                Math.cos(angle) * 3,
+                0.5,
+                Math.sin(angle) * 3
+            );
+            
+            tech.castShadow = true;
+            techGroup.add(tech);
+        }
+        
+        scene.add(techGroup);
 
         // --- ANIMAÇÃO ---
         let clock = new THREE.Clock();
@@ -764,41 +623,41 @@
             const delta = clock.getDelta();
             const time = performance.now() / 1000;
 
-            // Animação da boneca
-            dollGroup.rotation.y = Math.sin(time * 0.5) * 0.2;
-            dollGroup.position.y = Math.sin(time * 2) * 0.1;
+            // Rotação das partículas
+            particles.rotation.y += 0.0005;
+            particles.rotation.x = Math.sin(time * 0.1) * 0.1;
+
+            // Movimento dos cristais
+            crystalGroup.children.forEach((crystal, index) => {
+                crystal.rotation.y += 0.01;
+                crystal.rotation.x = Math.sin(time + index) * 0.2;
+                crystal.position.y += Math.sin(time * 2 + index) * 0.005;
+            });
+
+            // Livros flutuando
+            bookGroup.children.forEach((book, index) => {
+                book.rotation.y += 0.01;
+                book.position.y = 1.5 + Math.sin(time * 2 + index) * 0.3;
+            });
+
+            // Cubos de tecnologia girando
+            techGroup.rotation.y += 0.01;
+            techGroup.rotation.x = Math.sin(time * 0.5) * 0.1;
+
+            // Movimento das luzes
+            lights.forEach((light, index) => {
+                const angle = time * 0.5 + index * Math.PI / 2;
+                light.position.x = Math.sin(angle) * 6;
+                light.position.z = Math.cos(angle) * 6;
+            });
+
+            // Movimento suave da câmera baseado no scroll
+            const scrollY = window.scrollY || window.pageYOffset;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollProgress = maxScroll > 0 ? scrollY / maxScroll : 0;
             
-            // Rotação das asas
-            dollGroup.children.forEach(child => {
-                if (child.position.x === -0.8 && child.position.y === 1.5) {
-                    child.rotation.z = Math.sin(time * 3) * 0.2;
-                }
-                if (child.position.x === 0.8 && child.position.y === 1.5) {
-                    child.rotation.z = -Math.sin(time * 3) * 0.2;
-                }
-            });
-
-            // Rotação da varinha
-            wandGroup.rotation.y += 0.02;
-
-            // Estrelas girando
-            stars.rotation.y += 0.001;
-            stars.rotation.x = Math.sin(time * 0.1) * 0.1;
-
-            // Coletáveis girando
-            collectibles.forEach((star, index) => {
-                star.rotation.x += 0.02;
-                star.rotation.y += 0.03;
-                star.position.y = 1 + Math.sin(time * 2 + index) * 0.2;
-            });
-
-            // Anéis girando
-            ring.rotation.z += 0.005;
-            ring2.rotation.z -= 0.003;
-
-            // Movimento suave da câmera
-            camera.position.x = 5 + Math.sin(time * 0.2) * 2;
-            camera.lookAt(dollGroup.position);
+            camera.position.y = 2 + scrollProgress * 2;
+            camera.lookAt(0, 1 + scrollProgress, 0);
 
             renderer.render(scene, camera);
         }
@@ -817,9 +676,10 @@
             const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
             const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
             
-            // Inclinação suave da cabeça
-            head.rotation.x = mouseY * 0.1;
-            head.rotation.y = mouseX * 0.1;
+            // Inclinação sutil dos elementos
+            particles.rotation.y += mouseX * 0.0002;
+            crystalGroup.rotation.y += mouseX * 0.001;
+            bookGroup.rotation.y += mouseX * 0.001;
         });
     </script>
 </body>
