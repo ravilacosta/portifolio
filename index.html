@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Ràvila Costa • Portfólio</title>
+
 <style>
-body { margin:0; overflow:hidden; background:#030008; }
+body {
+  margin:0;
+  overflow:hidden;
+  background:#02010a;
+  font-family:Arial;
+}
 
 .hud {
   position: fixed;
@@ -13,7 +19,21 @@ body { margin:0; overflow:hidden; background:#030008; }
   transform:translateX(-50%);
   text-align:center;
   color:white;
-  font-family:Arial;
+}
+
+.hud h1 {
+  margin:0;
+  text-shadow:0 0 20px #4488ff;
+}
+
+.hud a {
+  display:inline-block;
+  margin-top:10px;
+  padding:6px 14px;
+  background:#4488ff;
+  border-radius:20px;
+  color:white;
+  text-decoration:none;
 }
 </style>
 </head>
@@ -23,6 +43,7 @@ body { margin:0; overflow:hidden; background:#030008; }
 <div class="hud">
   <h1>🚀 Ràvila Costa</h1>
   <p>Backend Developer • Portfólio Espacial</p>
+  <a href="https://github.com/ravilacosta" target="_blank">Ver GitHub</a>
 </div>
 
 <script type="module">
@@ -30,31 +51,60 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 
 // CENA
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
 
-const renderer = new THREE.WebGLRenderer();
+// CÂMERA
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
+camera.position.z = 10;
+
+// RENDER
+const renderer = new THREE.WebGLRenderer({ antialias:true });
 renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // LUZ
-const light = new THREE.DirectionalLight(0xffffff, 1);
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+const light = new THREE.PointLight(0xffffff, 1);
 light.position.set(5,5,5);
 scene.add(light);
 
-// PLANETAS
+// 🌌 ESTRELAS
+const starGeo = new THREE.BufferGeometry();
+const starCount = 3000;
+
+const positions = [];
+for(let i=0;i<starCount;i++){
+  positions.push(
+    (Math.random()-0.5)*200,
+    (Math.random()-0.5)*200,
+    (Math.random()-0.5)*200
+  );
+}
+
+starGeo.setAttribute("position", new THREE.Float32BufferAttribute(positions,3));
+
+const starMat = new THREE.PointsMaterial({ size:0.7 });
+const stars = new THREE.Points(starGeo, starMat);
+scene.add(stars);
+
+// 🪐 PROJETOS
 const projects = [
-  { color: 0xff6b35, x: -4, url: "https://github.com/ravilacosta/front-eventos" },
-  { color: 0xff3d3d, x: 0, url: "https://github.com/ravilacosta/shopee" },
-  { color: 0xa855f7, x: 4, url: "https://github.com/ravilacosta/loja-virtual" }
+  { name:"Front Eventos", color:0xff6b35, x:-4, url:"https://github.com/ravilacosta/front-eventos" },
+  { name:"Shopee Clone", color:0xff3d3d, x:0, url:"https://github.com/ravilacosta/shopee" },
+  { name:"Loja Virtual", color:0xa855f7, x:4, url:"https://github.com/ravilacosta/loja-virtual" }
 ];
 
 const planets = [];
 
-projects.forEach(p => {
-  const geo = new THREE.SphereGeometry(1.2, 32, 32);
-  const mat = new THREE.MeshStandardMaterial({ color: p.color });
-  const mesh = new THREE.Mesh(geo, mat);
+projects.forEach(p=>{
+  const geo = new THREE.SphereGeometry(1.3, 32, 32);
+  const mat = new THREE.MeshStandardMaterial({
+    color:p.color,
+    emissive:p.color,
+    emissiveIntensity:0.3
+  });
 
+  const mesh = new THREE.Mesh(geo, mat);
   mesh.position.x = p.x;
   mesh.userData.url = p.url;
 
@@ -62,34 +112,45 @@ projects.forEach(p => {
   planets.push(mesh);
 });
 
-// CLIQUE
+// 🖱 INTERAÇÃO
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-window.addEventListener("click", (event) => {
-  mouse.x = (event.clientX / innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / innerHeight) * 2 + 1;
+window.addEventListener("mousemove", (e)=>{
+  mouse.x = (e.clientX / innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / innerHeight) * 2 + 1;
+});
 
+window.addEventListener("click", ()=>{
   raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(planets);
+  const hits = raycaster.intersectObjects(planets);
 
-  if (intersects.length > 0) {
-    window.open(intersects[0].object.userData.url, "_blank");
+  if(hits.length){
+    window.open(hits[0].object.userData.url, "_blank");
   }
 });
 
-// ANIMAÇÃO
-camera.position.z = 8;
-
-function animate() {
+// 🎬 ANIMAÇÃO
+function animate(){
   requestAnimationFrame(animate);
 
-  planets.forEach(p => p.rotation.y += 0.01);
+  planets.forEach(p=>{
+    p.rotation.y += 0.01;
+  });
+
+  // leve movimento da câmera
+  camera.position.x = Math.sin(Date.now()*0.0005)*2;
 
   renderer.render(scene, camera);
 }
-
 animate();
+
+// RESPONSIVO
+window.addEventListener("resize", ()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
 </script>
 
 </body>
