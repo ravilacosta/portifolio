@@ -1,150 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>Ràvila Costa • Portfólio</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 <style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: #030008;
-  font-family: Arial, sans-serif;
-}
+body { margin:0; overflow:hidden; background:#030008; }
 
 .hud {
   position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  color: white;
-}
-
-.hud h1 {
-  margin: 0;
-  font-size: 26px;
-  text-shadow: 0 0 20px #4488ff;
-}
-
-.hud p {
-  font-size: 12px;
-  color: #aaa;
-}
-
-.hud a {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: #4488ff;
-  color: white;
-  text-decoration: none;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  color:white;
+  font-family:Arial;
 }
 </style>
 </head>
 
 <body>
 
-<div id="root"></div>
+<div class="hud">
+  <h1>🚀 Ràvila Costa</h1>
+  <p>Backend Developer • Portfólio Espacial</p>
+</div>
 
 <script type="module">
-import React from "https://esm.run/react@18";
-import ReactDOM from "https://esm.run/react-dom@18/client";
-import { Canvas, useFrame } from "https://esm.run/@react-three/fiber";
-import { Stars, Text } from "https://esm.run/@react-three/drei";
-
-// PROJETOS
-const projects = [
-  {
-    name: "Front Eventos",
-    color: "#ff6b35",
-    position: [-4, 0, 0],
-    url: "https://github.com/ravilacosta/front-eventos"
-  },
-  {
-    name: "Shopee Clone",
-    color: "#ff3d3d",
-    position: [0, 0, 0],
-    url: "https://github.com/ravilacosta/shopee"
-  },
-  {
-    name: "Loja Virtual",
-    color: "#a855f7",
-    position: [4, 0, 0],
-    url: "https://github.com/ravilacosta/loja-virtual"
-  }
-];
-
-// PLANETA
-function Planet({ project }) {
-  const ref = React.useRef();
-
-  useFrame(() => {
-    if (ref.current) ref.current.rotation.y += 0.01;
-  });
-
-  return (
-    React.createElement("group", { position: project.position },
-      React.createElement("mesh", {
-        ref: ref,
-        onClick: (e) => {
-          e.stopPropagation();
-          window.open(project.url, "_blank");
-        },
-        onPointerOver: () => (document.body.style.cursor = "pointer"),
-        onPointerOut: () => (document.body.style.cursor = "default")
-      },
-        React.createElement("sphereGeometry", { args: [1.2, 32, 32] }),
-        React.createElement("meshStandardMaterial", { color: project.color })
-      ),
-      React.createElement(Text, {
-        position: [0, 2, 0],
-        fontSize: 0.4,
-        anchorX: "center"
-      }, project.name)
-    )
-  );
-}
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 
 // CENA
-function Scene() {
-  return (
-    React.createElement(React.Fragment, null,
-      React.createElement("ambientLight", { intensity: 0.6 }),
-      React.createElement("directionalLight", { position: [5, 5, 5] }),
-      React.createElement(Stars, { radius: 100, depth: 50, count: 3000 }),
-      projects.map((p, i) =>
-        React.createElement(Planet, { key: i, project: p })
-      )
-    )
-  );
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// LUZ
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5,5,5);
+scene.add(light);
+
+// PLANETAS
+const projects = [
+  { color: 0xff6b35, x: -4, url: "https://github.com/ravilacosta/front-eventos" },
+  { color: 0xff3d3d, x: 0, url: "https://github.com/ravilacosta/shopee" },
+  { color: 0xa855f7, x: 4, url: "https://github.com/ravilacosta/loja-virtual" }
+];
+
+const planets = [];
+
+projects.forEach(p => {
+  const geo = new THREE.SphereGeometry(1.2, 32, 32);
+  const mat = new THREE.MeshStandardMaterial({ color: p.color });
+  const mesh = new THREE.Mesh(geo, mat);
+
+  mesh.position.x = p.x;
+  mesh.userData.url = p.url;
+
+  scene.add(mesh);
+  planets.push(mesh);
+});
+
+// CLIQUE
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+window.addEventListener("click", (event) => {
+  mouse.x = (event.clientX / innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(planets);
+
+  if (intersects.length > 0) {
+    window.open(intersects[0].object.userData.url, "_blank");
+  }
+});
+
+// ANIMAÇÃO
+camera.position.z = 8;
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  planets.forEach(p => p.rotation.y += 0.01);
+
+  renderer.render(scene, camera);
 }
 
-// APP
-function App() {
-  return (
-    React.createElement(React.Fragment, null,
-      React.createElement(Canvas, { camera: { position: [0, 2, 8] } },
-        React.createElement(Scene)
-      ),
-      React.createElement("div", { className: "hud" },
-        React.createElement("h1", null, "🚀 Ràvila Costa"),
-        React.createElement("p", null, "Backend Developer • Portfólio Espacial"),
-        React.createElement("a", {
-          href: "https://github.com/ravilacosta",
-          target: "_blank",
-          rel: "noopener noreferrer"
-        }, "Ver GitHub")
-      )
-    )
-  );
-}
-
-ReactDOM.createRoot(document.getElementById("root")).render(
-  React.createElement(App)
-);
+animate();
 </script>
 
 </body>
