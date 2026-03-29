@@ -1,595 +1,249 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rávila Costa | Portfólio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #080810;
-      --surface: #0f0f1a;
-      --border: rgba(255,255,255,0.07);
-      --text: #e8e8f0;
-      --muted: #7070a0;
-      --accent1: #7c6aff;
-      --accent2: #ff6af0;
-      --accent3: #6af4ff;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+<title>Ràvila Costa — Space Portfolio</title>
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Syne', sans-serif;
-      overflow-x: hidden;
-    }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;800&display=swap');
 
-    #bg-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.4rem 3rem;
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      background: rgba(8,8,16,0.6);
-    }
+body{
+  background:#000;
+  overflow:hidden;
+  font-family:'Orbitron',sans-serif;
+  cursor:pointer;
+}
 
-    .nav-logo {
-      font-size: 1.1rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--accent1), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.02em;
-    }
+/* HUD */
+#hud{
+  position:fixed;
+  top:20px;
+  left:30px;
+  color:#00f7ff;
+  text-shadow:0 0 20px #00f7ff;
+  z-index:10;
+}
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
+#hud h1{font-size:18px;letter-spacing:3px;}
+#hud span{font-size:11px;opacity:.7;}
 
-    .nav-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.2s;
-    }
+/* MODAL */
+#modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:20;
+}
 
-    .nav-links a:hover { color: var(--text); }
+#modal.active{
+  opacity:1;
+  pointer-events:all;
+}
 
-    /* SECTIONS */
-    section {
-      position: relative;
-      z-index: 10;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6rem 2rem;
-    }
+#modal-box{
+  background:#000;
+  border:1px solid #00f7ff;
+  padding:30px;
+  width:320px;
+  text-align:center;
+  box-shadow:0 0 40px #00f7ff55;
+}
 
-    .container { max-width: 860px; width: 100%; }
+#modal-box h2{margin-bottom:10px;}
+#modal-box p{font-size:12px;opacity:.8;margin-bottom:20px;}
 
-    /* HERO */
-    .hero-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent3);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .hero-tag::before {
-      content: '';
-      display: inline-block;
-      width: 24px; height: 1px;
-      background: var(--accent3);
-    }
-
-    h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 800;
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 50%, var(--accent3) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-desc {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.9;
-      max-width: 560px;
-      margin-bottom: 2.5rem;
-    }
-
-    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-    .btn {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      padding: 0.75rem 1.75rem;
-      border-radius: 4px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: var(--accent1);
-      color: #fff;
-      border: none;
-    }
-
-    .btn-primary:hover { background: #9580ff; transform: translateY(-2px); }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--accent2);
-      color: var(--accent2);
-      transform: translateY(-2px);
-    }
-
-    /* SOBRE */
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent1);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 2rem;
-      line-height: 1.1;
-    }
-
-    .focus-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent1);
-      border-radius: 8px;
-      padding: 1.5rem 1.75rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 2rem;
-    }
-
-    .focus-box strong { color: var(--accent3); font-weight: 500; }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .about-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .about-card:hover {
-      border-color: var(--accent1);
-      transform: translateY(-3px);
-    }
-
-    .card-icon { font-size: 1.4rem; margin-bottom: 0.75rem; }
-    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
-
-    .card-desc {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* FORMAÇÃO */
-    .disciplines-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 0.75rem;
-      margin-top: 1.5rem;
-    }
-
-    .discipline-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.82rem;
-      color: var(--muted);
-      transition: all 0.2s;
-    }
-
-    .discipline-item:hover {
-      border-color: var(--accent3);
-      color: var(--accent3);
-      transform: translateX(6px);
-    }
-
-    .check { color: #6af4a0; font-size: 1rem; }
-
-    /* SKILLS */
-    .skills-block { margin-bottom: 2rem; }
-
-    .skills-category {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent2);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-
-    .skills-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
-
-    .skill-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      padding: 0.45rem 1rem;
-      border-radius: 100px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      transition: all 0.2s;
-    }
-
-    .skill-tag:hover { border-color: var(--accent3); color: var(--accent3); }
-
-    .skill-tag.hot {
-      border-color: rgba(124,106,255,0.4);
-      color: var(--accent1);
-      background: rgba(124,106,255,0.08);
-    }
-
-    /* CONTATO */
-    .contact-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 3rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .contact-box::before {
-      content: '';
-      position: absolute;
-      top: -60px; left: 50%;
-      transform: translateX(-50%);
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(124,106,255,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .contact-box p {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin: 1rem 0 2rem;
-      line-height: 1.8;
-    }
-
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 1.5rem;
-    }
-
-    .social-link {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.5rem 1.2rem;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      transition: all 0.2s;
-    }
-
-    .social-link:hover { color: var(--accent2); border-color: var(--accent2); }
-
-    /* FOOTER */
-    footer {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 2rem;
-      border-top: 1px solid var(--border);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    @media (max-width: 640px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { gap: 1.2rem; }
-      .about-grid { grid-template-columns: 1fr; }
-      .contact-box { padding: 2rem 1.5rem; }
-    }
-  </style>
+#modal-box a{
+  display:inline-block;
+  padding:10px 20px;
+  border:1px solid #00f7ff;
+  color:#00f7ff;
+  text-decoration:none;
+}
+</style>
 </head>
+
 <body>
 
-  <canvas id="bg-canvas"></canvas>
+<div id="hud">
+  <h1>RÀVILA COSTA</h1>
+  <span>INTERACTIVE SPACE PORTFOLIO</span>
+</div>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">rávila.dev</div>
-    <ul class="nav-links">
-      <li><a href="#sobre">sobre</a></li>
-      <li><a href="#formacao">formação</a></li>
-      <li><a href="#skills">skills</a></li>
-      <li><a href="#contato">contato</a></li>
-    </ul>
-  </nav>
+<div id="modal">
+  <div id="modal-box">
+    <h2 id="title"></h2>
+    <p id="desc"></p>
+    <a id="link" target="_blank">VER PROJETO</a>
+  </div>
+</div>
 
-  <!-- HERO -->
-  <section id="hero">
-    <div class="container">
-      <div class="hero-tag">aberta a oportunidades de estágio</div>
-      <h1>
-        Olá, eu sou<br />
-        <span class="gradient-text">Rávila Costa</span>
-      </h1>
-      <p class="hero-desc">
-        Estudante do curso Técnico em Desenvolvimento de Sistemas (4º semestre),
-        em busca da primeira oportunidade como estagiária para aplicar
-        conhecimentos teóricos em projetos reais.
-      </p>
-      <div class="hero-buttons">
-        <a href="#contato" class="btn btn-primary">Fale comigo</a>
-        <a href="https://github.com/seu-usuario" target="_blank" class="btn btn-outline">GitHub ↗</a>
-      </div>
-    </div>
-  </section>
+<canvas id="c"></canvas>
 
-  <!-- SOBRE -->
-  <section id="sobre">
-    <div class="container">
-      <div class="section-label">// sobre mim</div>
-      <h2>Quem sou <span class="gradient-text">eu?</span></h2>
-      <div class="focus-box">
-        Foco atual em <strong>Internet das Coisas (IoT)</strong> e <strong>Implantação de Sistemas</strong> —
-        construindo base sólida para atuar com tecnologia de forma criativa e prática.
-      </div>
-      <div class="about-grid">
-        <div class="about-card">
-          <div class="card-icon">🌐</div>
-          <div class="card-title">IoT</div>
-          <div class="card-desc">Explorando a conexão entre dispositivos físicos e sistemas digitais.</div>
-        </div>
-        <div class="about-card">
-          <div class="card-icon">🚀</div>
-          <div class="card-title">Implantação</div>
-          <div class="card-desc">Interesse em colocar sistemas no ar e garantir que funcionem bem.</div>
-        </div>
-        <div class="about-card">
-          <div class="card-icon">📚</div>
-          <div class="card-title">Aprendizado</div>
-          <div class="card-desc">4º semestre com base em lógica, banco de dados e desenvolvimento.</div>
-        </div>
-        <div class="about-card">
-          <div class="card-icon">🎯</div>
-          <div class="card-title">Objetivo</div>
-          <div class="card-desc">Aplicar conhecimentos teóricos em projetos reais via estágio.</div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- AUDIO -->
+<audio id="bg-audio" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_946b6b5f9e.mp3" type="audio/mp3">
+</audio>
 
-  <!-- FORMAÇÃO -->
-  <section id="formacao">
-    <div class="container">
-      <div class="section-label">// formação</div>
-      <h2>Disciplinas <span class="gradient-text">cursadas</span></h2>
-      <p style="font-family:'DM Mono',monospace;color:var(--muted);font-size:0.88rem;line-height:1.8;margin-bottom:0.5rem;">
-        Técnico em Desenvolvimento de Sistemas — 4º semestre
-      </p>
-      <div class="disciplines-grid">
-        <div class="discipline-item"><span class="check">✓</span> Lógica de Programação</div>
-        <div class="discipline-item"><span class="check">✓</span> Programação de Aplicativos</div>
-        <div class="discipline-item"><span class="check">✓</span> Banco de Dados (Relacionais)</div>
-        <div class="discipline-item"><span class="check">✓</span> Modelagem de Sistemas</div>
-        <div class="discipline-item"><span class="check">✓</span> Desenvolvimento de Sistemas</div>
-        <div class="discipline-item"><span class="check">✓</span> Teste de Sistemas (QA)</div>
-      </div>
-    </div>
-  </section>
+<!-- THREE -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="container">
-      <div class="section-label">// tecnologias</div>
-      <h2>O que eu <span class="gradient-text">uso</span></h2>
+<!-- POST FX -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
 
-      <div class="skills-block">
-        <div class="skills-category">Linguagens</div>
-        <div class="skills-list">
-          <span class="skill-tag hot">Java</span>
-          <span class="skill-tag hot">JavaScript</span>
-        </div>
-      </div>
+<script>
+// DATA
+const PROJECTS=[
+ {name:"Front Eventos",desc:"Sistema de eventos moderno",url:"https://github.com/",color:0xff3d7f,x:6},
+ {name:"Shopee Clone",desc:"E-commerce completo",url:"https://github.com/",color:0x7c3aed,x:12},
+ {name:"Loja Virtual",desc:"Plataforma de vendas",url:"https://github.com/",color:0xff6b35,x:18}
+];
 
-      <div class="skills-block">
-        <div class="skills-category">Banco de Dados</div>
-        <div class="skills-list">
-          <span class="skill-tag hot">MySQL</span>
-          <span class="skill-tag hot">PostgreSQL</span>
-        </div>
-      </div>
+// AUDIO START
+let audioStarted=false;
+document.body.addEventListener("click",()=>{
+  if(!audioStarted){
+    document.getElementById("bg-audio").play();
+    audioStarted=true;
+  }
+});
 
-      <div class="skills-block">
-        <div class="skills-category">Ferramentas</div>
-        <div class="skills-list">
-          <span class="skill-tag">Git</span>
-          <span class="skill-tag">GitHub</span>
-          <span class="skill-tag">VS Code</span>
-        </div>
-      </div>
-    </div>
-  </section>
+// THREE SETUP
+const canvas=document.getElementById("c");
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setSize(innerWidth,innerHeight);
 
-  <!-- CONTATO -->
-  <section id="contato">
-    <div class="container">
-      <div class="section-label">// contato</div>
-      <div class="contact-box">
-        <h2>Vamos <span class="gradient-text">conversar?</span></h2>
-        <p>
-          Estou aberta a oportunidades de estágio e projetos.<br />
-          Me manda uma mensagem — responderei em breve!
-        </p>
-        <a href="mailto:seu@email.com" class="btn btn-primary">Enviar e-mail</a>
-        <div class="social-links">
-          <a href="https://github.com/seu-usuario" target="_blank" class="social-link">GitHub</a>
-          <a href="https://linkedin.com/in/seu-usuario" target="_blank" class="social-link">LinkedIn</a>
-        </div>
-      </div>
-    </div>
-  </section>
+const scene=new THREE.Scene();
 
-  <footer>
-    feito com 💜 por <strong>Rávila Costa</strong> · Desenvolvimento de Sistemas · 4º semestre
-  </footer>
+const camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,500);
+camera.position.set(0,2,10);
 
-  <!-- THREE.JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script>
-    const canvas = document.getElementById('bg-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
+// BLOOM
+const composer=new THREE.EffectComposer(renderer);
+composer.addPass(new THREE.RenderPass(scene,camera));
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.z = 18;
+const bloom=new THREE.UnrealBloomPass(
+ new THREE.Vector2(innerWidth,innerHeight),1.8,.4,.85
+);
+composer.addPass(bloom);
 
-    const geoTypes = [
-      new THREE.IcosahedronGeometry(1, 0),
-      new THREE.OctahedronGeometry(1, 0),
-      new THREE.TetrahedronGeometry(1, 0),
-      new THREE.BoxGeometry(1.4, 1.4, 1.4),
-      new THREE.TorusGeometry(0.7, 0.28, 8, 16),
-    ];
+// LIGHT
+scene.add(new THREE.AmbientLight(0x111122,1));
+const rim=new THREE.PointLight(0x00f7ff,4,50);
+rim.position.set(-5,5,-5);
+scene.add(rim);
 
-    const colors = [0x7c6aff, 0xff6af0, 0x6af4ff, 0xffaa6a, 0x6affa0];
+// STARS
+function stars(n,s){
+ const g=new THREE.BufferGeometry();
+ const p=new Float32Array(n*3);
+ for(let i=0;i<n*3;i++) p[i]=(Math.random()-0.5)*s;
+ g.setAttribute("position",new THREE.BufferAttribute(p,3));
+ return new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:0.7}));
+}
+scene.add(stars(4000,400));
 
-    const meshes = [];
-    for (let i = 0; i < 28; i++) {
-      const geo = geoTypes[Math.floor(Math.random() * geoTypes.length)];
-      const mat = new THREE.MeshBasicMaterial({
-        color: colors[Math.floor(Math.random() * colors.length)],
-        wireframe: true,
-        transparent: true,
-        opacity: 0.18 + Math.random() * 0.18,
-      });
-      const mesh = new THREE.Mesh(geo, mat);
+// PLANETS
+const meshes=[];
+PROJECTS.forEach(p=>{
+ const m=new THREE.Mesh(
+  new THREE.SphereGeometry(1.5,64,64),
+  new THREE.MeshStandardMaterial({
+   color:p.color,
+   emissive:p.color,
+   emissiveIntensity:1.5
+  })
+ );
+ m.position.x=p.x;
+ scene.add(m);
+ meshes.push(m);
+});
 
-      mesh.position.set(
-        (Math.random() - 0.5) * 36,
-        (Math.random() - 0.5) * 26,
-        (Math.random() - 0.5) * 14
-      );
+// ASTRONAUTA
+const astronaut=new THREE.Group();
 
-      const s = 0.5 + Math.random() * 1.6;
-      mesh.scale.setScalar(s);
+const body=new THREE.Mesh(
+ new THREE.CylinderGeometry(.4,.5,1.3,32),
+ new THREE.MeshStandardMaterial({color:0xffffff})
+);
+astronaut.add(body);
 
-      mesh.userData = {
-        rotSpeedX: (Math.random() - 0.5) * 0.008,
-        rotSpeedY: (Math.random() - 0.5) * 0.008,
-        floatSpeed: 0.3 + Math.random() * 0.5,
-        floatAmp:   0.3 + Math.random() * 0.4,
-        floatOffset: Math.random() * Math.PI * 2,
-        originY: mesh.position.y,
-      };
+const head=new THREE.Mesh(
+ new THREE.SphereGeometry(.5,32,32),
+ new THREE.MeshStandardMaterial({color:0xffffff})
+);
+head.position.y=1;
+astronaut.add(head);
 
-      scene.add(mesh);
-      meshes.push(mesh);
-    }
+scene.add(astronaut);
 
-    let mouseX = 0, mouseY = 0;
-    document.addEventListener('mousemove', e => {
-      mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
+// MOVIMENTO
+let targetX=0;
+addEventListener("keydown",e=>{
+ if(e.code==="ArrowRight")targetX+=2;
+ if(e.code==="ArrowLeft")targetX-=2;
+});
 
-    window.addEventListener('resize', () => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-    });
+// CLICK PLANET
+const ray=new THREE.Raycaster();
+const mouse=new THREE.Vector2();
 
-    const clock = new THREE.Clock();
-    function animate() {
-      requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
+addEventListener("click",e=>{
+ mouse.x=(e.clientX/innerWidth)*2-1;
+ mouse.y=-(e.clientY/innerHeight)*2+1;
 
-      meshes.forEach(m => {
-        m.rotation.x += m.userData.rotSpeedX;
-        m.rotation.y += m.userData.rotSpeedY;
-        m.position.y = m.userData.originY +
-          Math.sin(t * m.userData.floatSpeed + m.userData.floatOffset) * m.userData.floatAmp;
-      });
+ ray.setFromCamera(mouse,camera);
+ const hits=ray.intersectObjects(meshes);
 
-      camera.position.x += (mouseX * 1.5 - camera.position.x) * 0.03;
-      camera.position.y += (-mouseY * 1.0 - camera.position.y) * 0.03;
+ if(hits.length){
+   const i=meshes.indexOf(hits[0].object);
+   openModal(PROJECTS[i]);
+ }
+});
 
-      renderer.render(scene, camera);
-    }
+function openModal(p){
+ document.getElementById("modal").classList.add("active");
+ title.textContent=p.name;
+ desc.textContent=p.desc;
+ link.href=p.url;
+}
 
-    animate();
-  </script>
+document.getElementById("modal").onclick=()=>{
+ document.getElementById("modal").classList.remove("active");
+}
+
+// ANIMATE
+function animate(){
+ requestAnimationFrame(animate);
+
+ astronaut.position.x+=(targetX-astronaut.position.x)*.05;
+ camera.position.x+=(astronaut.position.x-camera.position.x)*.05;
+
+ meshes.forEach(m=>m.rotation.y+=.01);
+
+ composer.render();
+}
+animate();
+
+// RESIZE
+addEventListener("resize",()=>{
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+
 </body>
 </html>
