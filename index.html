@@ -5,20 +5,6 @@
 <title>Ràvila Costa • Portfólio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- React -->
-<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-
-<!-- Three -->
-<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-
-<!-- Fiber + Drei -->
-<script src="https://unpkg.com/@react-three/fiber/dist/react-three-fiber.umd.js"></script>
-<script src="https://unpkg.com/@react-three/drei/dist/drei.umd.js"></script>
-
-<!-- Babel -->
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
 <style>
 body {
   margin: 0;
@@ -63,10 +49,12 @@ body {
 
 <div id="root"></div>
 
-<script type="text/babel">
-
-const { Canvas, useFrame } = ReactThreeFiber;
-const { Stars, Text } = Drei;
+<script type="module">
+import React from "https://esm.sh/react@18";
+import ReactDOM from "https://esm.sh/react-dom@18/client";
+import * as THREE from "https://esm.sh/three@0.160.0";
+import { Canvas, useFrame } from "https://esm.sh/@react-three/fiber";
+import { Stars, Text } from "https://esm.sh/@react-three/drei";
 
 // PROJETOS
 const projects = [
@@ -95,66 +83,63 @@ function Planet({ project }) {
   const ref = React.useRef();
 
   useFrame(() => {
-    ref.current.rotation.y += 0.01;
+    if (ref.current) ref.current.rotation.y += 0.01;
   });
 
   return (
-    <group position={project.position}>
-      <mesh
-        ref={ref}
-        onClick={() => window.open(project.url)}
-      >
-        <sphereGeometry args={[1.2, 32, 32]} />
-        <meshStandardMaterial color={project.color} />
-      </mesh>
-
-      <Text
-        position={[0, 2, 0]}
-        fontSize={0.4}
-        anchorX="center"
-      >
-        {project.name}
-      </Text>
-    </group>
+    React.createElement("group", { position: project.position },
+      React.createElement("mesh", {
+        ref: ref,
+        onClick: () => window.open(project.url)
+      },
+        React.createElement("sphereGeometry", { args: [1.2, 32, 32] }),
+        React.createElement("meshStandardMaterial", { color: project.color })
+      ),
+      React.createElement(Text, {
+        position: [0, 2, 0],
+        fontSize: 0.4,
+        anchorX: "center"
+      }, project.name)
+    )
   );
 }
 
 // CENA
 function Scene() {
   return (
-    <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 5, 5]} />
-
-      <Stars radius={100} depth={50} count={5000} factor={4} />
-
-      {projects.map((p, i) => (
-        <Planet key={i} project={p} />
-      ))}
-    </>
+    React.createElement(React.Fragment, null,
+      React.createElement("ambientLight", { intensity: 0.6 }),
+      React.createElement("directionalLight", { position: [5, 5, 5] }),
+      React.createElement(Stars, { radius: 100, depth: 50, count: 5000 }),
+      projects.map((p, i) =>
+        React.createElement(Planet, { key: i, project: p })
+      )
+    )
   );
 }
 
 // APP
 function App() {
   return (
-    <>
-      <Canvas camera={{ position: [0, 2, 8], fov: 60 }}>
-        <Scene />
-      </Canvas>
-
-      <div className="hud">
-        <h1>🚀 Ràvila Costa</h1>
-        <p>Backend Developer • Portfólio Espacial</p>
-        <a href="https://github.com/ravilacosta" target="_blank">
-          Ver GitHub
-        </a>
-      </div>
-    </>
+    React.createElement(React.Fragment, null,
+      React.createElement(Canvas, { camera: { position: [0, 2, 8] } },
+        React.createElement(Scene)
+      ),
+      React.createElement("div", { className: "hud" },
+        React.createElement("h1", null, "🚀 Ràvila Costa"),
+        React.createElement("p", null, "Backend Developer • Portfólio Espacial"),
+        React.createElement("a", {
+          href: "https://github.com/ravilacosta",
+          target: "_blank"
+        }, "Ver GitHub")
+      )
+    )
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+ReactDOM.createRoot(document.getElementById("root")).render(
+  React.createElement(App)
+);
 
 </script>
 
