@@ -5,73 +5,53 @@ import { useRef, useState, useEffect, Suspense, useMemo, useCallback } from "rea
 import * as THREE from "three";
 
 // ─────────────────────────────────────────────────────────────
-// DADOS – projetos do GitHub
+// DADOS – projetos do GitHub da Ràvila Costa
 // ─────────────────────────────────────────────────────────────
+const OWNER = {
+  name: "Ràvila Costa",
+  role: "Backend Developer",
+  github: "https://github.com/ravilacosta",
+};
+
 const PROJECTS = [
   {
     id: 1,
-    name: "Projeto Alpha",
-    description: "Aplicação web full-stack com React e Node.js",
-    githubUrl: "https://github.com",
+    name: "Front Eventos",
+    description: "Interface frontend para gerenciamento e divulgação de eventos. Experiência visual moderna e responsiva.",
+    githubUrl: "https://github.com/ravilacosta/front-eventos",
     color: "#ff6b35",
     glowColor: "#ff4500",
     size: 1.4,
     position: [14, 0, 0] as [number, number, number],
     ringColor: "#ff8c00",
-    icon: "🚀",
-    tech: ["React", "Node.js", "Express"],
+    icon: "🎪",
+    tech: ["HTML", "CSS", "JavaScript"],
   },
   {
     id: 2,
-    name: "Projeto Beta",
-    description: "API REST com autenticação JWT e PostgreSQL",
-    githubUrl: "https://github.com",
-    color: "#00d4ff",
-    glowColor: "#00bfff",
+    name: "Shopee Clone",
+    description: "Recriação da plataforma Shopee com foco em e-commerce, listagem de produtos e carrinho de compras.",
+    githubUrl: "https://github.com/ravilacosta/shopee",
+    color: "#ff3d3d",
+    glowColor: "#ee1111",
     size: 1.2,
-    position: [28, 0, 4] as [number, number, number],
-    ringColor: "#00ffff",
-    icon: "⚡",
-    tech: ["TypeScript", "JWT", "PostgreSQL"],
+    position: [30, 0, 4] as [number, number, number],
+    ringColor: "#ff6666",
+    icon: "🛍️",
+    tech: ["HTML", "CSS", "JavaScript"],
   },
   {
     id: 3,
-    name: "Projeto Gamma",
-    description: "App mobile com React Native e Expo",
-    githubUrl: "https://github.com",
+    name: "Loja Virtual",
+    description: "Loja virtual completa com catálogo de produtos, páginas de detalhe e fluxo de compra integrado.",
+    githubUrl: "https://github.com/ravilacosta/loja-virtual",
     color: "#a855f7",
     glowColor: "#9333ea",
     size: 1.6,
-    position: [44, 0, -4] as [number, number, number],
+    position: [48, 0, -4] as [number, number, number],
     ringColor: "#c084fc",
-    icon: "📱",
-    tech: ["React Native", "Expo", "Firebase"],
-  },
-  {
-    id: 4,
-    name: "Projeto Delta",
-    description: "Machine Learning com Python e TensorFlow",
-    githubUrl: "https://github.com",
-    color: "#22c55e",
-    glowColor: "#16a34a",
-    size: 1.3,
-    position: [60, 0, 5] as [number, number, number],
-    ringColor: "#4ade80",
-    icon: "🤖",
-    tech: ["Python", "TensorFlow", "scikit-learn"],
-  },
-  {
-    id: 5,
-    name: "Projeto Epsilon",
-    description: "Dashboard analítico com D3.js e visualizações",
-    githubUrl: "https://github.com",
-    color: "#f59e0b",
-    glowColor: "#d97706",
-    size: 1.5,
-    position: [76, 0, -3] as [number, number, number],
-    ringColor: "#fbbf24",
-    icon: "📊",
-    tech: ["D3.js", "Vue", "GraphQL"],
+    icon: "🏪",
+    tech: ["HTML", "CSS", "JavaScript"],
   },
 ];
 
@@ -84,7 +64,6 @@ function useKeys() {
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       keys.current[e.code] = true;
-      // evitar scroll da página
       if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code)) {
         e.preventDefault();
       }
@@ -120,25 +99,17 @@ function FireMeteor({ startPos, size = 1 }: { startPos: [number, number, number]
     ).normalize(),
     []
   );
-  const r = 0.06 * size; // raio do núcleo
+  const r = 0.06 * size;
 
   useFrame((_, dt) => {
     t.current += dt;
     if (!coreRef.current) return;
-
-    // movimento
     coreRef.current.position.addScaledVector(dir, speed);
     const pos = coreRef.current.position;
     if (halo1Ref.current) halo1Ref.current.position.copy(pos);
     if (halo2Ref.current) halo2Ref.current.position.copy(pos);
     if (lightRef.current)  lightRef.current.position.copy(pos);
-
-    // reset quando sai da tela
-    if (pos.x < -25) {
-      coreRef.current.position.set(...startPos);
-    }
-
-    // pulso do núcleo (simula chama pulsando)
+    if (pos.x < -25) coreRef.current.position.set(...startPos);
     const pulse = 1 + Math.sin(t.current * 18) * 0.18;
     coreRef.current.scale.setScalar(pulse);
     if (halo1Ref.current) {
@@ -154,77 +125,25 @@ function FireMeteor({ startPos, size = 1 }: { startPos: [number, number, number]
 
   return (
     <>
-      {/* Rastro de chama – camada amarela (mais quente, mais próxima) */}
-      <Trail
-        width={r * 28}
-        length={16}
-        color={new THREE.Color("#ffee00")}
-        attenuation={(f) => f * f * f}
-      >
-        {/* Rastro de chama – camada laranja */}
-        <Trail
-          width={r * 18}
-          length={22}
-          color={new THREE.Color("#ff6600")}
-          attenuation={(f) => f * f}
-        >
-          {/* Rastro de fumaça – camada vermelha externa */}
-          <Trail
-            width={r * 10}
-            length={30}
-            color={new THREE.Color("#cc1100")}
-            attenuation={(f) => Math.pow(f, 1.5)}
-          >
-            {/* NÚCLEO – branco incandescente */}
+      <Trail width={r * 28} length={16} color={new THREE.Color("#ffee00")} attenuation={(f) => f * f * f}>
+        <Trail width={r * 18} length={22} color={new THREE.Color("#ff6600")} attenuation={(f) => f * f}>
+          <Trail width={r * 10} length={30} color={new THREE.Color("#cc1100")} attenuation={(f) => Math.pow(f, 1.5)}>
             <mesh ref={coreRef} position={startPos}>
               <sphereGeometry args={[r, 10, 10]} />
-              <meshStandardMaterial
-                color="#ffffff"
-                emissive="#ffffff"
-                emissiveIntensity={5}
-                roughness={0}
-                metalness={0}
-              />
+              <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={5} roughness={0} metalness={0} />
             </mesh>
           </Trail>
         </Trail>
       </Trail>
-
-      {/* HALO laranja ao redor do núcleo */}
       <mesh ref={halo1Ref} position={startPos}>
         <sphereGeometry args={[r * 2.2, 12, 12]} />
-        <meshStandardMaterial
-          color="#ff4400"
-          emissive="#ff8800"
-          emissiveIntensity={1.5}
-          transparent
-          opacity={0.75}
-          depthWrite={false}
-        />
+        <meshStandardMaterial color="#ff4400" emissive="#ff8800" emissiveIntensity={1.5} transparent opacity={0.75} depthWrite={false} />
       </mesh>
-
-      {/* HALO exterior difuso */}
       <mesh ref={halo2Ref} position={startPos}>
         <sphereGeometry args={[r * 4.5, 10, 10]} />
-        <meshStandardMaterial
-          color="#ff2200"
-          emissive="#ff2200"
-          emissiveIntensity={0.8}
-          transparent
-          opacity={0.22}
-          depthWrite={false}
-          side={THREE.BackSide}
-        />
+        <meshStandardMaterial color="#ff2200" emissive="#ff2200" emissiveIntensity={0.8} transparent opacity={0.22} depthWrite={false} side={THREE.BackSide} />
       </mesh>
-
-      {/* Luz pontual que segue o meteoro e ilumina o ambiente */}
-      <pointLight
-        ref={lightRef}
-        position={startPos}
-        color="#ff5500"
-        intensity={size * 3}
-        distance={size * 8}
-      />
+      <pointLight ref={lightRef} position={startPos} color="#ff5500" intensity={size * 3} distance={size * 8} />
     </>
   );
 }
@@ -234,11 +153,8 @@ function FireMeteor({ startPos, size = 1 }: { startPos: [number, number, number]
 // ─────────────────────────────────────────────────────────────
 function Asteroid({ position }: { position: [number, number, number] }) {
   const ref = useRef<THREE.Mesh>(null);
-  const rot = useMemo(() => ({
-    x: (Math.random() - 0.5) * 0.6,
-    y: (Math.random() - 0.5) * 0.5,
-  }), []);
-  const sc = useMemo(() => 0.07 + Math.random() * 0.22, []);
+  const rot = useMemo(() => ({ x: (Math.random() - 0.5) * 0.6, y: (Math.random() - 0.5) * 0.5 }), []);
+  const sc  = useMemo(() => 0.07 + Math.random() * 0.22, []);
 
   useFrame((_, dt) => {
     if (!ref.current) return;
@@ -255,7 +171,7 @@ function Asteroid({ position }: { position: [number, number, number] }) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// SHADER GLSL – superfície animada do planeta (bandas coloridas)
+// SHADER GLSL – superfície animada do planeta
 // ─────────────────────────────────────────────────────────────
 const PLANET_VERT = /* glsl */`
   varying vec2 vUv;
@@ -278,14 +194,11 @@ const PLANET_FRAG = /* glsl */`
   varying vec2 vUv;
   varying vec3 vNormal;
 
-  float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-  }
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   float noise(vec2 p) {
     vec2 i = floor(p); vec2 f = fract(p);
     f = f*f*(3.0-2.0*f);
-    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),
-               mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
+    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
   }
   float fbm(vec2 p) {
     float v=0.0; float a=0.5;
@@ -294,74 +207,48 @@ const PLANET_FRAG = /* glsl */`
   }
 
   void main() {
-    // bandas horizontais com turbulência animada
     float n = fbm(vec2(vUv.x*3.0 + time*0.08, vUv.y*1.5));
     float band1 = sin(vUv.y * 12.0 + n*3.5 + time*0.25) * 0.5 + 0.5;
     float band2 = sin(vUv.y * 6.0  - n*2.0 - time*0.12) * 0.5 + 0.5;
     float band3 = sin(vUv.y * 20.0 + n*5.0 + time*0.4)  * 0.5 + 0.5;
-
     vec3 col = mix(c1, c2, band1);
     col = mix(col, c3, band2 * 0.6);
     col = mix(col, c4, band3 * 0.35);
-
-    // sombreamento suave
     float light = dot(vNormal, normalize(vec3(1.0, 0.8, 0.5))) * 0.45 + 0.55;
-    // brilho polar
     float polar = 1.0 - abs(vUv.y - 0.5) * 1.8;
     col = mix(col, col * 1.3, clamp(polar * 0.3, 0.0, 0.3));
-
     gl_FragColor = vec4(col * light, 1.0);
   }
 `;
 
-// paletas de cores para cada planeta (estilo animação)
 const PLANET_PALETTES = [
-  // 1 – Planeta de FOGO (vermelho/laranja/amarelo/preto)
   { c1: new THREE.Color("#ff2200"), c2: new THREE.Color("#ff8800"), c3: new THREE.Color("#ffdd00"), c4: new THREE.Color("#110000") },
-  // 2 – Planeta OCEANO (ciano/azul/branco/azul escuro)
-  { c1: new THREE.Color("#00aaff"), c2: new THREE.Color("#00eeff"), c3: new THREE.Color("#ffffff"), c4: new THREE.Color("#001155") },
-  // 3 – Planeta NEBULOSA (roxo/magenta/rosa/indigo)
+  { c1: new THREE.Color("#ff0033"), c2: new THREE.Color("#ff4466"), c3: new THREE.Color("#ffaaaa"), c4: new THREE.Color("#110005") },
   { c1: new THREE.Color("#9900ff"), c2: new THREE.Color("#ff00cc"), c3: new THREE.Color("#ff88ff"), c4: new THREE.Color("#110022") },
-  // 4 – Planeta FLORESTA (verde/teal/amarelo/preto)
-  { c1: new THREE.Color("#00ff44"), c2: new THREE.Color("#00cc88"), c3: new THREE.Color("#aaff00"), c4: new THREE.Color("#001100") },
-  // 5 – Planeta OURO (dourado/laranja/marrom/amarelo)
-  { c1: new THREE.Color("#ffcc00"), c2: new THREE.Color("#ff8800"), c3: new THREE.Color("#ffee88"), c4: new THREE.Color("#331100") },
 ];
 
 // ─────────────────────────────────────────────────────────────
 // SUPERFÍCIE ANIMADA DO PLANETA
 // ─────────────────────────────────────────────────────────────
-function PlanetSurface({ size, paletteIdx, near }: { size: number; paletteIdx: number; near: boolean }) {
+function PlanetSurface({ size, paletteIdx }: { size: number; paletteIdx: number; near: boolean }) {
   const matRef = useRef<THREE.ShaderMaterial>(null);
   const pal = PLANET_PALETTES[paletteIdx % PLANET_PALETTES.length];
-
   const uniforms = useMemo(() => ({
     time: { value: 0 },
-    c1: { value: pal.c1 },
-    c2: { value: pal.c2 },
-    c3: { value: pal.c3 },
-    c4: { value: pal.c4 },
+    c1: { value: pal.c1 }, c2: { value: pal.c2 },
+    c3: { value: pal.c3 }, c4: { value: pal.c4 },
   }), []);
-
-  useFrame((_, dt) => {
-    if (matRef.current) matRef.current.uniforms.time.value += dt;
-  });
-
+  useFrame((_, dt) => { if (matRef.current) matRef.current.uniforms.time.value += dt; });
   return (
     <mesh castShadow>
       <sphereGeometry args={[size, 64, 64]} />
-      <shaderMaterial
-        ref={matRef}
-        vertexShader={PLANET_VERT}
-        fragmentShader={PLANET_FRAG}
-        uniforms={uniforms}
-      />
+      <shaderMaterial ref={matRef} vertexShader={PLANET_VERT} fragmentShader={PLANET_FRAG} uniforms={uniforms} />
     </mesh>
   );
 }
 
 // ─────────────────────────────────────────────────────────────
-// ANEL DO PLANETA (duplo para planetas de fogo)
+// ANEL DO PLANETA
 // ─────────────────────────────────────────────────────────────
 function Ring({ color, r, fire }: { color: string; r: number; fire?: boolean }) {
   const ref1 = useRef<THREE.Mesh>(null);
@@ -390,22 +277,20 @@ function Ring({ color, r, fire }: { color: string; r: number; fire?: boolean }) 
 // PLANETA
 // ─────────────────────────────────────────────────────────────
 function Planet({
-  project,
-  paletteIdx,
-  nearbyAstronaut,
+  project, paletteIdx, nearbyAstronaut,
 }: {
   project: (typeof PROJECTS)[0];
   paletteIdx: number;
   nearbyAstronaut: boolean;
 }) {
   const groupRef = useRef<THREE.Group>(null);
-  const atmoRef = useRef<THREE.Mesh>(null);
-  const glowRef = useRef<THREE.Mesh>(null);
-  const isFire = paletteIdx === 0;
+  const atmoRef  = useRef<THREE.Mesh>(null);
+  const glowRef  = useRef<THREE.Mesh>(null);
+  const isFire   = paletteIdx === 0;
 
   useFrame((_, dt) => {
     if (groupRef.current) groupRef.current.rotation.y += dt * 0.28;
-    if (atmoRef.current) atmoRef.current.rotation.y -= dt * 0.12;
+    if (atmoRef.current)  atmoRef.current.rotation.y  -= dt * 0.12;
     if (glowRef.current) {
       const target = nearbyAstronaut ? 0.28 : 0.1;
       const mat = glowRef.current.material as THREE.MeshStandardMaterial;
@@ -418,120 +303,86 @@ function Planet({
 
   return (
     <group position={project.position}>
-      {/* atmosfera exterior pulsante */}
       <mesh ref={glowRef}>
         <sphereGeometry args={[project.size * 1.72, 32, 32]} />
-        <meshStandardMaterial
-          color={atmoColor}
-          transparent
-          opacity={0.1}
-          side={THREE.BackSide}
-          emissive={atmoColor}
-          emissiveIntensity={isFire ? 1.5 : 0.8}
-        />
+        <meshStandardMaterial color={atmoColor} transparent opacity={0.1} side={THREE.BackSide} emissive={atmoColor} emissiveIntensity={isFire ? 1.5 : 0.8} />
       </mesh>
-
-      {/* halo de brilho fino */}
       <mesh>
         <sphereGeometry args={[project.size * 1.12, 32, 32]} />
-        <meshStandardMaterial
-          color={project.color}
-          transparent
-          opacity={0.08}
-          side={THREE.BackSide}
-          emissive={project.color}
-          emissiveIntensity={2}
-        />
+        <meshStandardMaterial color={project.color} transparent opacity={0.08} side={THREE.BackSide} emissive={project.color} emissiveIntensity={2} />
       </mesh>
-
-      {/* superfície animada com shader */}
       <group ref={groupRef}>
         <PlanetSurface size={project.size} paletteIdx={paletteIdx} near={nearbyAstronaut} />
-
-        {/* nuvens atmosféricas (camada extra semi-trans) */}
         <mesh rotation={[0.1, 0, 0]}>
           <sphereGeometry args={[project.size * 1.04, 32, 32]} />
-          <meshStandardMaterial
-            color={pal.c3}
-            transparent
-            opacity={0.08}
-            depthWrite={false}
-          />
+          <meshStandardMaterial color={pal.c3} transparent opacity={0.08} depthWrite={false} />
         </mesh>
       </group>
-
       <Ring color={project.ringColor} r={project.size} fire={isFire} />
-
-      {/* partículas especiais para planeta de fogo */}
-      {isFire ? (
-        <Sparkles count={60} scale={project.size * 5} size={1.4} speed={0.8} color="#ff6600" opacity={0.9} />
-      ) : (
-        <Sparkles count={30} scale={project.size * 4} size={0.8} speed={0.3} color={project.color} opacity={0.55} />
-      )}
-
-      {/* nome */}
-      <Text
-        position={[0, project.size + 1.3, 0]}
-        fontSize={0.4}
-        color={isFire ? "#ffaa00" : project.color}
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.03}
-        outlineColor={isFire ? "#440000" : "#000"}
-      >
+      {isFire
+        ? <Sparkles count={60} scale={project.size * 5} size={1.4} speed={0.8} color="#ff6600" opacity={0.9} />
+        : <Sparkles count={30} scale={project.size * 4} size={0.8} speed={0.3} color={project.color} opacity={0.55} />
+      }
+      <Text position={[0, project.size + 1.3, 0]} fontSize={0.38} color={isFire ? "#ffaa00" : project.color} anchorX="center" anchorY="middle" outlineWidth={0.03} outlineColor={isFire ? "#440000" : "#000"}>
         {project.icon} {project.name}
       </Text>
+      <pointLight color={isFire ? "#ff4400" : project.glowColor} intensity={nearbyAstronaut ? 8 : isFire ? 4 : 2.5} distance={11} />
 
-      {/* luz pontual colorida */}
-      <pointLight
-        color={isFire ? "#ff4400" : project.glowColor}
-        intensity={nearbyAstronaut ? 8 : isFire ? 4 : 2.5}
-        distance={11}
-      />
-
-      {/* card quando próximo */}
+      {/* Card de projeto quando próximo */}
       {nearbyAstronaut && (
-        <Html position={[0, -project.size - 2.5, 0]} center distanceFactor={9}>
+        <Html position={[0, -project.size - 2.8, 0]} center distanceFactor={9}>
           <div style={{
-            background: "rgba(4,4,18,0.95)",
+            background: "rgba(4,4,18,0.97)",
             border: `2px solid ${isFire ? "#ff6600" : project.color}`,
-            borderRadius: "14px",
-            padding: "16px 20px",
-            width: "235px",
-            boxShadow: `0 0 32px ${isFire ? "#ff440099" : project.color + "99"}, 0 0 80px ${isFire ? "#ff220022" : project.color + "22"}`,
+            borderRadius: "16px",
+            padding: "18px 22px",
+            width: "250px",
+            boxShadow: `0 0 40px ${isFire ? "#ff440099" : project.color + "99"}, 0 0 100px ${isFire ? "#ff220022" : project.color + "22"}`,
             color: "#fff",
             fontFamily: "'Segoe UI', sans-serif",
             textAlign: "center",
-            backdropFilter: "blur(14px)",
+            backdropFilter: "blur(16px)",
             animation: "fadeIn 0.4s ease",
           }}>
-            <div style={{ fontSize: "34px", marginBottom: "8px" }}>{project.icon}</div>
-            <div style={{ fontSize: "15px", fontWeight: 800, color: isFire ? "#ff8800" : project.color, marginBottom: "6px" }}>
+            <div style={{ fontSize: "36px", marginBottom: "8px" }}>{project.icon}</div>
+            <div style={{ fontSize: "15px", fontWeight: 800, color: isFire ? "#ff8800" : project.color, marginBottom: "6px", letterSpacing: "0.5px" }}>
               {project.name}
             </div>
-            <div style={{ fontSize: "11px", color: "#bbb", marginBottom: "10px", lineHeight: 1.5 }}>
+            <div style={{ fontSize: "11px", color: "#bbb", marginBottom: "12px", lineHeight: 1.6 }}>
               {project.description}
             </div>
-            <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", justifyContent: "center", marginBottom: "12px" }}>
+            <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", justifyContent: "center", marginBottom: "14px" }}>
               {project.tech.map(t => (
                 <span key={t} style={{
                   background: `${isFire ? "#ff6600" : project.color}22`,
                   border: `1px solid ${isFire ? "#ff6600" : project.color}55`,
-                  borderRadius: "10px", padding: "2px 8px",
-                  fontSize: "9px", color: isFire ? "#ffaa44" : project.color, fontWeight: 600,
+                  borderRadius: "10px", padding: "2px 9px",
+                  fontSize: "9px", color: isFire ? "#ffaa44" : project.color, fontWeight: 700,
                 }}>{t}</span>
               ))}
             </div>
-            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 display: "inline-block",
-                background: isFire ? "linear-gradient(135deg,#ff4400,#ffaa00)" : project.color,
-                color: "#000", padding: "7px 18px", borderRadius: "20px",
-                fontSize: "11px", fontWeight: 800, textDecoration: "none",
+                background: isFire ? "linear-gradient(135deg,#ff4400,#ffaa00)" : `linear-gradient(135deg, ${project.color}, ${project.glowColor})`,
+                color: "#fff",
+                padding: "8px 20px",
+                borderRadius: "20px",
+                fontSize: "11px",
+                fontWeight: 800,
+                textDecoration: "none",
                 letterSpacing: "0.5px",
-                boxShadow: `0 0 14px ${isFire ? "#ff6600" : project.color}aa`,
+                boxShadow: `0 0 18px ${isFire ? "#ff6600" : project.color}aa`,
+                transition: "transform 0.2s",
               }}
-            >Ver no GitHub →</a>
+              onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.06)")}
+              onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+            >
+              Ver no GitHub →
+            </a>
           </div>
         </Html>
       )}
@@ -543,307 +394,108 @@ function Planet({
 // ASTRONAUTA REALISTA
 // ─────────────────────────────────────────────────────────────
 function RealisticAstronaut({
-  positionRef,
-  facingAngle,
-  isMoving,
+  positionRef, facingAngle, isMoving,
 }: {
   positionRef: React.MutableRefObject<THREE.Vector3>;
   facingAngle: React.MutableRefObject<number>;
   isMoving: boolean;
 }) {
   const groupRef = useRef<THREE.Group>(null);
-  const bodyRef = useRef<THREE.Group>(null);
-  const headRef = useRef<THREE.Group>(null);
-  const armLRef = useRef<THREE.Group>(null);
-  const armRRef = useRef<THREE.Group>(null);
-  const legLRef = useRef<THREE.Group>(null);
-  const legRRef = useRef<THREE.Group>(null);
+  const bodyRef  = useRef<THREE.Group>(null);
+  const headRef  = useRef<THREE.Group>(null);
+  const armLRef  = useRef<THREE.Group>(null);
+  const armRRef  = useRef<THREE.Group>(null);
+  const legLRef  = useRef<THREE.Group>(null);
+  const legRRef  = useRef<THREE.Group>(null);
   const visorRef = useRef<THREE.Mesh>(null);
-  const jetRef = useRef<THREE.Mesh>(null);
-  const t = useRef(0);
+  const jetRef   = useRef<THREE.Mesh>(null);
+  const t        = useRef(0);
 
-  // cores do traje
-  const suitW = "#dce8ff";
-  const suitD = "#b0c4e8";
-  const accent = "#ff8800";
-  const visorC = "#00eeff";
+  const suitW   = "#dce8ff";
+  const suitD   = "#b0c4e8";
+  const accent  = "#ff8800";
+  const visorC  = "#00eeff";
   const darkGray = "#3a3a4a";
 
   useFrame((_, dt) => {
     t.current += dt;
-
     if (!groupRef.current) return;
-
-    // posição e rotação do grupo
     groupRef.current.position.copy(positionRef.current);
     groupRef.current.position.y += 0.5;
     groupRef.current.rotation.y = facingAngle.current;
+    if (bodyRef.current) bodyRef.current.position.y = Math.sin(t.current * 1.2) * 0.06;
 
-    // flutuação suave
-    if (bodyRef.current) {
-      bodyRef.current.position.y = Math.sin(t.current * 1.2) * 0.06;
-    }
-
-    // animação de caminhada
     const walkSpeed = 2.5;
-    const walkAmp = isMoving ? 0.45 : 0;
-    const sideArm = isMoving ? 0.15 : 0;
+    const walkAmp   = isMoving ? 0.45 : 0;
+    const sideArm   = isMoving ? 0.15 : 0;
 
-    if (armLRef.current) {
-      armLRef.current.rotation.x = Math.sin(t.current * walkSpeed) * walkAmp;
-      armLRef.current.rotation.z = 0.12 + sideArm;
-    }
-    if (armRRef.current) {
-      armRRef.current.rotation.x = -Math.sin(t.current * walkSpeed) * walkAmp;
-      armRRef.current.rotation.z = -(0.12 + sideArm);
-    }
-    if (legLRef.current) {
-      legLRef.current.rotation.x = -Math.sin(t.current * walkSpeed) * (isMoving ? 0.35 : 0);
-    }
-    if (legRRef.current) {
-      legRRef.current.rotation.x = Math.sin(t.current * walkSpeed) * (isMoving ? 0.35 : 0);
-    }
-
-    // visor pulsando
-    if (visorRef.current) {
-      (visorRef.current.material as THREE.MeshStandardMaterial).emissiveIntensity =
-        0.9 + Math.sin(t.current * 4) * 0.2;
-    }
-
-    // propulsor pulsando
-    if (jetRef.current) {
-      const scale = 1 + Math.sin(t.current * 8) * 0.12;
-      jetRef.current.scale.set(scale, scale, scale);
-    }
-
-    // rotação sutil da cabeça
-    if (headRef.current) {
-      headRef.current.rotation.y = Math.sin(t.current * 0.7) * 0.15;
-    }
+    if (armLRef.current) { armLRef.current.rotation.x = Math.sin(t.current * walkSpeed) * walkAmp; armLRef.current.rotation.z = 0.12 + sideArm; }
+    if (armRRef.current) { armRRef.current.rotation.x = -Math.sin(t.current * walkSpeed) * walkAmp; armRRef.current.rotation.z = -(0.12 + sideArm); }
+    if (legLRef.current) legLRef.current.rotation.x = -Math.sin(t.current * walkSpeed) * (isMoving ? 0.35 : 0);
+    if (legRRef.current) legRRef.current.rotation.x =  Math.sin(t.current * walkSpeed) * (isMoving ? 0.35 : 0);
+    if (visorRef.current) (visorRef.current.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.9 + Math.sin(t.current * 4) * 0.2;
+    if (jetRef.current) { const s = 1 + Math.sin(t.current * 8) * 0.12; jetRef.current.scale.set(s,s,s); }
+    if (headRef.current) headRef.current.rotation.y = Math.sin(t.current * 0.7) * 0.15;
   });
 
   return (
     <group ref={groupRef}>
       <group ref={bodyRef}>
-
-        {/* ── PERNAS ── */}
-        {/* Perna esquerda */}
-        <group ref={legLRef} position={[-0.17, -0.62, 0]}>
-          {/* coxa */}
-          <mesh position={[0, -0.18, 0]} castShadow>
-            <capsuleGeometry args={[0.1, 0.28, 8, 12]} />
-            <meshStandardMaterial color={suitW} roughness={0.3} metalness={0.35} />
+        {/* Pernas */}
+        {([-0.17, 0.17] as number[]).map((lx, li) => (
+          <group key={li} ref={li === 0 ? legLRef : legRRef} position={[lx, -0.62, 0]}>
+            <mesh position={[0,-0.18,0]} castShadow><capsuleGeometry args={[0.1,0.28,8,12]}/><meshStandardMaterial color={suitW} roughness={0.3} metalness={0.35}/></mesh>
+            <mesh position={[0,-0.38,0]} castShadow><sphereGeometry args={[0.11,16,16]}/><meshStandardMaterial color={suitD} roughness={0.4} metalness={0.4}/></mesh>
+            <mesh position={[0,-0.6,0]} castShadow><capsuleGeometry args={[0.09,0.26,8,12]}/><meshStandardMaterial color={suitW} roughness={0.3} metalness={0.35}/></mesh>
+            <mesh position={[0,-0.82,0.04]} castShadow><boxGeometry args={[0.18,0.14,0.26]}/><meshStandardMaterial color={darkGray} roughness={0.6} metalness={0.2}/></mesh>
+          </group>
+        ))}
+        {/* Torso */}
+        <mesh position={[0,0,0]} castShadow><boxGeometry args={[0.56,0.72,0.38]}/><meshStandardMaterial color={suitW} roughness={0.25} metalness={0.45}/></mesh>
+        <mesh position={[0,0.05,0.2]} castShadow><boxGeometry args={[0.28,0.3,0.04]}/><meshStandardMaterial color={darkGray} roughness={0.5} metalness={0.6}/></mesh>
+        <mesh position={[0,0.15,0.21]}><circleGeometry args={[0.05,16]}/><meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={2}/></mesh>
+        <mesh position={[0,0.28,0]}><boxGeometry args={[0.58,0.06,0.4]}/><meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={0.6} roughness={0.3}/></mesh>
+        <mesh position={[0,-0.28,0]}><boxGeometry args={[0.58,0.06,0.4]}/><meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={0.6} roughness={0.3}/></mesh>
+        {/* Jetpack */}
+        <mesh position={[0,0.02,-0.24]} castShadow><boxGeometry args={[0.48,0.6,0.14]}/><meshStandardMaterial color="#555566" roughness={0.5} metalness={0.6}/></mesh>
+        {([-0.13, 0.13] as number[]).map((jx, ji) => (
+          <group key={ji} position={[jx,-0.18,-0.33]}>
+            <mesh castShadow><cylinderGeometry args={[0.055,0.075,0.16,12]}/><meshStandardMaterial color={darkGray} roughness={0.5} metalness={0.7}/></mesh>
+            <mesh ref={ji === 0 ? jetRef : undefined} position={[0,-0.12,0]}>
+              <coneGeometry args={[0.07,0.14,12]}/><meshStandardMaterial color={visorC} emissive={visorC} emissiveIntensity={3} transparent opacity={0.85}/>
+            </mesh>
+            <pointLight position={[0,-0.18,0]} color={visorC} intensity={1.5} distance={1.2}/>
+          </group>
+        ))}
+        {/* Braços */}
+        {([[-0.38, -1, armLRef], [0.38, 1, armRRef]] as [number, number, typeof armLRef][]).map(([ax, side, ref], i) => (
+          <group key={i} ref={ref} position={[ax, 0.12, 0]}>
+            <mesh position={[0,0.04,0]} castShadow><sphereGeometry args={[0.125,16,16]}/><meshStandardMaterial color={suitD} roughness={0.35} metalness={0.45}/></mesh>
+            <mesh position={[side*0.04,-0.22,0]} castShadow><capsuleGeometry args={[0.09,0.3,8,12]}/><meshStandardMaterial color={suitW} roughness={0.3} metalness={0.4}/></mesh>
+            <mesh position={[side*0.04,-0.44,0]} castShadow><sphereGeometry args={[0.09,12,12]}/><meshStandardMaterial color={suitD} roughness={0.4}/></mesh>
+            <mesh position={[side*0.02,-0.64,0]} castShadow><capsuleGeometry args={[0.08,0.25,8,12]}/><meshStandardMaterial color={suitW} roughness={0.3} metalness={0.4}/></mesh>
+            <mesh position={[side*0.01,-0.83,0]} castShadow><sphereGeometry args={[0.1,16,16]}/><meshStandardMaterial color={darkGray} roughness={0.5} metalness={0.4}/></mesh>
+          </group>
+        ))}
+        {/* Pescoço */}
+        <mesh position={[0,0.42,0]} castShadow><cylinderGeometry args={[0.1,0.12,0.14,16]}/><meshStandardMaterial color={suitD} roughness={0.4} metalness={0.5}/></mesh>
+        {/* Cabeça / Capacete */}
+        <group ref={headRef} position={[0,0.66,0]}>
+          <mesh castShadow><sphereGeometry args={[0.32,32,32]}/><meshStandardMaterial color={suitW} roughness={0.15} metalness={0.55}/></mesh>
+          <mesh position={[0,-0.27,0]}><torusGeometry args={[0.15,0.04,12,30]}/><meshStandardMaterial color={darkGray} metalness={0.8} roughness={0.2}/></mesh>
+          <mesh ref={visorRef} position={[0,0.04,0.22]} castShadow>
+            <sphereGeometry args={[0.21,32,32,0,Math.PI*2,0,Math.PI*0.6]}/>
+            <meshStandardMaterial color={visorC} emissive={visorC} emissiveIntensity={1} transparent opacity={0.82} roughness={0} metalness={0.9} side={THREE.DoubleSide}/>
           </mesh>
-          {/* articulação joelho */}
-          <mesh position={[0, -0.38, 0]} castShadow>
-            <sphereGeometry args={[0.11, 16, 16]} />
-            <meshStandardMaterial color={suitD} roughness={0.4} metalness={0.4} />
+          <mesh position={[0.06,0.1,0.28]}><planeGeometry args={[0.06,0.1]}/><meshStandardMaterial color="#ffffff" transparent opacity={0.35}/></mesh>
+          <pointLight position={[0,0.04,0.5]} color={visorC} intensity={2} distance={2.5}/>
+          <mesh position={[0,0.22,0]} rotation={[Math.PI/2,0,0]}>
+            <torusGeometry args={[0.29,0.03,8,30,Math.PI]}/><meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={0.8} roughness={0.3}/>
           </mesh>
-          {/* canela */}
-          <mesh position={[0, -0.6, 0]} castShadow>
-            <capsuleGeometry args={[0.09, 0.26, 8, 12]} />
-            <meshStandardMaterial color={suitW} roughness={0.3} metalness={0.35} />
-          </mesh>
-          {/* bota */}
-          <mesh position={[0, -0.82, 0.04]} castShadow>
-            <boxGeometry args={[0.18, 0.14, 0.26]} />
-            <meshStandardMaterial color={darkGray} roughness={0.6} metalness={0.2} />
-          </mesh>
+          <mesh position={[0.22,0.28,0]}><cylinderGeometry args={[0.012,0.012,0.22,8]}/><meshStandardMaterial color={darkGray} metalness={0.8} roughness={0.2}/></mesh>
+          <mesh position={[0.22,0.4,0]}><sphereGeometry args={[0.025,8,8]}/><meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={2}/></mesh>
+          <spotLight position={[0,0,0.5]} color="#aaddff" intensity={3} angle={0.5} penumbra={0.6} distance={12}/>
         </group>
-
-        {/* Perna direita */}
-        <group ref={legRRef} position={[0.17, -0.62, 0]}>
-          <mesh position={[0, -0.18, 0]} castShadow>
-            <capsuleGeometry args={[0.1, 0.28, 8, 12]} />
-            <meshStandardMaterial color={suitW} roughness={0.3} metalness={0.35} />
-          </mesh>
-          <mesh position={[0, -0.38, 0]} castShadow>
-            <sphereGeometry args={[0.11, 16, 16]} />
-            <meshStandardMaterial color={suitD} roughness={0.4} metalness={0.4} />
-          </mesh>
-          <mesh position={[0, -0.6, 0]} castShadow>
-            <capsuleGeometry args={[0.09, 0.26, 8, 12]} />
-            <meshStandardMaterial color={suitW} roughness={0.3} metalness={0.35} />
-          </mesh>
-          <mesh position={[0, -0.82, 0.04]} castShadow>
-            <boxGeometry args={[0.18, 0.14, 0.26]} />
-            <meshStandardMaterial color={darkGray} roughness={0.6} metalness={0.2} />
-          </mesh>
-        </group>
-
-        {/* ── TORSO ── */}
-        <mesh position={[0, 0, 0]} castShadow>
-          <boxGeometry args={[0.56, 0.72, 0.38]} />
-          <meshStandardMaterial color={suitW} roughness={0.25} metalness={0.45} />
-        </mesh>
-
-        {/* detalhe central do torso */}
-        <mesh position={[0, 0.05, 0.2]} castShadow>
-          <boxGeometry args={[0.28, 0.3, 0.04]} />
-          <meshStandardMaterial color={darkGray} roughness={0.5} metalness={0.6} />
-        </mesh>
-        {/* luz de status */}
-        <mesh position={[0, 0.15, 0.21]}>
-          <circleGeometry args={[0.05, 16]} />
-          <meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={2} />
-        </mesh>
-        {/* faixas de acento */}
-        <mesh position={[0, 0.28, 0]}>
-          <boxGeometry args={[0.58, 0.06, 0.4]} />
-          <meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={0.6} roughness={0.3} />
-        </mesh>
-        <mesh position={[0, -0.28, 0]}>
-          <boxGeometry args={[0.58, 0.06, 0.4]} />
-          <meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={0.6} roughness={0.3} />
-        </mesh>
-
-        {/* ── MOCHILA / JETPACK ── */}
-        <mesh position={[0, 0.02, -0.24]} castShadow>
-          <boxGeometry args={[0.48, 0.6, 0.14]} />
-          <meshStandardMaterial color="#555566" roughness={0.5} metalness={0.6} />
-        </mesh>
-        {/* propulsor esq */}
-        <group position={[-0.13, -0.18, -0.33]}>
-          <mesh castShadow>
-            <cylinderGeometry args={[0.055, 0.075, 0.16, 12]} />
-            <meshStandardMaterial color={darkGray} roughness={0.5} metalness={0.7} />
-          </mesh>
-          <mesh ref={jetRef} position={[0, -0.12, 0]}>
-            <coneGeometry args={[0.07, 0.14, 12]} />
-            <meshStandardMaterial color={visorC} emissive={visorC} emissiveIntensity={3} transparent opacity={0.85} />
-          </mesh>
-          <pointLight position={[0, -0.18, 0]} color={visorC} intensity={1.5} distance={1.2} />
-        </group>
-        {/* propulsor dir */}
-        <group position={[0.13, -0.18, -0.33]}>
-          <mesh castShadow>
-            <cylinderGeometry args={[0.055, 0.075, 0.16, 12]} />
-            <meshStandardMaterial color={darkGray} roughness={0.5} metalness={0.7} />
-          </mesh>
-          <mesh position={[0, -0.12, 0]}>
-            <coneGeometry args={[0.07, 0.14, 12]} />
-            <meshStandardMaterial color={visorC} emissive={visorC} emissiveIntensity={3} transparent opacity={0.85} />
-          </mesh>
-          <pointLight position={[0, -0.18, 0]} color={visorC} intensity={1.5} distance={1.2} />
-        </group>
-
-        {/* ── BRAÇO ESQUERDO ── */}
-        <group ref={armLRef} position={[-0.38, 0.12, 0]}>
-          {/* ombro */}
-          <mesh position={[0, 0.04, 0]} castShadow>
-            <sphereGeometry args={[0.125, 16, 16]} />
-            <meshStandardMaterial color={suitD} roughness={0.35} metalness={0.45} />
-          </mesh>
-          {/* braço */}
-          <mesh position={[-0.04, -0.22, 0]} castShadow>
-            <capsuleGeometry args={[0.09, 0.3, 8, 12]} />
-            <meshStandardMaterial color={suitW} roughness={0.3} metalness={0.4} />
-          </mesh>
-          {/* cotovelo */}
-          <mesh position={[-0.04, -0.44, 0]} castShadow>
-            <sphereGeometry args={[0.09, 12, 12]} />
-            <meshStandardMaterial color={suitD} roughness={0.4} />
-          </mesh>
-          {/* antebraço */}
-          <mesh position={[-0.02, -0.64, 0]} castShadow>
-            <capsuleGeometry args={[0.08, 0.25, 8, 12]} />
-            <meshStandardMaterial color={suitW} roughness={0.3} metalness={0.4} />
-          </mesh>
-          {/* luva */}
-          <mesh position={[-0.01, -0.83, 0]} castShadow>
-            <sphereGeometry args={[0.1, 16, 16]} />
-            <meshStandardMaterial color={darkGray} roughness={0.5} metalness={0.4} />
-          </mesh>
-        </group>
-
-        {/* ── BRAÇO DIREITO ── */}
-        <group ref={armRRef} position={[0.38, 0.12, 0]}>
-          <mesh position={[0, 0.04, 0]} castShadow>
-            <sphereGeometry args={[0.125, 16, 16]} />
-            <meshStandardMaterial color={suitD} roughness={0.35} metalness={0.45} />
-          </mesh>
-          <mesh position={[0.04, -0.22, 0]} castShadow>
-            <capsuleGeometry args={[0.09, 0.3, 8, 12]} />
-            <meshStandardMaterial color={suitW} roughness={0.3} metalness={0.4} />
-          </mesh>
-          <mesh position={[0.04, -0.44, 0]} castShadow>
-            <sphereGeometry args={[0.09, 12, 12]} />
-            <meshStandardMaterial color={suitD} roughness={0.4} />
-          </mesh>
-          <mesh position={[0.02, -0.64, 0]} castShadow>
-            <capsuleGeometry args={[0.08, 0.25, 8, 12]} />
-            <meshStandardMaterial color={suitW} roughness={0.3} metalness={0.4} />
-          </mesh>
-          <mesh position={[0.01, -0.83, 0]} castShadow>
-            <sphereGeometry args={[0.1, 16, 16]} />
-            <meshStandardMaterial color={darkGray} roughness={0.5} metalness={0.4} />
-          </mesh>
-        </group>
-
-        {/* ── PESCOÇO ── */}
-        <mesh position={[0, 0.42, 0]} castShadow>
-          <cylinderGeometry args={[0.1, 0.12, 0.14, 16]} />
-          <meshStandardMaterial color={suitD} roughness={0.4} metalness={0.5} />
-        </mesh>
-
-        {/* ── CABEÇA / CAPACETE ── */}
-        <group ref={headRef} position={[0, 0.66, 0]}>
-          {/* esfera principal do capacete */}
-          <mesh castShadow>
-            <sphereGeometry args={[0.32, 32, 32]} />
-            <meshStandardMaterial color={suitW} roughness={0.15} metalness={0.55} />
-          </mesh>
-          {/* anel metálico do pescoço */}
-          <mesh position={[0, -0.27, 0]}>
-            <torusGeometry args={[0.15, 0.04, 12, 30]} />
-            <meshStandardMaterial color={darkGray} metalness={0.8} roughness={0.2} />
-          </mesh>
-          {/* visor */}
-          <mesh ref={visorRef} position={[0, 0.04, 0.22]} castShadow>
-            <sphereGeometry args={[0.21, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.6]} />
-            <meshStandardMaterial
-              color={visorC}
-              emissive={visorC}
-              emissiveIntensity={1}
-              transparent
-              opacity={0.82}
-              roughness={0}
-              metalness={0.9}
-              side={THREE.DoubleSide}
-            />
-          </mesh>
-          {/* reflexo no visor */}
-          <mesh position={[0.06, 0.1, 0.28]}>
-            <planeGeometry args={[0.06, 0.1]} />
-            <meshStandardMaterial color="#ffffff" transparent opacity={0.35} />
-          </mesh>
-          {/* luz visor */}
-          <pointLight position={[0, 0.04, 0.5]} color={visorC} intensity={2} distance={2.5} />
-          {/* faixa na testa */}
-          <mesh position={[0, 0.22, 0]} rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.29, 0.03, 8, 30, Math.PI]} />
-            <meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={0.8} roughness={0.3} />
-          </mesh>
-          {/* antena */}
-          <mesh position={[0.22, 0.28, 0]}>
-            <cylinderGeometry args={[0.012, 0.012, 0.22, 8]} />
-            <meshStandardMaterial color={darkGray} metalness={0.8} roughness={0.2} />
-          </mesh>
-          <mesh position={[0.22, 0.4, 0]}>
-            <sphereGeometry args={[0.025, 8, 8]} />
-            <meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={2} />
-          </mesh>
-          {/* farolete */}
-          <spotLight
-            position={[0, 0, 0.5]}
-            color="#aaddff"
-            intensity={3}
-            angle={0.5}
-            penumbra={0.6}
-            distance={12}
-          />
-        </group>
-
       </group>
     </group>
   );
@@ -855,363 +507,229 @@ function RealisticAstronaut({
 function SpacePath() {
   const geo = useMemo(() => {
     const pts: THREE.Vector3[] = [];
-    for (let x = -5; x <= 90; x += 0.8) {
+    for (let x = -5; x <= 60; x += 0.8)
       pts.push(new THREE.Vector3(x, 0, Math.sin(x * 0.18) * 3));
-    }
     const curve = new THREE.CatmullRomCurve3(pts);
     return new THREE.TubeGeometry(curve, 300, 0.035, 8, false);
   }, []);
 
   return (
     <mesh geometry={geo}>
-      <meshStandardMaterial color="#3366ff" emissive="#2255ee" emissiveIntensity={2} transparent opacity={0.55} />
+      <meshStandardMaterial color="#3366ff" emissive="#2255ee" emissiveIntensity={2} transparent opacity={0.55}/>
     </mesh>
   );
 }
 
 // ─────────────────────────────────────────────────────────────
-// NEBULOSA DRAMÁTICA (fogo + cores fortes)
+// NEBULOSA
 // ─────────────────────────────────────────────────────────────
 function Nebula() {
   const cloudRefs = useRef<THREE.Mesh[]>([]);
   useFrame((_, dt) => {
-    cloudRefs.current.forEach((m, i) => {
-      if (m) m.rotation.z += dt * (i % 2 === 0 ? 0.008 : -0.005);
-    });
+    cloudRefs.current.forEach((m, i) => { if (m) m.rotation.z += dt * (i % 2 === 0 ? 0.008 : -0.005); });
   });
+  const clouds = [
+    { pos:[8,-5,-22], rot:[0.2,0,0],   color:"#cc3300", emissive:"#ff4400", opacity:0.18 },
+    { pos:[5,3,-18],  rot:[0,0.3,0.1], color:"#ff8800", emissive:"#ffaa00", opacity:0.12 },
+    { pos:[30,8,-32], rot:[0.3,0.4,0], color:"#440088", emissive:"#8800ff", opacity:0.20 },
+    { pos:[40,-4,-24],rot:[0.1,-0.3,0],color:"#220055", emissive:"#6600cc", opacity:0.13 },
+    { pos:[50,6,-28], rot:[0.2,0.5,0.1],color:"#003388",emissive:"#0055ff", opacity:0.16 },
+  ] as const;
 
   return (
     <>
-      {/* ── nébula de fogo (laranja/vermelho/amarelo) ── */}
-      <mesh ref={el => { if (el) cloudRefs.current[0] = el; }} position={[8, -5, -22]} rotation={[0.2, 0, 0]}>
-        <planeGeometry args={[55, 30]} />
-        <meshStandardMaterial color="#cc3300" emissive="#ff4400" emissiveIntensity={0.7} transparent opacity={0.18} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-      <mesh ref={el => { if (el) cloudRefs.current[1] = el; }} position={[5, 3, -18]} rotation={[0, 0.3, 0.1]}>
-        <planeGeometry args={[40, 22]} />
-        <meshStandardMaterial color="#ff8800" emissive="#ffaa00" emissiveIntensity={0.6} transparent opacity={0.12} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-      <mesh ref={el => { if (el) cloudRefs.current[2] = el; }} position={[12, -2, -15]} rotation={[0.15, -0.2, 0]}>
-        <planeGeometry args={[30, 18]} />
-        <meshStandardMaterial color="#ffcc00" emissive="#ffee00" emissiveIntensity={0.5} transparent opacity={0.09} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-
-      {/* ── nébula roxa profunda ── */}
-      <mesh ref={el => { if (el) cloudRefs.current[3] = el; }} position={[45, 8, -32]} rotation={[0.3, 0.4, 0]}>
-        <planeGeometry args={[80, 45]} />
-        <meshStandardMaterial color="#440088" emissive="#8800ff" emissiveIntensity={0.5} transparent opacity={0.2} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-      <mesh ref={el => { if (el) cloudRefs.current[4] = el; }} position={[50, -4, -24]} rotation={[0.1, -0.3, 0]}>
-        <planeGeometry args={[55, 30]} />
-        <meshStandardMaterial color="#220055" emissive="#6600cc" emissiveIntensity={0.4} transparent opacity={0.13} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-
-      {/* ── nébula azul/ciano ── */}
-      <mesh ref={el => { if (el) cloudRefs.current[5] = el; }} position={[70, 6, -28]} rotation={[0.2, 0.5, 0.1]}>
-        <planeGeometry args={[65, 38]} />
-        <meshStandardMaterial color="#003388" emissive="#0055ff" emissiveIntensity={0.5} transparent opacity={0.16} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-
-      {/* ── faixa de gás vermelho-escuro nos dois lados ── */}
-      <mesh ref={el => { if (el) cloudRefs.current[6] = el; }} position={[30, -10, -10]} rotation={[1.2, 0, 0.2]}>
-        <planeGeometry args={[100, 12]} />
-        <meshStandardMaterial color="#550000" emissive="#880000" emissiveIntensity={0.6} transparent opacity={0.12} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-      <mesh ref={el => { if (el) cloudRefs.current[7] = el; }} position={[30, 12, -10]} rotation={[-1.2, 0, -0.2]}>
-        <planeGeometry args={[100, 10]} />
-        <meshStandardMaterial color="#440033" emissive="#aa0055" emissiveIntensity={0.5} transparent opacity={0.1} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-
-      {/* ── sol distante / estrela gigante ── */}
-      <mesh position={[-20, 8, -50]}>
-        <sphereGeometry args={[6, 32, 32]} />
-        <meshStandardMaterial color="#ffee00" emissive="#ffaa00" emissiveIntensity={2} />
-      </mesh>
-      <mesh position={[-20, 8, -50]}>
-        <sphereGeometry args={[9, 32, 32]} />
-        <meshStandardMaterial color="#ff6600" emissive="#ff4400" emissiveIntensity={1} transparent opacity={0.15} side={THREE.BackSide} />
-      </mesh>
-      <pointLight position={[-20, 8, -50]} color="#ff8800" intensity={3} distance={60} />
+      {clouds.map(({pos,rot,color,emissive,opacity},i)=>(
+        <mesh key={i} ref={el=>{if(el)cloudRefs.current[i]=el;}} position={pos as any} rotation={rot as any}>
+          <planeGeometry args={[60,35]}/>
+          <meshStandardMaterial color={color} emissive={emissive} emissiveIntensity={0.6} transparent opacity={opacity} side={THREE.DoubleSide} depthWrite={false}/>
+        </mesh>
+      ))}
+      {/* Estrela gigante ao fundo */}
+      <mesh position={[-20,8,-50]}><sphereGeometry args={[6,32,32]}/><meshStandardMaterial color="#ffee00" emissive="#ffaa00" emissiveIntensity={2}/></mesh>
+      <mesh position={[-20,8,-50]}><sphereGeometry args={[9,32,32]}/><meshStandardMaterial color="#ff6600" emissive="#ff4400" emissiveIntensity={1} transparent opacity={0.15} side={THREE.BackSide}/></mesh>
+      <pointLight position={[-20,8,-50]} color="#ff8800" intensity={3} distance={60}/>
     </>
   );
 }
 
 // ─────────────────────────────────────────────────────────────
-// CÂMERA SUAVE — segue o astronauta em 3ª pessoa
+// CÂMERA
 // ─────────────────────────────────────────────────────────────
-function CameraController({
-  positionRef,
-  facingAngle,
-}: {
+function CameraController({ positionRef, facingAngle }: {
   positionRef: React.MutableRefObject<THREE.Vector3>;
   facingAngle: React.MutableRefObject<number>;
 }) {
   const { camera } = useThree();
-
   useFrame((_, dt) => {
     const target = positionRef.current;
-    const angle = facingAngle.current;
-
-    // câmera 3ª pessoa: atrás e acima do astronauta
-    const dist = 7;
-    const height = 3.5;
-    const desiredX = target.x - Math.sin(angle) * dist;
-    const desiredZ = target.z - Math.cos(angle) * dist;
-    const desiredY = target.y + height;
-
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, desiredX, dt * 3);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, desiredY, dt * 3);
-    camera.position.z = THREE.MathUtils.lerp(camera.position.z, desiredZ, dt * 3);
-
-    const lookAt = new THREE.Vector3(target.x, target.y + 0.8, target.z);
-    camera.lookAt(lookAt);
+    const angle  = facingAngle.current;
+    const dist = 7, height = 3.5;
+    camera.position.x = THREE.MathUtils.lerp(camera.position.x, target.x - Math.sin(angle)*dist, dt*3);
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, target.y + height, dt*3);
+    camera.position.z = THREE.MathUtils.lerp(camera.position.z, target.z - Math.cos(angle)*dist, dt*3);
+    camera.lookAt(new THREE.Vector3(target.x, target.y+0.8, target.z));
   });
-
   return null;
 }
 
 // ─────────────────────────────────────────────────────────────
-// CONTROLADOR DO ASTRONAUTA (movement logic)
+// CONTROLADOR DO ASTRONAUTA
 // ─────────────────────────────────────────────────────────────
-function AstronautController({
-  keys,
-  positionRef,
-  facingAngle,
-  onMove,
-}: {
+function AstronautController({ keys, positionRef, facingAngle, onMove }: {
   keys: React.MutableRefObject<Record<string, boolean>>;
   positionRef: React.MutableRefObject<THREE.Vector3>;
   facingAngle: React.MutableRefObject<number>;
   onMove: (pos: THREE.Vector3) => void;
 }) {
-  const speed = 4.5;
-  const rotSpeed = 2.2;
-
+  const speed = 4.5, rotSpeed = 2.2;
   useFrame((_, dt) => {
     const k = keys.current;
-    const left  = k["ArrowLeft"]  || k["KeyA"];
-    const right = k["ArrowRight"] || k["KeyD"];
-    const fwd   = k["ArrowUp"]   || k["KeyW"];
-    const back  = k["ArrowDown"]  || k["KeyS"];
-
-    if (left)  facingAngle.current += rotSpeed * dt;
-    if (right) facingAngle.current -= rotSpeed * dt;
-
+    if (k["ArrowLeft"] ||k["KeyA"]) facingAngle.current += rotSpeed * dt;
+    if (k["ArrowRight"]||k["KeyD"]) facingAngle.current -= rotSpeed * dt;
     let moved = false;
-    if (fwd) {
-      positionRef.current.x += Math.sin(facingAngle.current) * speed * dt;
-      positionRef.current.z += Math.cos(facingAngle.current) * speed * dt;
-      moved = true;
-    }
-    if (back) {
-      positionRef.current.x -= Math.sin(facingAngle.current) * speed * dt;
-      positionRef.current.z -= Math.cos(facingAngle.current) * speed * dt;
-      moved = true;
-    }
-
-    // limites do mapa
-    positionRef.current.x = THREE.MathUtils.clamp(positionRef.current.x, -5, 85);
+    if (k["ArrowUp"]  ||k["KeyW"]) { positionRef.current.x += Math.sin(facingAngle.current)*speed*dt; positionRef.current.z += Math.cos(facingAngle.current)*speed*dt; moved=true; }
+    if (k["ArrowDown"]||k["KeyS"]) { positionRef.current.x -= Math.sin(facingAngle.current)*speed*dt; positionRef.current.z -= Math.cos(facingAngle.current)*speed*dt; moved=true; }
+    positionRef.current.x = THREE.MathUtils.clamp(positionRef.current.x, -5, 60);
     positionRef.current.z = THREE.MathUtils.clamp(positionRef.current.z, -10, 10);
-
     if (moved) onMove(positionRef.current.clone());
   });
-
   return null;
 }
 
 // ─────────────────────────────────────────────────────────────
 // CENA PRINCIPAL
 // ─────────────────────────────────────────────────────────────
-function Scene({
-  keys,
-  nearbyPlanetId,
-  setNearbyPlanetId,
-  isMoving,
-  setIsMoving,
-}: {
+function Scene({ keys, nearbyPlanetId, setNearbyPlanetId, isMoving, setIsMoving }: {
   keys: React.MutableRefObject<Record<string, boolean>>;
   nearbyPlanetId: number | null;
   setNearbyPlanetId: (id: number | null) => void;
   isMoving: boolean;
   setIsMoving: (v: boolean) => void;
 }) {
-  const positionRef = useRef(new THREE.Vector3(0, 0, 0));
-  const facingAngle = useRef(0);
-  const movingRef = useRef(false);
+  const positionRef  = useRef(new THREE.Vector3(0, 0, 0));
+  const facingAngle  = useRef(0);
+  const movingRef    = useRef(false);
 
-  const meteors = useMemo(() =>
-    Array.from({ length: 14 }, (_, i) => ({
-      id: i,
-      startPos: [
-        55 + Math.random() * 50,
-        6 + Math.random() * 16,
-        (Math.random() - 0.5) * 18,
-      ] as [number, number, number],
-      // mistura de tamanhos: alguns grandes e dramáticos, maioria média/pequena
-      size: i < 2 ? 2.5 + Math.random() * 1.5   // 2 grandes
-          : i < 6 ? 1.2 + Math.random() * 0.8    // 4 médios
-          : 0.5 + Math.random() * 0.5,            // 8 pequenos
-    })), []);
+  const meteors = useMemo(() => Array.from({length:10},(_,i)=>({
+    id:i,
+    startPos:[40+Math.random()*40, 6+Math.random()*14, (Math.random()-.5)*14] as [number,number,number],
+    size: i<2 ? 2.2+Math.random() : i<5 ? 1+Math.random()*.6 : .4+Math.random()*.4,
+  })),[]);
 
-  const asteroids = useMemo(() =>
-    Array.from({ length: 25 }, (_, i) => ({
-      id: i,
-      position: [(Math.random() * 95) - 5, (Math.random() - 0.5) * 14, (Math.random() - 0.5) * 18 - 4] as [number, number, number],
-    })), []);
+  const asteroids = useMemo(()=>Array.from({length:20},(_,i)=>({
+    id:i,
+    position:[(Math.random()*65)-5,(Math.random()-.5)*12,(Math.random()-.5)*16-4] as [number,number,number],
+  })),[]);
 
   const handleMove = useCallback((pos: THREE.Vector3) => {
-    // detectar planeta próximo
-    let closest: (typeof PROJECTS)[0] | null = null;
+    let closest: (typeof PROJECTS)[0]|null = null;
     let minDist = 5;
     for (const p of PROJECTS) {
       const d = pos.distanceTo(new THREE.Vector3(...p.position));
-      if (d < minDist) { minDist = d; closest = p; }
+      if (d < minDist) { minDist=d; closest=p; }
     }
     setNearbyPlanetId(closest?.id ?? null);
+  }, [setNearbyPlanetId]);
 
-    // detectar se está em movimento
+  useFrame(()=>{
     const k = keys.current;
-    const moving = !!(k["ArrowUp"] || k["KeyW"] || k["ArrowDown"] || k["KeyS"]);
-    if (moving !== movingRef.current) {
-      movingRef.current = moving;
-      setIsMoving(moving);
-    }
-  }, [keys, setNearbyPlanetId, setIsMoving]);
-
-  // atualizar isMoving via frame
-  useFrame(() => {
-    const k = keys.current;
-    const moving = !!(k["ArrowUp"] || k["KeyW"] || k["ArrowDown"] || k["KeyS"]);
-    if (moving !== movingRef.current) {
-      movingRef.current = moving;
-      setIsMoving(moving);
-    }
+    const moving = !!(k["ArrowUp"]||k["KeyW"]||k["ArrowDown"]||k["KeyS"]);
+    if (moving !== movingRef.current) { movingRef.current=moving; setIsMoving(moving); }
   });
 
   return (
     <>
-      <CameraController positionRef={positionRef} facingAngle={facingAngle} />
-      <AstronautController
-        keys={keys}
-        positionRef={positionRef}
-        facingAngle={facingAngle}
-        onMove={handleMove}
-      />
-
-      {/* iluminação ambiente quente + fria */}
-      <ambientLight intensity={0.18} color="#1a0a00" />
-      <directionalLight position={[-20, 30, 10]} intensity={0.5} color="#4466ff" />
-      {/* luz de fogo vinda do sol distante */}
-      <directionalLight position={[-25, 5, -30]} intensity={0.7} color="#ff6600" />
-      {/* luz suave azul para contrabalançar */}
-      <directionalLight position={[100, 10, 20]} intensity={0.3} color="#0044ff" />
-
-      <Stars radius={200} depth={60} count={10000} factor={4} saturation={0.6} fade speed={0.3} />
-      <Nebula />
-
-      {meteors.map(m => <FireMeteor key={m.id} startPos={m.startPos} size={m.size} />)}
-      {asteroids.map(a => <Asteroid key={a.id} position={a.position} />)}
-
-      <SpacePath />
-
-      {PROJECTS.map((p, i) => (
-        <Planet
-          key={p.id}
-          project={p}
-          paletteIdx={i}
-          nearbyAstronaut={nearbyPlanetId === p.id}
-        />
+      <CameraController positionRef={positionRef} facingAngle={facingAngle}/>
+      <AstronautController keys={keys} positionRef={positionRef} facingAngle={facingAngle} onMove={handleMove}/>
+      <ambientLight intensity={0.18} color="#1a0a00"/>
+      <directionalLight position={[-20,30,10]} intensity={0.5} color="#4466ff"/>
+      <directionalLight position={[-25,5,-30]} intensity={0.7} color="#ff6600"/>
+      <directionalLight position={[60,10,20]} intensity={0.3} color="#0044ff"/>
+      <Stars radius={200} depth={60} count={10000} factor={4} saturation={0.6} fade speed={0.3}/>
+      <Nebula/>
+      {meteors.map(m=><FireMeteor key={m.id} startPos={m.startPos} size={m.size}/>)}
+      {asteroids.map(a=><Asteroid key={a.id} position={a.position}/>)}
+      <SpacePath/>
+      {PROJECTS.map((p,i)=>(
+        <Planet key={p.id} project={p} paletteIdx={i} nearbyAstronaut={nearbyPlanetId===p.id}/>
       ))}
-
-      <RealisticAstronaut
-        positionRef={positionRef}
-        facingAngle={facingAngle}
-        isMoving={isMoving}
-      />
-
-      {/* partículas de fogo espalhadas no espaço perto do início */}
-      <Sparkles count={80} position={[5, 0, -5]} scale={20} size={1.2} speed={0.4} color="#ff4400" opacity={0.3} />
-      <Sparkles count={200} scale={110} size={0.5} speed={0.08} color="#4488ff" opacity={0.2} />
+      <RealisticAstronaut positionRef={positionRef} facingAngle={facingAngle} isMoving={isMoving}/>
+      <Sparkles count={80} position={[5,0,-5]} scale={18} size={1.2} speed={0.4} color="#ff4400" opacity={0.3}/>
+      <Sparkles count={200} scale={100} size={0.5} speed={0.08} color="#4488ff" opacity={0.2}/>
     </>
   );
 }
 
 // ─────────────────────────────────────────────────────────────
-// HUD
+// HUD – com nome da Ràvila e link do GitHub
 // ─────────────────────────────────────────────────────────────
 function HUD({ nearbyProject }: { nearbyProject: (typeof PROJECTS)[0] | null }) {
   return (
     <>
-      {/* Título */}
+      {/* Cabeçalho com nome e GitHub */}
       <div style={{
-        position: "fixed", top: "18px", left: "50%", transform: "translateX(-50%)",
-        zIndex: 10, textAlign: "center", pointerEvents: "none",
+        position:"fixed", top:"18px", left:"50%", transform:"translateX(-50%)",
+        zIndex:10, textAlign:"center", pointerEvents:"none",
       }}>
         <div style={{
-          fontSize: "clamp(16px, 2.5vw, 24px)", fontWeight: 900,
-          color: "#fff", textShadow: "0 0 20px #4488ff, 0 0 50px #2244aa",
-          letterSpacing: "3px", fontFamily: "'Segoe UI', sans-serif",
-          textTransform: "uppercase",
+          fontSize:"clamp(14px,2.2vw,22px)", fontWeight:900, color:"#fff",
+          textShadow:"0 0 20px #4488ff, 0 0 50px #2244aa",
+          letterSpacing:"4px", fontFamily:"'Segoe UI',sans-serif", textTransform:"uppercase",
         }}>
-          🚀 MEU PORTFÓLIO ESPACIAL
+          🚀 {OWNER.name}
         </div>
-        <div style={{ fontSize: "11px", color: "#88aaff", letterSpacing: "3px", marginTop: "3px" }}>
-          Explore o universo dos meus projetos
+        <div style={{ fontSize:"11px", color:"#88aaff", letterSpacing:"3px", marginTop:"4px" }}>
+          {OWNER.role} · Portfólio Espacial
         </div>
+        <a
+          href={OWNER.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display:"inline-block", marginTop:"8px",
+            fontSize:"10px", color:"#aaccff",
+            background:"rgba(68,136,255,0.15)",
+            border:"1px solid rgba(68,136,255,0.4)",
+            borderRadius:"20px", padding:"3px 12px",
+            textDecoration:"none", letterSpacing:"2px",
+            pointerEvents:"all",
+            transition:"all .2s",
+          }}
+          onMouseEnter={e=>(e.currentTarget.style.background="rgba(68,136,255,0.35)")}
+          onMouseLeave={e=>(e.currentTarget.style.background="rgba(68,136,255,0.15)")}
+        >
+          github.com/ravilacosta
+        </a>
       </div>
 
       {/* Controles */}
       <div style={{
-        position: "fixed", bottom: "20px", left: "20px", zIndex: 10,
-        background: "rgba(0,0,0,0.65)", border: "1px solid rgba(68,136,255,0.35)",
-        borderRadius: "14px", padding: "12px 16px", backdropFilter: "blur(10px)",
-        fontFamily: "'Segoe UI', sans-serif", color: "#88aaff",
+        position:"fixed", bottom:"20px", left:"20px", zIndex:10,
+        background:"rgba(0,0,0,0.65)", border:"1px solid rgba(68,136,255,0.35)",
+        borderRadius:"14px", padding:"12px 16px", backdropFilter:"blur(10px)",
+        fontFamily:"'Segoe UI',sans-serif", color:"#88aaff",
       }}>
-        <div style={{ fontSize: "10px", fontWeight: 700, marginBottom: "8px", color: "#fff", letterSpacing: "2px" }}>
-          CONTROLES
-        </div>
-        {[
-          ["W / ↑", "Avançar"],
-          ["S / ↓", "Recuar"],
-          ["A / ←", "Girar esq."],
-          ["D / →", "Girar dir."],
-        ].map(([k, v]) => (
-          <div key={k} style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "4px" }}>
-            <kbd style={{
-              background: "rgba(68,136,255,0.2)", border: "1px solid rgba(68,136,255,0.5)",
-              borderRadius: "4px", padding: "1px 6px", fontSize: "10px", color: "#aaccff",
-              minWidth: "40px", textAlign: "center",
-            }}>{k}</kbd>
-            <span style={{ fontSize: "10px", color: "#aaa" }}>{v}</span>
+        <div style={{ fontSize:"10px", fontWeight:700, marginBottom:"8px", color:"#fff", letterSpacing:"2px" }}>CONTROLES</div>
+        {[["W / ↑","Avançar"],["S / ↓","Recuar"],["A / ←","Girar esq."],["D / →","Girar dir."]].map(([k,v])=>(
+          <div key={k} style={{display:"flex",gap:"8px",alignItems:"center",marginBottom:"4px"}}>
+            <kbd style={{background:"rgba(68,136,255,0.2)",border:"1px solid rgba(68,136,255,0.5)",borderRadius:"4px",padding:"1px 6px",fontSize:"10px",color:"#aaccff",minWidth:"40px",textAlign:"center"}}>{k}</kbd>
+            <span style={{fontSize:"10px",color:"#aaa"}}>{v}</span>
           </div>
         ))}
       </div>
 
       {/* Radar de planetas */}
       <div style={{
-        position: "fixed", bottom: "20px", right: "20px", zIndex: 10,
-        background: "rgba(0,0,0,0.65)", border: "1px solid rgba(68,136,255,0.35)",
-        borderRadius: "14px", padding: "12px 16px", backdropFilter: "blur(10px)",
-        fontFamily: "'Segoe UI', sans-serif",
+        position:"fixed", bottom:"20px", right:"20px", zIndex:10,
+        background:"rgba(0,0,0,0.65)", border:"1px solid rgba(68,136,255,0.35)",
+        borderRadius:"14px", padding:"12px 16px", backdropFilter:"blur(10px)",
+        fontFamily:"'Segoe UI',sans-serif",
       }}>
-        <div style={{ fontSize: "10px", fontWeight: 700, marginBottom: "8px", color: "#fff", letterSpacing: "2px" }}>
-          PLANETAS
-        </div>
-        {PROJECTS.map(p => (
-          <div key={p.id} style={{
-            display: "flex", gap: "8px", alignItems: "center", marginBottom: "5px",
-          }}>
-            <div style={{
-              width: "8px", height: "8px", borderRadius: "50%", background: p.color,
-              boxShadow: nearbyProject?.id === p.id ? `0 0 8px ${p.color}` : "none",
-              flexShrink: 0,
-            }} />
-            <span style={{
-              fontSize: "10px",
-              color: nearbyProject?.id === p.id ? p.color : "#666",
-              fontWeight: nearbyProject?.id === p.id ? 700 : 400,
-              transition: "color 0.3s",
-            }}>
+        <div style={{ fontSize:"10px", fontWeight:700, marginBottom:"8px", color:"#fff", letterSpacing:"2px" }}>PROJETOS</div>
+        {PROJECTS.map(p=>(
+          <div key={p.id} style={{display:"flex",gap:"8px",alignItems:"center",marginBottom:"6px"}}>
+            <div style={{width:"8px",height:"8px",borderRadius:"50%",background:p.color,boxShadow:nearbyProject?.id===p.id?`0 0 8px ${p.color}`:"none",flexShrink:0,transition:"box-shadow .3s"}}/>
+            <span style={{fontSize:"10px",color:nearbyProject?.id===p.id?p.color:"#666",fontWeight:nearbyProject?.id===p.id?700:400,transition:"color .3s"}}>
               {p.icon} {p.name}
             </span>
           </div>
@@ -1220,17 +738,13 @@ function HUD({ nearbyProject }: { nearbyProject: (typeof PROJECTS)[0] | null }) 
 
       {/* Dica inicial */}
       <div style={{
-        position: "fixed", bottom: "50%", left: "50%",
-        transform: "translateX(-50%) translateY(50%)",
-        zIndex: 10, pointerEvents: "none", textAlign: "center",
-        animation: "fadeOut 4s ease forwards",
+        position:"fixed", bottom:"50%", left:"50%",
+        transform:"translateX(-50%) translateY(50%)",
+        zIndex:10, pointerEvents:"none", textAlign:"center",
+        animation:"fadeOut 4s ease forwards",
       }}>
-        <div style={{
-          fontSize: "14px", color: "rgba(136,170,255,0.9)",
-          fontFamily: "'Segoe UI', sans-serif", letterSpacing: "2px",
-          textShadow: "0 0 10px #4488ff",
-        }}>
-          Use W A S D ou as setas para mover o astronauta
+        <div style={{fontSize:"13px",color:"rgba(136,170,255,0.9)",fontFamily:"'Segoe UI',sans-serif",letterSpacing:"2px",textShadow:"0 0 10px #4488ff"}}>
+          Use W A S D ou as setas · Aproxime-se dos planetas para ver os projetos
         </div>
       </div>
     </>
@@ -1242,35 +756,17 @@ function HUD({ nearbyProject }: { nearbyProject: (typeof PROJECTS)[0] | null }) 
 // ─────────────────────────────────────────────────────────────
 function NoWebGLFallback() {
   return (
-    <div style={{
-      position: "fixed", inset: 0,
-      background: "linear-gradient(135deg, #000010, #0a0030, #000010)",
-      display: "flex", flexDirection: "column", alignItems: "center",
-      justifyContent: "center", color: "#fff",
-      fontFamily: "'Segoe UI', sans-serif", textAlign: "center", padding: "20px",
-    }}>
-      <div style={{ fontSize: "64px", marginBottom: "24px" }}>🚀</div>
-      <h1 style={{
-        fontSize: "28px", fontWeight: 900, letterSpacing: "4px",
-        textShadow: "0 0 30px #4488ff", marginBottom: "12px",
-      }}>MEU PORTFÓLIO ESPACIAL</h1>
-      <p style={{ color: "#88aaff", marginBottom: "32px", fontSize: "15px" }}>
-        Seu navegador não suporta WebGL 3D.<br />
-        Tente abrir no Chrome, Firefox ou Edge atualizado.
-      </p>
-      <div style={{
-        display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-        gap: "12px", maxWidth: "700px", width: "100%",
-      }}>
-        {PROJECTS.map(p => (
+    <div style={{position:"fixed",inset:0,background:"linear-gradient(135deg,#000010,#0a0030,#000010)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",color:"#fff",fontFamily:"'Segoe UI',sans-serif",textAlign:"center",padding:"20px"}}>
+      <div style={{fontSize:"64px",marginBottom:"24px"}}>🚀</div>
+      <h1 style={{fontSize:"26px",fontWeight:900,letterSpacing:"4px",textShadow:"0 0 30px #4488ff",marginBottom:"8px"}}>{OWNER.name}</h1>
+      <p style={{color:"#88aaff",marginBottom:"32px",fontSize:"14px"}}>{OWNER.role}</p>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:"12px",maxWidth:"600px",width:"100%"}}>
+        {PROJECTS.map(p=>(
           <a key={p.id} href={p.githubUrl} target="_blank" rel="noopener noreferrer"
-            style={{
-              background: "rgba(255,255,255,0.05)", border: `1px solid ${p.color}44`,
-              borderRadius: "12px", padding: "16px", textDecoration: "none", color: "#fff",
-            }}>
-            <div style={{ fontSize: "28px", marginBottom: "8px" }}>{p.icon}</div>
-            <div style={{ fontWeight: 700, color: p.color, marginBottom: "4px" }}>{p.name}</div>
-            <div style={{ fontSize: "11px", color: "#aaa" }}>{p.description}</div>
+            style={{background:"rgba(255,255,255,0.05)",border:`1px solid ${p.color}44`,borderRadius:"12px",padding:"16px",textDecoration:"none",color:"#fff"}}>
+            <div style={{fontSize:"28px",marginBottom:"8px"}}>{p.icon}</div>
+            <div style={{fontWeight:700,color:p.color,marginBottom:"4px"}}>{p.name}</div>
+            <div style={{fontSize:"11px",color:"#aaa"}}>{p.description}</div>
           </a>
         ))}
       </div>
@@ -1285,41 +781,34 @@ export default function App() {
   const [nearbyPlanetId, setNearbyPlanetId] = useState<number | null>(null);
   const [webglSupported, setWebglSupported] = useState<boolean | null>(null);
   const [isMoving, setIsMoving] = useState(false);
-
   const keys = useKeys();
 
   const nearbyProject = useMemo(
-    () => PROJECTS.find(p => p.id === nearbyPlanetId) ?? null,
+    ()=>PROJECTS.find(p=>p.id===nearbyPlanetId)??null,
     [nearbyPlanetId],
   );
 
-  useEffect(() => {
-    const cv = document.createElement("canvas");
-    setWebglSupported(!!(cv.getContext("webgl2") || cv.getContext("webgl")));
-  }, []);
+  useEffect(()=>{
+    const cv=document.createElement("canvas");
+    setWebglSupported(!!(cv.getContext("webgl2")||cv.getContext("webgl")));
+  },[]);
 
-  if (webglSupported === null) return null;
-  if (!webglSupported) return <NoWebGLFallback />;
+  if (webglSupported===null) return null;
+  if (!webglSupported) return <NoWebGLFallback/>;
 
   return (
-    <div style={{ width: "100vw", height: "100vh", background: "#030008", overflow: "hidden", position: "relative" }}>
+    <div style={{width:"100vw",height:"100vh",background:"#030008",overflow:"hidden",position:"relative"}}>
       <style>{`
-        @keyframes fadeOut { 0%,60% { opacity:1; } 100% { opacity:0; } }
-        @keyframes fadeIn  { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { overflow: hidden; }
+        @keyframes fadeOut { 0%,60%{opacity:1;} 100%{opacity:0;} }
+        @keyframes fadeIn  { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:none;} }
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{overflow:hidden;}
       `}</style>
-
       <Canvas
-        camera={{ position: [0, 3, 8], fov: 65 }}
+        camera={{position:[0,3,8],fov:65}}
         shadows
-        gl={{
-          antialias: true,
-          toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.5,
-          powerPreference: "high-performance",
-        }}
-        onCreated={({ gl }) => gl.setClearColor(new THREE.Color("#030008"))}
+        gl={{antialias:true,toneMapping:THREE.ACESFilmicToneMapping,toneMappingExposure:1.5,powerPreference:"high-performance"}}
+        onCreated={({gl})=>gl.setClearColor(new THREE.Color("#030008"))}
       >
         <Suspense fallback={null}>
           <Scene
@@ -1331,8 +820,7 @@ export default function App() {
           />
         </Suspense>
       </Canvas>
-
-      <HUD nearbyProject={nearbyProject} />
+      <HUD nearbyProject={nearbyProject}/>
     </div>
   );
 }
