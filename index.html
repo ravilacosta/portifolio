@@ -3,228 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Portfólio 3D | Passeio de Carro por Pontos Turísticos</title>
+    <title>Élise | Portfólio 3D Elegante</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            margin: 0;
             overflow: hidden;
-            font-family: 'Poppins', 'Segoe UI', 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
         
-        /* Interface UI */
-        #info {
+        /* Interface sofisticada */
+        .ui-container {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            color: white;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            padding: 12px 24px;
-            border-radius: 30px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            font-weight: 500;
-            letter-spacing: 1px;
-            border-left: 4px solid #ff6600;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            font-size: 14px;
+            z-index: 50;
         }
         
-        #info h1 {
-            margin: 0;
-            font-size: 1.2rem;
-        }
-        
-        #info p {
-            margin: 5px 0 0;
-            font-size: 0.7rem;
-            opacity: 0.9;
-        }
-        
-        #controls-panel {
+        .header {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            z-index: 100;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            padding: 10px 20px;
-            border-radius: 30px;
-            color: white;
-            font-size: 12px;
-            font-family: monospace;
-            pointer-events: none;
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .controls-key {
-            background: rgba(255,255,255,0.2);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-        
-        #speed-indicator {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            padding: 8px 16px;
-            border-radius: 20px;
-            color: #ff6600;
-            font-family: monospace;
-            font-size: 14px;
-            font-weight: bold;
-            z-index: 100;
-            pointer-events: none;
-        }
-        
-        #destination-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            padding: 12px 20px;
-            border-radius: 20px;
-            color: white;
-            font-size: 12px;
-            z-index: 100;
-            pointer-events: none;
-            text-align: right;
-            border-right: 3px solid #ff6600;
-        }
-        
-        .destination-name {
-            font-size: 14px;
-            font-weight: bold;
-            color: #ffaa44;
-        }
-        
-        #project-modal {
-            position: absolute;
-            bottom: 25%;
-            left: 50%;
-            transform: translateX(-50%) scale(0.9);
-            z-index: 200;
-            background: linear-gradient(135deg, rgba(10,10,25,0.98), rgba(20,20,40,0.98));
-            backdrop-filter: blur(16px);
-            border-radius: 24px;
-            padding: 24px 32px;
-            color: white;
-            text-align: center;
-            border: 1px solid rgba(255,102,0,0.5);
-            box-shadow: 0 0 50px rgba(0,0,0,0.6), 0 0 30px rgba(255,102,0,0.3);
-            opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
-            font-family: 'Poppins', sans-serif;
-            min-width: 280px;
-            max-width: 90vw;
-        }
-        
-        #project-modal.show {
-            opacity: 1;
-            transform: translateX(-50%) scale(1);
+            top: 40px;
+            left: 60px;
             pointer-events: auto;
         }
         
-        #project-modal h3 {
-            margin: 0 0 12px;
-            color: #ff6600;
-            font-size: 24px;
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #f5e6e8 0%, #e8d0dd 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        #project-modal p {
-            margin: 10px 0;
-            font-size: 14px;
-            line-height: 1.5;
+        .logo-sub {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: rgba(245, 230, 232, 0.7);
+            margin-top: 4px;
+            font-weight: 300;
         }
         
-        #project-modal a {
-            display: inline-block;
-            margin-top: 15px;
-            color: #ff6600;
+        .nav-links {
+            position: absolute;
+            top: 50px;
+            right: 60px;
+            display: flex;
+            gap: 40px;
+            pointer-events: auto;
+        }
+        
+        .nav-links a {
+            color: #f5e6e8;
             text-decoration: none;
-            font-weight: bold;
-            border-bottom: 2px solid #ff6600;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+            color: #e8b4c8;
+        }
+        
+        .project-panel {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            width: 320px;
+            background: rgba(20, 15, 25, 0.75);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid rgba(232, 180, 200, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            pointer-events: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .project-panel.active {
+            transform: translateX(0);
+        }
+        
+        .project-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #e8b4c8;
+            margin-bottom: 12px;
+        }
+        
+        .project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #f5e6e8;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        
+        .project-description {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: rgba(245, 230, 232, 0.8);
+            margin-bottom: 20px;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .tech-tag {
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            background: rgba(232, 180, 200, 0.2);
+            border-radius: 20px;
+            color: #e8b4c8;
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #e8b4c8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: gap 0.3s ease;
+            border-bottom: 1px solid rgba(232, 180, 200, 0.4);
             padding-bottom: 4px;
-            transition: 0.2s;
         }
         
-        #project-modal a:hover {
-            color: #ffaa44;
-            border-bottom-color: #ffaa44;
-        }
-        
-        #close-modal {
-            background: rgba(255,255,255,0.15);
-            border: none;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 30px;
-            margin-top: 15px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: 0.2s;
-        }
-        
-        #close-modal:hover {
-            background: rgba(255,255,255,0.3);
+        .project-link:hover {
+            gap: 12px;
         }
         
         .instruction {
             position: absolute;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.5);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            color: #ccc;
-            white-space: nowrap;
+            bottom: 40px;
+            left: 60px;
+            font-size: 0.7rem;
+            color: rgba(245, 230, 232, 0.5);
+            letter-spacing: 0.1em;
+            font-weight: 300;
             pointer-events: none;
-            z-index: 100;
         }
         
-        @media (max-width: 600px) {
-            #controls-panel { font-size: 10px; gap: 8px; padding: 6px 12px; }
-            #info { font-size: 10px; top: 10px; left: 10px; }
-            #destination-panel { font-size: 10px; top: 10px; right: 10px; }
-            .instruction { bottom: 60px; font-size: 9px; white-space: nowrap; }
+        .close-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #f5e6e8;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        
+        .close-panel:hover {
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .header { top: 20px; left: 20px; }
+            .logo { font-size: 1.2rem; }
+            .nav-links { top: 25px; right: 20px; gap: 20px; }
+            .project-panel { bottom: 20px; right: 20px; left: 20px; width: auto; max-width: calc(100% - 40px); }
+            .instruction { bottom: 20px; left: 20px; font-size: 0.6rem; }
+        }
+        
+        /* Loading */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a12;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s;
+        }
+        
+        .loading-text {
+            color: #e8b4c8;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.2em;
         }
     </style>
 </head>
 <body>
-    <div id="info">
-        <h1>🚗 PASSEIO DE CARRO | PORTFÓLIO INTERATIVO</h1>
-        <p>WASD / SETAS → Dirija o carro | Aproxime-se dos pontos turísticos para ver os projetos</p>
+    <div class="loading" id="loading">
+        <div class="loading-text">ÉLISE STUDIO</div>
     </div>
-    <div id="controls-panel">
-        <span>🏎️ ACELERAR: ⬆️ W</span>
-        <span>🔻 FREAR/RE: ⬇️ S</span>
-        <span>↔️ DIRECÃO: A/D ⬅️➡️</span>
-        <span>🎯 Clique nos marcos luminosos</span>
-    </div>
-    <div id="speed-indicator">
-        🚗 VELOCIDADE: <span id="speed-value">0</span> km/h
-    </div>
-    <div id="destination-panel">
-        📍 PRÓXIMO DESTINO:<br>
-        <span id="next-dest" class="destination-name">Aproxime-se de um ponto</span>
-    </div>
-    <div class="instruction">
-        💡 DICA: Dirija até os monumentos coloridos e clique neles para abrir meus projetos!
-    </div>
-    <div id="project-modal">
-        <h3 id="project-title">✨ Projeto</h3>
-        <p id="project-desc">Descrição do projeto</p>
-        <a id="project-link" href="#" target="_blank">🔗 Ver no GitHub →</a>
-        <div><button id="close-modal">Fechar</button></div>
+    
+    <div class="ui-container">
+        <div class="header">
+            <div class="logo">Élise</div>
+            <div class="logo-sub">CREATIVE STUDIO</div>
+        </div>
+        <div class="nav-links">
+            <a href="#" data-section="work">WORK</a>
+            <a href="#" data-section="about">ABOUT</a>
+            <a href="#" data-section="contact">CONTACT</a>
+        </div>
+        <div class="instruction">
+            ✦ CLICK + DRAG PARA EXPLORAR ✦
+        </div>
+        <div class="project-panel" id="projectPanel">
+            <button class="close-panel" id="closePanel">✕</button>
+            <div class="project-category" id="projectCategory">PROJETO RECENTE</div>
+            <div class="project-title" id="projectTitle">Luminae</div>
+            <div class="project-description" id="projectDesc">Plataforma imersiva para experiências sensoriais digitais.</div>
+            <div class="project-tech" id="projectTech"></div>
+            <a href="#" class="project-link" id="projectLink" target="_blank">EXPLORAR PROJETO →</a>
+        </div>
     </div>
 
     <script type="importmap">
@@ -238,24 +253,270 @@
 
     <script type="module">
         import * as THREE from 'three';
-        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-
-        // --- CONFIGURAÇÃO DA CENA ---
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        
+        // --- CONFIGURAÇÃO DA CENA ELEGANTE ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a0a2a);
-        scene.fog = new THREE.FogExp2(0x0a0a2a, 0.006);
+        scene.background = new THREE.Color(0x05030a);
+        scene.fog = new THREE.FogExp2(0x05030a, 0.008);
         
-        // --- CÂMERA EM PRIMEIRA PESSOA (SIMULANDO CARRO) ---
-        const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 1.2, 0);
+        // --- CÂMERA COM ORBIT SUAVE ---
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(5, 4, 8);
+        camera.lookAt(0, 1, 0);
         
-        // --- RENDERERS ---
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.toneMappingExposure = 1.2;
         document.body.appendChild(renderer.domElement);
         
+        // --- POST-PROCESSING (BLOOM SUAVE) ---
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.3, 0.2);
+        bloomPass.threshold = 0.1;
+        bloomPass.strength = 0.45;
+        bloomPass.radius = 0.5;
+        const effectComposer = new EffectComposer(renderer);
+        effectComposer.addPass(renderScene);
+        effectComposer.addPass(bloomPass);
+        
+        // --- CONTROLES ORBITAIS SUAVES (EXPERIÊNCIA DE GALERIA) ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = false;
+        controls.enableZoom = true;
+        controls.zoomSpeed = 0.8;
+        controls.enablePan = true;
+        controls.panSpeed = 0.5;
+        controls.rotateSpeed = 0.8;
+        controls.target.set(0, 1.2, 0);
+        
+        // --- LUZES SOFISTICADAS E FEMININAS ---
+        // Luz ambiente rosada suave
+        const ambientLight = new THREE.AmbientLight(0x332a33, 0.45);
+        scene.add(ambientLight);
+        
+        // Luz principal quente
+        const mainLight = new THREE.DirectionalLight(0xffe6f0, 1.2);
+        mainLight.position.set(4, 5, 3);
+        mainLight.castShadow = true;
+        mainLight.receiveShadow = false;
+        mainLight.shadow.mapSize.width = 1024;
+        scene.add(mainLight);
+        
+        // Luz de preenchimento lavanda
+        const fillLightPurple = new THREE.PointLight(0xb7a9c4, 0.6);
+        fillLightPurple.position.set(-2, 3, 4);
+        scene.add(fillLightPurple);
+        
+        // Luz rosa quente backlight
+        const backLightPink = new THREE.PointLight(0xe8b4c8, 0.5);
+        backLightPink.position.set(0, 2, -5);
+        scene.add(backLightPink);
+        
+        // Luz dourada accent
+        const goldLight = new THREE.PointLight(0xd4af7a, 0.4);
+        goldLight.position.set(3, 1.5, 2);
+        scene.add(goldLight);
+        
+        // Luzes de destaque flutuantes
+        const accentLights = [];
+        for (let i = 0; i < 6; i++) {
+            const color = i % 2 === 0 ? 0xe8b4c8 : 0xc9b6e0;
+            const light = new THREE.PointLight(color, 0.3);
+            light.userData = { speed: 0.5 + Math.random() * 0.5, angle: Math.random() * Math.PI * 2, radius: 2.5 };
+            scene.add(light);
+            accentLights.push(light);
+        }
+        
+        // --- PISO REFINADO (CÍRCULO COM GRADIENTE) ---
+        const circleGeometry = new THREE.CircleGeometry(6.5, 32);
+        const circleMaterial = new THREE.MeshStandardMaterial({
+            color: 0x1e1a2a,
+            roughness: 0.4,
+            metalness: 0.2,
+            emissive: 0x2a1f2a,
+            emissiveIntensity: 0.15
+        });
+        const floor = new THREE.Mesh(circleGeometry, circleMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -0.2;
+        floor.receiveShadow = true;
+        scene.add(floor);
+        
+        // Anel decorativo no chão
+        const ringGeometry = new THREE.TorusGeometry(2.8, 0.05, 64, 200);
+        const ringMaterial = new THREE.MeshStandardMaterial({ color: 0xe8b4c8, emissive: 0xe8b4c8, emissiveIntensity: 0.3 });
+        const floorRing = new THREE.Mesh(ringGeometry, ringMaterial);
+        floorRing.rotation.x = Math.PI / 2;
+        floorRing.position.y = -0.15;
+        scene.add(floorRing);
+        
+        // --- ELEMENTOS FLUTUANTES (ESFERAS E FORMAS ORGÂNICAS) ---
+        const floatingSpheres = [];
+        const sphereColors = [0xe8b4c8, 0xd4af7a, 0xc9b6e0, 0xf5d0d8, 0xdec9e6];
+        
+        for (let i = 0; i < 24; i++) {
+            const size = 0.08 + Math.random() * 0.12;
+            const material = new THREE.MeshStandardMaterial({
+                color: sphereColors[Math.floor(Math.random() * sphereColors.length)],
+                emissive: 0xe8b4c8,
+                emissiveIntensity: 0.2 + Math.random() * 0.3,
+                metalness: 0.3,
+                roughness: 0.2
+            });
+            const sphere = new THREE.Mesh(new THREE.SphereGeometry(size, 24, 24), material);
+            sphere.userData = {
+                speedX: (Math.random() - 0.5) * 0.8,
+                speedZ: (Math.random() - 0.5) * 0.8,
+                speedY: 0.5 + Math.random() * 1,
+                radius: 1.5 + Math.random() * 2.5,
+                angle: Math.random() * Math.PI * 2,
+                yOffset: Math.random() * 2
+            };
+            scene.add(sphere);
+            floatingSpheres.push(sphere);
+        }
+        
+        // --- CARDS DE PROJETOS (FORMAS GEOMÉTRICAS ELEGANTES) ---
+        const projects = [
+            {
+                title: "AURA",
+                subtitle: "Design Generativo",
+                desc: "Sistema de visualização de dados sensoriais com partículas e inteligência artificial. Uma experiência imersiva que traduz emoções em formas visuais.",
+                tech: ["Three.js", "TensorFlow.js", "WebGL"],
+                link: "https://github.com/seuuser/aura",
+                color: 0xe8b4c8,
+                position: { x: -2.2, z: -1.8, y: 0.2 }
+            },
+            {
+                title: "LUMEN",
+                subtitle: "Instalação Interativa",
+                desc: "Instalação digital que reage à presença do espectador, criando uma coreografia de luz e som. Premiado no Festival de Arte Digital 2024.",
+                tech: ["WebGL", "Shader", "Kinect"],
+                link: "https://github.com/seuuser/lumen",
+                color: 0xd4af7a,
+                position: { x: 2.5, z: -1.5, y: 0.2 }
+            },
+            {
+                title: "NÉCTAR",
+                subtitle: "E-commerce Experience",
+                desc: "Plataforma de e-commerce imersiva para marcas de luxo. Experiência de compra 3D com personalização em tempo real.",
+                tech: ["React", "Three.js", "GSAP"],
+                link: "https://github.com/seuuser/nectar",
+                color: 0xc9b6e0,
+                position: { x: 0, z: 2.2, y: 0.2 }
+            },
+            {
+                title: "ÉTER",
+                subtitle: "Arquitetura Virtual",
+                desc: "Galeria de arte virtual com curadoria de artistas emergentes. Espaços imersivos que transcendem os limites físicos.",
+                tech: ["WebXR", "Three.js", "Blender"],
+                link: "https://github.com/seuuser/eter",
+                color: 0xf5d0d8,
+                position: { x: -2.8, z: 2.5, y: 0.2 }
+            },
+            {
+                title: "SERENA",
+                subtitle: "Bem-estar Digital",
+                desc: "Aplicativo de meditação guiada com ambientes 3D relaxantes e sound design imersivo.",
+                tech: ["Vue.js", "Web Audio", "Three.js"],
+                link: "https://github.com/seuuser/serena",
+                color: 0xdec9e6,
+                position: { x: 2.8, z: 2, y: 0.2 }
+            }
+        ];
+        
+        const projectCards = [];
+        
+        projects.forEach((proj, idx) => {
+            // Base do card (plataforma elegante)
+            const baseMat = new THREE.MeshStandardMaterial({
+                color: 0x2a2335,
+                metalness: 0.6,
+                roughness: 0.3,
+                emissive: proj.color,
+                emissiveIntensity: 0.08
+            });
+            const platform = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.0, 0.12, 24), baseMat);
+            platform.position.set(proj.position.x, proj.position.y - 0.1, proj.position.z);
+            platform.castShadow = true;
+            platform.receiveShadow = true;
+            scene.add(platform);
+            
+            // Elemento principal do card (forma geométrica elegante)
+            let mainShape;
+            if (idx % 3 === 0) {
+                mainShape = new THREE.IcosahedronGeometry(0.55, 0);
+            } else if (idx % 3 === 1) {
+                mainShape = new THREE.OctahedronGeometry(0.65);
+            } else {
+                mainShape = new THREE.DodecahedronGeometry(0.5);
+            }
+            
+            const cardMat = new THREE.MeshStandardMaterial({
+                color: proj.color,
+                metalness: 0.7,
+                roughness: 0.2,
+                emissive: proj.color,
+                emissiveIntensity: 0.25
+            });
+            const mainObj = new THREE.Mesh(mainShape, cardMat);
+            mainObj.position.set(proj.position.x, proj.position.y + 0.45, proj.position.z);
+            mainObj.castShadow = true;
+            scene.add(mainObj);
+            
+            // Anel giratório ao redor
+            const ringMat = new THREE.MeshStandardMaterial({
+                color: proj.color,
+                emissive: proj.color,
+                emissiveIntensity: 0.4,
+                transparent: true,
+                opacity: 0.6
+            });
+            const ringOrbit = new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.04, 32, 100), ringMat);
+            ringOrbit.position.set(proj.position.x, proj.position.y + 0.45, proj.position.z);
+            ringOrbit.rotation.x = Math.PI / 2;
+            scene.add(ringOrbit);
+            
+            // Texto CSS2D (título)
+            const div = document.createElement('div');
+            div.textContent = proj.title;
+            div.style.fontFamily = 'Playfair Display, serif';
+            div.style.fontSize = '1rem';
+            div.style.fontWeight = '500';
+            div.style.color = '#f5e6e8';
+            div.style.letterSpacing = '0.05em';
+            div.style.background = 'rgba(20, 15, 25, 0.6)';
+            div.style.backdropFilter = 'blur(8px)';
+            div.style.padding = '4px 14px';
+            div.style.borderRadius = '40px';
+            div.style.border = `1px solid ${new THREE.Color(proj.color).getStyle()}`;
+            div.style.pointerEvents = 'none';
+            div.style.fontSize = '0.75rem';
+            
+            const label = new THREE.CSS2DRenderer();
+            // Usando CSS2DRenderer corretamente - vamos importar
+            // Será adicionado depois
+            
+            projectCards.push({
+                ...proj,
+                mesh: mainObj,
+                platform,
+                ring: ringOrbit,
+                position: new THREE.Vector3(proj.position.x, proj.position.y + 0.45, proj.position.z),
+                color: proj.color
+            });
+        });
+        
+        // Adicionar CSS2DRenderer para textos
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
         const labelRenderer = new CSS2DRenderer();
         labelRenderer.setSize(window.innerWidth, window.innerHeight);
         labelRenderer.domElement.style.position = 'absolute';
@@ -264,459 +525,188 @@
         labelRenderer.domElement.style.pointerEvents = 'none';
         document.body.appendChild(labelRenderer.domElement);
         
-        // --- LUZES DINÂMICAS E AMBIENTE ---
-        const ambientLight = new THREE.AmbientLight(0x222244);
-        scene.add(ambientLight);
-        
-        const dirLight = new THREE.DirectionalLight(0xffeedd, 1.2);
-        dirLight.position.set(5, 12, 8);
-        dirLight.castShadow = true;
-        dirLight.receiveShadow = true;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
-        scene.add(dirLight);
-        
-        const fillLight = new THREE.PointLight(0x44aaff, 0.5);
-        fillLight.position.set(-3, 4, 2);
-        scene.add(fillLight);
-        
-        const backLight = new THREE.PointLight(0xff6633, 0.4);
-        backLight.position.set(0, 3, -8);
-        scene.add(backLight);
-        
-        // Luz que segue o carro (farol)
-        const carLight = new THREE.SpotLight(0xffaa66, 0.8);
-        carLight.position.set(0, 0.8, 1.5);
-        carLight.angle = 0.6;
-        carLight.penumbra = 0.3;
-        carLight.distance = 20;
-        carLight.castShadow = true;
-        scene.add(carLight);
-        
-        // --- CHÃO COM ESTRADA ---
-        const groundMat = new THREE.MeshStandardMaterial({ color: 0x2a2a3a, roughness: 0.7, metalness: 0.1 });
-        const ground = new THREE.Mesh(new THREE.PlaneGeometry(50, 50), groundMat);
-        ground.rotation.x = -Math.PI / 2;
-        ground.position.y = -0.2;
-        ground.receiveShadow = true;
-        scene.add(ground);
-        
-        // Grade de estrada (linhas)
-        const roadLines = [];
-        for (let z = -25; z <= 25; z += 1.5) {
-            const lineMat = new THREE.MeshStandardMaterial({ color: 0xffaa55, emissive: 0x442200 });
-            const line = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.05, 0.8), lineMat);
-            line.position.set(0, -0.1, z);
-            line.castShadow = true;
-            scene.add(line);
-            roadLines.push(line);
-        }
-        
-        // Marcadores laterais
-        const sideMarkers = [-3.5, 3.5];
-        sideMarkers.forEach(xPos => {
-            for (let z = -22; z <= 22; z += 2) {
-                const marker = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.2, 0.3, 6), new THREE.MeshStandardMaterial({ color: 0x88aaff, emissive: 0x2266aa }));
-                marker.position.set(xPos, 0, z);
-                marker.castShadow = true;
-                scene.add(marker);
-            }
-        });
-        
-        // --- PONTOS TURÍSTICOS (MONUMENTOS) COM PROJETOS ---
-        const touristSpots = [
-            { 
-                name: "🏛️ COLISEU DIGITAL", 
-                desc: "Plataforma interativa de eventos virtuais com WebGL e Three.js. Experiência imersiva para shows e conferências.",
-                link: "https://github.com/seuuser/coliseu-digital",
-                color: 0xff6644,
-                pos: { x: -7, z: -6 },
-                scale: 1.2
-            },
-            { 
-                name: "🗼 TORRE DE CÓDIGO", 
-                desc: "Visualizador de algoritmos em 3D. Animações que mostram sorting, pathfinding e estruturas de dados.",
-                link: "https://github.com/seuuser/torre-codigo",
-                color: 0x44aaff,
-                pos: { x: 6, z: -5 },
-                scale: 1.1
-            },
-            { 
-                name: "🎡 RODA DA INOVAÇÃO", 
-                desc: "Dashboard interativo para monitoramento de dados em tempo real com gráficos 3D e IoT.",
-                link: "https://github.com/seuuser/roda-inovacao",
-                color: 0x66ff66,
-                pos: { x: -5, z: 7 },
-                scale: 1.0
-            },
-            { 
-                name: "🏯 TEMPLO VR", 
-                desc: "Experiência de realidade virtual para treinamento corporativo. Compatível com WebXR.",
-                link: "https://github.com/seuuser/templo-vr",
-                color: 0xff44cc,
-                pos: { x: 4, z: 6.5 },
-                scale: 1.2
-            },
-            { 
-                name: "🗿 MONTE DOS DADOS", 
-                desc: "Plataforma de visualização de Big Data com partículas e shaders avançados.",
-                link: "https://github.com/seuuser/monte-dados",
-                color: 0xffaa33,
-                pos: { x: -3, z: -9 },
-                scale: 1.0
-            },
-            { 
-                name: "⛲ FONTE IA", 
-                desc: "Demonstração de redes neurais generativas com efeitos visuais em tempo real.",
-                link: "https://github.com/seuuser/fonte-ia",
-                color: 0x33ddff,
-                pos: { x: 8, z: 3 },
-                scale: 0.9
-            }
-        ];
-        
-        const monuments = [];
-        
-        // Função para criar monumento estilizado
-        function createMonument(color, pos, scaleVal = 1) {
-            const group = new THREE.Group();
-            
-            // Base
-            const baseMat = new THREE.MeshStandardMaterial({ color: 0xccaa88, metalness: 0.6, roughness: 0.3 });
-            const base = new THREE.Mesh(new THREE.CylinderGeometry(0.8 * scaleVal, 1.0 * scaleVal, 0.4 * scaleVal, 8), baseMat);
-            base.position.y = 0;
-            base.castShadow = true;
-            group.add(base);
-            
-            // Coluna central brilhante
-            const pillarMat = new THREE.MeshStandardMaterial({ color: color, emissive: color, emissiveIntensity: 0.5, metalness: 0.8 });
-            const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.4 * scaleVal, 0.5 * scaleVal, 1.2 * scaleVal, 12), pillarMat);
-            pillar.position.y = 0.5 * scaleVal;
-            pillar.castShadow = true;
-            group.add(pillar);
-            
-            // Anel giratório
-            const ringMat = new THREE.MeshStandardMaterial({ color: color, emissive: color, emissiveIntensity: 0.7 });
-            const ring = new THREE.Mesh(new THREE.TorusGeometry(0.6 * scaleVal, 0.08 * scaleVal, 16, 48), ringMat);
-            ring.position.y = 1.0 * scaleVal;
-            ring.rotation.x = Math.PI / 2;
-            group.add(ring);
-            
-            // Topo esférico
-            const topMat = new THREE.MeshStandardMaterial({ color: color, emissive: color, emissiveIntensity: 0.8 });
-            const top = new THREE.Mesh(new THREE.SphereGeometry(0.35 * scaleVal, 16, 16), topMat);
-            top.position.y = 1.3 * scaleVal;
-            top.castShadow = true;
-            group.add(top);
-            
-            // Partículas flutuantes
-            const particles = [];
-            for (let i = 0; i < 24; i++) {
-                const part = new THREE.Mesh(new THREE.SphereGeometry(0.06 * scaleVal, 6, 6), new THREE.MeshStandardMaterial({ color: color, emissive: color }));
-                part.userData = {
-                    angle: Math.random() * Math.PI * 2,
-                    radius: 0.9 * scaleVal + Math.random() * 0.4,
-                    speed: 0.8 + Math.random() * 1,
-                    yOff: Math.random() * 1.2 * scaleVal
-                };
-                group.add(part);
-                particles.push(part);
-            }
-            
-            group.userData = { particles, ring, color, scaleVal };
-            return group;
-        }
-        
-        // Adicionar monumentos ao cenário
-        touristSpots.forEach((spot, idx) => {
-            const monument = createMonument(spot.color, spot.pos, spot.scale);
-            monument.position.set(spot.pos.x, 0, spot.pos.z);
-            monument.castShadow = true;
-            monument.receiveShadow = false;
-            scene.add(monument);
-            
-            // CSS2D Label com nome
+        // Adicionar labels para cada projeto
+        projects.forEach((proj, idx) => {
             const div = document.createElement('div');
-            div.textContent = spot.name;
-            div.style.backgroundColor = 'rgba(0,0,0,0.75)';
-            div.style.color = '#fff';
-            div.style.padding = '6px 14px';
-            div.style.borderRadius = '30px';
-            div.style.fontSize = '13px';
-            div.style.fontWeight = 'bold';
-            div.style.borderBottom = `3px solid ${new THREE.Color(spot.color).getStyle()}`;
+            div.textContent = proj.title;
+            div.style.fontFamily = 'Playfair Display, serif';
+            div.style.fontSize = '0.85rem';
+            div.style.fontWeight = '500';
+            div.style.color = '#f5e6e8';
+            div.style.background = 'rgba(20, 15, 25, 0.5)';
             div.style.backdropFilter = 'blur(8px)';
-            div.style.fontFamily = 'Poppins, sans-serif';
-            div.style.whiteSpace = 'nowrap';
-            const label = new CSS2DObject(div);
-            label.position.set(spot.pos.x, 1.6 * spot.scale, spot.pos.z);
-            scene.add(label);
+            div.style.padding = '6px 16px';
+            div.style.borderRadius = '40px';
+            div.style.border = `1px solid ${new THREE.Color(proj.color).getStyle()}`;
+            div.style.pointerEvents = 'none';
+            div.style.fontSize = '0.7rem';
+            div.style.letterSpacing = '0.05em';
             
-            monuments.push({
-                ...spot,
-                mesh: monument,
-                label,
-                position: new THREE.Vector3(spot.pos.x, 0.5, spot.pos.z),
-                radius: 1.8 * spot.scale
-            });
+            const label = new CSS2DObject(div);
+            label.position.set(proj.position.x, proj.position.y + 1.0, proj.position.z);
+            scene.add(label);
+            projectCards[idx].label = label;
         });
         
-        // --- ÁRVORES E DECORAÇÃO URBANA ---
-        const treeMat = new THREE.MeshStandardMaterial({ color: 0x5a9e4e });
-        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
-        for (let i = 0; i < 60; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const radius = 11 + Math.random() * 5;
-            const x = Math.cos(angle) * radius;
-            const z = Math.sin(angle) * radius;
-            if (Math.abs(x) < 9 && Math.abs(z) < 8) continue;
-            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.45, 0.8, 5), trunkMat);
-            trunk.position.set(x, -0.1, z);
-            trunk.castShadow = true;
-            const foliage = new THREE.Mesh(new THREE.ConeGeometry(0.5, 0.9, 6), treeMat);
-            foliage.position.set(x, 0.5, z);
-            foliage.castShadow = true;
-            scene.add(trunk);
-            scene.add(foliage);
+        // --- PARTÍCULAS FLUTUANTES ELEGANTES ---
+        const particleCount = 800;
+        const particleGeometry = new THREE.BufferGeometry();
+        const particlePositions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount; i++) {
+            particlePositions[i*3] = (Math.random() - 0.5) * 14;
+            particlePositions[i*3+1] = Math.random() * 5;
+            particlePositions[i*3+2] = (Math.random() - 0.5) * 12 - 2;
         }
-        
-        // --- MODELO SIMPLES DO CARRO (VISUAL EM TERCEIRA PESSOA PARA REFERÊNCIA) ---
-        const carGroup = new THREE.Group();
-        const carBody = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.3, 1.6), new THREE.MeshStandardMaterial({ color: 0xff3366, metalness: 0.7, roughness: 0.2 }));
-        carBody.position.y = 0.15;
-        carBody.castShadow = true;
-        carGroup.add(carBody);
-        
-        const carRoof = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.25, 0.9), new THREE.MeshStandardMaterial({ color: 0xdd2266 }));
-        carRoof.position.y = 0.4;
-        carRoof.castShadow = true;
-        carGroup.add(carRoof);
-        
-        const wheelMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.3 });
-        const positions = [[-0.5, 0.05, -0.7], [0.5, 0.05, -0.7], [-0.5, 0.05, 0.7], [0.5, 0.05, 0.7]];
-        positions.forEach(pos => {
-            const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.3, 16), wheelMat);
-            wheel.rotation.z = Math.PI / 2;
-            wheel.position.set(pos[0], pos[1], pos[2]);
-            wheel.castShadow = true;
-            carGroup.add(wheel);
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+        const particleMaterial = new THREE.PointsMaterial({
+            color: 0xe8b4c8,
+            size: 0.03,
+            transparent: true,
+            opacity: 0.4,
+            blending: THREE.AdditiveBlending
         });
+        const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particleSystem);
         
-        scene.add(carGroup);
-        
-        // --- CONTROLE DO CARRO (FÍSICA SIMPLES) ---
-        let velocity = 0;
-        let steering = 0;
-        let carAngle = 0;
-        let carX = 0, carZ = 0;
-        const maxSpeed = 18;
-        const acceleration = 12;
-        const brakeForce = 18;
-        const turnSpeed = 1.8;
-        const drag = 0.98;
-        
-        const keyState = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, w: false, s: false, a: false, d: false };
-        
-        window.addEventListener('keydown', (e) => {
-            const key = e.key;
-            if (keyState.hasOwnProperty(key)) keyState[key] = true;
-            if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight') e.preventDefault();
-        });
-        window.addEventListener('keyup', (e) => {
-            const key = e.key;
-            if (keyState.hasOwnProperty(key)) keyState[key] = false;
-        });
-        
-        // Raycaster para cliques nos monumentos
+        // --- RAYCASTER PARA INTERAÇÃO COM CARDS ---
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         
-        window.addEventListener('click', (event) => {
+        function onMouseClick(event) {
             mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
             mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
             
             raycaster.setFromCamera(mouse, camera);
-            const clickableObjects = [];
-            monuments.forEach(m => {
-                if (m.mesh) clickableObjects.push(m.mesh);
-            });
-            const intersects = raycaster.intersectObjects(clickableObjects, true);
+            const clickableObjects = projectCards.map(card => card.mesh);
+            const intersects = raycaster.intersectObjects(clickableObjects);
+            
             if (intersects.length > 0) {
-                let hitMonument = null;
-                for (let obj of intersects) {
-                    for (let mon of monuments) {
-                        if (obj.object === mon.mesh || mon.mesh.children.includes(obj.object)) {
-                            hitMonument = mon;
-                            break;
-                        }
-                    }
-                    if (hitMonument) break;
-                }
-                if (hitMonument) {
-                    const modal = document.getElementById('project-modal');
-                    document.getElementById('project-title').innerHTML = hitMonument.name;
-                    document.getElementById('project-desc').innerHTML = hitMonument.desc;
-                    const linkEl = document.getElementById('project-link');
-                    linkEl.href = hitMonument.link;
-                    modal.classList.add('show');
+                const hit = intersects[0].object;
+                const card = projectCards.find(c => c.mesh === hit);
+                if (card) {
+                    openProjectPanel(card);
                 }
             }
+        }
+        
+        function openProjectPanel(project) {
+            const panel = document.getElementById('projectPanel');
+            document.getElementById('projectCategory').textContent = project.subtitle.toUpperCase();
+            document.getElementById('projectTitle').textContent = project.title;
+            document.getElementById('projectDesc').textContent = project.desc;
+            
+            const techContainer = document.getElementById('projectTech');
+            techContainer.innerHTML = project.tech.map(t => `<span class="tech-tag">${t}</span>`).join('');
+            
+            const link = document.getElementById('projectLink');
+            link.href = project.link;
+            
+            panel.classList.add('active');
+        }
+        
+        document.getElementById('closePanel').addEventListener('click', () => {
+            document.getElementById('projectPanel').classList.remove('active');
         });
         
-        document.getElementById('close-modal').addEventListener('click', () => {
-            document.getElementById('project-modal').classList.remove('show');
-        });
+        window.addEventListener('click', onMouseClick);
         
+        // Fechar com ESC
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') document.getElementById('project-modal').classList.remove('show');
+            if (e.key === 'Escape') {
+                document.getElementById('projectPanel').classList.remove('active');
+            }
         });
         
-        // Atualizar indicador de destino mais próximo
-        function updateNearestDestination() {
-            let minDist = Infinity;
-            let nearest = null;
-            monuments.forEach(mon => {
-                const dist = Math.hypot(carX - mon.position.x, carZ - mon.position.z);
-                if (dist < minDist) {
-                    minDist = dist;
-                    nearest = mon;
-                }
-            });
-            const destSpan = document.getElementById('next-dest');
-            if (nearest && minDist < 8) {
-                destSpan.innerHTML = `${nearest.name} (${Math.round(minDist * 10)/10}m)`;
-                destSpan.style.color = '#ffaa44';
-            } else if (nearest) {
-                destSpan.innerHTML = `${nearest.name} - ${Math.round(minDist)}m`;
-                destSpan.style.color = '#ffffff';
-            } else {
-                destSpan.innerHTML = 'Aproxime-se de um ponto turístico';
-            }
-        }
-        
-        // Atualizar posição da câmera (visão do motorista)
-        function updateCarAndCamera(deltaTime) {
-            // Aceleração/Freio
-            let accel = 0;
-            if (keyState['ArrowUp'] || keyState['w']) accel = acceleration;
-            if (keyState['ArrowDown'] || keyState['s']) accel = -brakeForce;
-            
-            velocity += accel * deltaTime;
-            velocity *= drag;
-            if (Math.abs(velocity) < 0.2 && accel === 0) velocity = 0;
-            velocity = Math.min(maxSpeed, Math.max(-maxSpeed * 0.6, velocity));
-            
-            // Direção
-            let turnInput = 0;
-            if (keyState['ArrowLeft'] || keyState['a']) turnInput = 1;
-            if (keyState['ArrowRight'] || keyState['d']) turnInput = -1;
-            steering = turnInput * turnSpeed * (Math.abs(velocity) / maxSpeed) * deltaTime * 8;
-            carAngle += steering;
-            
-            // Movimento
-            const moveDistance = velocity * deltaTime;
-            carX += Math.sin(carAngle) * moveDistance;
-            carZ += Math.cos(carAngle) * moveDistance;
-            
-            // Limites do mapa
-            const limit = 19;
-            carX = Math.min(limit, Math.max(-limit, carX));
-            carZ = Math.min(limit, Math.max(-limit, carZ));
-            
-            // Posicionar carro e câmera
-            carGroup.position.set(carX, 0, carZ);
-            carGroup.rotation.y = carAngle;
-            
-            // Câmera em primeira pessoa (posição do motorista)
-            camera.position.set(carX, 1.0, carZ);
-            camera.rotation.order = 'YXZ';
-            camera.rotation.y = carAngle;
-            camera.rotation.x = -0.1; // leve inclinação
-            
-            // Farol segue direção do carro
-            const forwardDir = new THREE.Vector3(Math.sin(carAngle), 0, Math.cos(carAngle));
-            carLight.position.set(carX + forwardDir.x * 1.2, 0.8, carZ + forwardDir.z * 1.2);
-            carLight.target.position.set(carX + forwardDir.x * 5, 0.5, carZ + forwardDir.z * 5);
-            scene.add(carLight.target);
-            
-            // Atualizar velocidade no UI
-            document.getElementById('speed-value').innerText = Math.abs(Math.round(velocity * 3.6));
-            
-            updateNearestDestination();
-        }
-        
-        // --- ANIMAÇÕES DOS MONUMENTOS (partículas e rotação) ---
+        // --- ANIMAÇÃO FLUTUANTE E CORES DINÂMICAS ---
         let time = 0;
         
-        function animateMonuments() {
-            time += 0.016;
-            monuments.forEach(mon => {
-                if (mon.mesh.userData.particles) {
-                    mon.mesh.userData.particles.forEach((part, idx) => {
-                        const data = part.userData;
-                        if (data) {
-                            const angle = data.angle + time * data.speed;
-                            const xOff = Math.cos(angle) * data.radius;
-                            const zOff = Math.sin(angle) * data.radius;
-                            part.position.x = xOff;
-                            part.position.z = zOff;
-                            part.position.y = 0.5 + Math.sin(time * 3 + idx) * 0.1 + data.yOff;
-                        }
-                    });
-                }
-                if (mon.mesh.userData.ring) {
-                    mon.mesh.userData.ring.rotation.z += 0.025;
-                }
-                // Pulsar emissão
-                if (mon.mesh.children) {
-                    mon.mesh.children.forEach(child => {
-                        if (child.material && child.material.emissiveIntensity) {
-                            child.material.emissiveIntensity = 0.4 + Math.sin(time * 3) * 0.2;
-                        }
-                    });
-                }
-            });
-        }
-        
-        // Efeitos de luz dinâmica
-        let globalTime = 0;
-        
-        // --- LOOP PRINCIPAL ---
-        let lastTime = performance.now();
-        
-        function gameLoop() {
-            const now = performance.now();
-            let delta = Math.min(0.033, (now - lastTime) / 1000);
-            lastTime = now;
+        function animate() {
+            time += 0.012;
             
-            updateCarAndCamera(delta);
-            animateMonuments();
-            
-            globalTime += delta;
-            fillLight.intensity = 0.5 + Math.sin(globalTime * 1.2) * 0.2;
-            backLight.intensity = 0.4 + Math.sin(globalTime * 0.9) * 0.2;
-            
-            // Efeito nas linhas da estrada
-            roadLines.forEach((line, idx) => {
-                if (line.material) line.material.emissiveIntensity = 0.1 + Math.sin(globalTime * 5 + idx) * 0.05;
+            // Animar esferas flutuantes
+            floatingSpheres.forEach((sphere, i) => {
+                const data = sphere.userData;
+                sphere.position.x = Math.sin(time * data.speedX + i) * data.radius;
+                sphere.position.z = Math.cos(time * data.speedZ + i) * data.radius;
+                sphere.position.y = 0.5 + Math.sin(time * data.speedY + i) * 0.8 + data.yOffset * 0.3;
             });
             
-            renderer.render(scene, camera);
+            // Animar anéis dos cards
+            projectCards.forEach((card, idx) => {
+                if (card.ring) {
+                    card.ring.rotation.z += 0.01;
+                    card.ring.rotation.y += 0.005;
+                }
+                if (card.mesh) {
+                    card.mesh.rotation.y = time * 0.3;
+                    card.mesh.rotation.x = Math.sin(time * 0.5 + idx) * 0.1;
+                }
+            });
+            
+            // Animar luzes accent
+            accentLights.forEach((light, i) => {
+                const angle = time * 0.8 + i;
+                light.position.x = Math.sin(angle) * 2.2;
+                light.position.z = Math.cos(angle * 0.7) * 2.5;
+                light.intensity = 0.25 + Math.sin(time * 1.5 + i) * 0.15;
+            });
+            
+            // Luzes principais suaves
+            fillLightPurple.intensity = 0.5 + Math.sin(time * 0.7) * 0.15;
+            backLightPink.intensity = 0.45 + Math.sin(time * 0.9) * 0.15;
+            goldLight.intensity = 0.35 + Math.sin(time * 0.5) * 0.1;
+            
+            // Partículas suaves
+            particleSystem.rotation.y = time * 0.05;
+            
+            // Anel do chão
+            floorRing.rotation.z = time * 0.2;
+            
+            // Atualizar controles e renderizar com effect composer
+            controls.update();
+            effectComposer.render();
             labelRenderer.render(scene, camera);
-            requestAnimationFrame(gameLoop);
+            
+            requestAnimationFrame(animate);
         }
         
-        gameLoop();
+        // Remover loading
+        setTimeout(() => {
+            const loading = document.getElementById('loading');
+            loading.style.opacity = '0';
+            setTimeout(() => loading.remove(), 1000);
+        }, 800);
         
-        window.addEventListener('resize', () => {
+        animate();
+        
+        // Resize handler
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            effectComposer.setSize(window.innerWidth, window.innerHeight);
             labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // Navegação suave (mock)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.dataset.section;
+                if (section === 'work') {
+                    camera.position.set(5, 4, 8);
+                    controls.target.set(0, 1, 0);
+                } else if (section === 'about') {
+                    camera.position.set(-3, 3, 6);
+                    controls.target.set(0, 1, 0);
+                } else if (section === 'contact') {
+                    camera.position.set(0, 3, -7);
+                    controls.target.set(0, 1, 0);
+                }
+            });
         });
         
-        // Bloquear contexto de clique inicial
-        console.log('🏎️ Passeio de Carro iniciado! Dirija até os monumentos coloridos e clique para ver os projetos.');
+        console.log('✨ Élise Studio | Portfólio 3D Elegante carregado');
     </script>
 </body>
 </html>
