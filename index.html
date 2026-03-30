@@ -2,10 +2,10 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Portfólio Espacial</title>
+<title>Portfólio Espacial Game</title>
 
 <style>
-body { margin:0; overflow:hidden; background:#000; }
+body { margin:0; overflow:hidden; background:black; }
 .info {
   position:fixed;
   top:20px;
@@ -20,88 +20,107 @@ body { margin:0; overflow:hidden; background:#000; }
 <body>
 
 <div class="info">
-  <h2>🚀 Use ← → para mover o astronauta</h2>
+  <h2>🚀 WASD para mover • Espaço para pular</h2>
 </div>
 
 <script type="module">
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
 
 // CENA
 const scene = new THREE.Scene();
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
-camera.position.z = 10;
+camera.position.set(0,2,8);
 
 // RENDER
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias:true });
 renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // LUZ
 scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5,5,5);
+scene.add(light);
 
-// 👨‍🚀 ASTRONAUTA (simples)
-const astro = new THREE.Mesh(
-  new THREE.BoxGeometry(1,1.5,1),
-  new THREE.MeshStandardMaterial({ color:0xffffff })
+// 👨‍🚀 ASTRONAUTA (modelo real)
+let astronaut;
+const loader = new GLTFLoader();
+
+loader.load(
+  "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
+  (gltf)=>{
+    astronaut = gltf.scene;
+    astronaut.scale.set(1,1,1);
+    scene.add(astronaut);
+  }
 );
-scene.add(astro);
 
-// 🪐 PLANETAS COM ÓRBITA
+// 🎮 CONTROLES
+const keys = {};
+window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
+window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+
+// 🪐 PLANETAS
 const planets = [];
 
 function createPlanet(color, radius, speed, url){
-  const geo = new THREE.SphereGeometry(1, 32, 32);
-  const mat = new THREE.MeshStandardMaterial({ color });
-  const mesh = new THREE.Mesh(geo, mat);
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(1.2,32,32),
+    new THREE.MeshStandardMaterial({ color, emissive:color, emissiveIntensity:0.4 })
+  );
 
   scene.add(mesh);
-
-  planets.push({ mesh, radius, speed, angle: Math.random()*Math.PI*2, url });
+  planets.push({ mesh, radius, speed, angle: Math.random()*6.28, url });
 }
 
-createPlanet(0xff6b35, 4, 0.01, "https://github.com");
-createPlanet(0xff3d3d, 6, 0.008, "https://github.com");
-createPlanet(0xa855f7, 8, 0.006, "https://github.com");
+createPlanet(0xff6b35, 5, 0.01, "https://github.com/ravilacosta/front-eventos");
+createPlanet(0xff3d3d, 7, 0.008, "https://github.com/ravilacosta/shopee");
+createPlanet(0xa855f7, 9, 0.006, "https://github.com/ravilacosta/loja-virtual");
 
 // 🌌 ESTRELAS
-const starsGeo = new THREE.BufferGeometry();
-const starCount = 2000;
-const positions = [];
+const starGeo = new THREE.BufferGeometry();
+const starCount = 3000;
+const pos = [];
 
 for(let i=0;i<starCount;i++){
-  positions.push(
-    (Math.random()-0.5)*200,
-    (Math.random()-0.5)*200,
-    (Math.random()-0.5)*200
-  );
+  pos.push((Math.random()-0.5)*300);
+  pos.push((Math.random()-0.5)*300);
+  pos.push((Math.random()-0.5)*300);
 }
 
-starsGeo.setAttribute("position", new THREE.Float32BufferAttribute(positions,3));
-const stars = new THREE.Points(starsGeo, new THREE.PointsMaterial({ size:0.7 }));
+starGeo.setAttribute("position", new THREE.Float32BufferAttribute(pos,3));
+
+const stars = new THREE.Points(
+  starGeo,
+  new THREE.PointsMaterial({ size:0.7 })
+);
+
 scene.add(stars);
 
-// ☄️ COMETA
+// ☄️ COMETA COM RASTRO
 const comet = new THREE.Mesh(
-  new THREE.SphereGeometry(0.3,16,16),
+  new THREE.SphereGeometry(0.3),
   new THREE.MeshBasicMaterial({ color:0xffaa00 })
 );
+
+const trail = [];
+
+for(let i=0;i<20;i++){
+  const t = new THREE.Mesh(
+    new THREE.SphereGeometry(0.2),
+    new THREE.MeshBasicMaterial({ color:0xff5500, transparent:true, opacity:0.3 })
+  );
+  scene.add(t);
+  trail.push(t);
+}
+
 scene.add(comet);
+let cometX = -30;
 
-let cometX = -20;
-
-// 🎮 CONTROLE
-let move = 0;
-
-window.addEventListener("keydown", (e)=>{
-  if(e.key === "ArrowRight") move = 0.1;
-  if(e.key === "ArrowLeft") move = -0.1;
-});
-
-window.addEventListener("keyup", ()=> move = 0);
-
-// 🖱 CLIQUE PLANETA
+// 🖱 CLIQUE
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -117,31 +136,52 @@ window.addEventListener("click",(e)=>{
   }
 });
 
-// 🎬 ANIMAÇÃO
+// 🎬 LOOP
 function animate(){
   requestAnimationFrame(animate);
 
   // movimento astronauta
-  astro.position.x += move;
+  if(astronaut){
+    if(keys["w"]) astronaut.position.z -= 0.1;
+    if(keys["s"]) astronaut.position.z += 0.1;
+    if(keys["a"]) astronaut.position.x -= 0.1;
+    if(keys["d"]) astronaut.position.x += 0.1;
 
-  // câmera segue
-  camera.position.x = astro.position.x;
+    // câmera segue
+    camera.position.x = astronaut.position.x;
+    camera.position.z = astronaut.position.z + 8;
+    camera.lookAt(astronaut.position);
+  }
 
   // órbitas
   planets.forEach(p=>{
     p.angle += p.speed;
     p.mesh.position.x = Math.cos(p.angle)*p.radius;
-    p.mesh.position.y = Math.sin(p.angle)*p.radius;
+    p.mesh.position.z = Math.sin(p.angle)*p.radius;
   });
 
   // cometa
-  cometX += 0.2;
-  comet.position.set(cometX, 5, -5);
-  if(cometX > 20) cometX = -20;
+  cometX += 0.3;
+  comet.position.set(cometX, 4, -5);
+
+  trail.forEach((t,i)=>{
+    t.position.copy(comet.position);
+    t.position.x -= i*0.5;
+  });
+
+  if(cometX > 30) cometX = -30;
 
   renderer.render(scene,camera);
 }
+
 animate();
+
+// RESPONSIVO
+window.addEventListener("resize", ()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
 </script>
 
 </body>
