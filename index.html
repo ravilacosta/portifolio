@@ -2,48 +2,25 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Ràvila Costa • Portfólio</title>
+<title>Portfólio Espacial</title>
 
 <style>
-body {
-  margin:0;
-  overflow:hidden;
-  background:#02010a;
-  font-family:Arial;
-}
-
-.hud {
-  position: fixed;
+body { margin:0; overflow:hidden; background:#000; }
+.info {
+  position:fixed;
   top:20px;
   left:50%;
   transform:translateX(-50%);
-  text-align:center;
   color:white;
-}
-
-.hud h1 {
-  margin:0;
-  text-shadow:0 0 20px #4488ff;
-}
-
-.hud a {
-  display:inline-block;
-  margin-top:10px;
-  padding:6px 14px;
-  background:#4488ff;
-  border-radius:20px;
-  color:white;
-  text-decoration:none;
+  font-family:Arial;
 }
 </style>
 </head>
 
 <body>
 
-<div class="hud">
-  <h1>🚀 Ràvila Costa</h1>
-  <p>Backend Developer • Portfólio Espacial</p>
-  <a href="https://github.com/ravilacosta" target="_blank">Ver GitHub</a>
+<div class="info">
+  <h2>🚀 Use ← → para mover o astronauta</h2>
 </div>
 
 <script type="module">
@@ -52,27 +29,47 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 // CENA
 const scene = new THREE.Scene();
 
-// CÂMERA
+// CAMERA
 const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
 camera.position.z = 10;
 
 // RENDER
-const renderer = new THREE.WebGLRenderer({ antialias:true });
+const renderer = new THREE.WebGLRenderer();
 renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // LUZ
-scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 
-const light = new THREE.PointLight(0xffffff, 1);
-light.position.set(5,5,5);
-scene.add(light);
+// 👨‍🚀 ASTRONAUTA (simples)
+const astro = new THREE.Mesh(
+  new THREE.BoxGeometry(1,1.5,1),
+  new THREE.MeshStandardMaterial({ color:0xffffff })
+);
+scene.add(astro);
+
+// 🪐 PLANETAS COM ÓRBITA
+const planets = [];
+
+function createPlanet(color, radius, speed, url){
+  const geo = new THREE.SphereGeometry(1, 32, 32);
+  const mat = new THREE.MeshStandardMaterial({ color });
+  const mesh = new THREE.Mesh(geo, mat);
+
+  scene.add(mesh);
+
+  planets.push({ mesh, radius, speed, angle: Math.random()*Math.PI*2, url });
+}
+
+createPlanet(0xff6b35, 4, 0.01, "https://github.com");
+createPlanet(0xff3d3d, 6, 0.008, "https://github.com");
+createPlanet(0xa855f7, 8, 0.006, "https://github.com");
 
 // 🌌 ESTRELAS
-const starGeo = new THREE.BufferGeometry();
-const starCount = 3000;
-
+const starsGeo = new THREE.BufferGeometry();
+const starCount = 2000;
 const positions = [];
+
 for(let i=0;i<starCount;i++){
   positions.push(
     (Math.random()-0.5)*200,
@@ -81,52 +78,42 @@ for(let i=0;i<starCount;i++){
   );
 }
 
-starGeo.setAttribute("position", new THREE.Float32BufferAttribute(positions,3));
-
-const starMat = new THREE.PointsMaterial({ size:0.7 });
-const stars = new THREE.Points(starGeo, starMat);
+starsGeo.setAttribute("position", new THREE.Float32BufferAttribute(positions,3));
+const stars = new THREE.Points(starsGeo, new THREE.PointsMaterial({ size:0.7 }));
 scene.add(stars);
 
-// 🪐 PROJETOS
-const projects = [
-  { name:"Front Eventos", color:0xff6b35, x:-4, url:"https://github.com/ravilacosta/front-eventos" },
-  { name:"Shopee Clone", color:0xff3d3d, x:0, url:"https://github.com/ravilacosta/shopee" },
-  { name:"Loja Virtual", color:0xa855f7, x:4, url:"https://github.com/ravilacosta/loja-virtual" }
-];
+// ☄️ COMETA
+const comet = new THREE.Mesh(
+  new THREE.SphereGeometry(0.3,16,16),
+  new THREE.MeshBasicMaterial({ color:0xffaa00 })
+);
+scene.add(comet);
 
-const planets = [];
+let cometX = -20;
 
-projects.forEach(p=>{
-  const geo = new THREE.SphereGeometry(1.3, 32, 32);
-  const mat = new THREE.MeshStandardMaterial({
-    color:p.color,
-    emissive:p.color,
-    emissiveIntensity:0.3
-  });
+// 🎮 CONTROLE
+let move = 0;
 
-  const mesh = new THREE.Mesh(geo, mat);
-  mesh.position.x = p.x;
-  mesh.userData.url = p.url;
-
-  scene.add(mesh);
-  planets.push(mesh);
+window.addEventListener("keydown", (e)=>{
+  if(e.key === "ArrowRight") move = 0.1;
+  if(e.key === "ArrowLeft") move = -0.1;
 });
 
-// 🖱 INTERAÇÃO
+window.addEventListener("keyup", ()=> move = 0);
+
+// 🖱 CLIQUE PLANETA
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-window.addEventListener("mousemove", (e)=>{
-  mouse.x = (e.clientX / innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / innerHeight) * 2 + 1;
-});
+window.addEventListener("click",(e)=>{
+  mouse.x = (e.clientX/innerWidth)*2-1;
+  mouse.y = -(e.clientY/innerHeight)*2+1;
 
-window.addEventListener("click", ()=>{
-  raycaster.setFromCamera(mouse, camera);
-  const hits = raycaster.intersectObjects(planets);
+  raycaster.setFromCamera(mouse,camera);
+  const hits = raycaster.intersectObjects(planets.map(p=>p.mesh));
 
   if(hits.length){
-    window.open(hits[0].object.userData.url, "_blank");
+    window.open(planets.find(p=>p.mesh===hits[0].object).url);
   }
 });
 
@@ -134,23 +121,27 @@ window.addEventListener("click", ()=>{
 function animate(){
   requestAnimationFrame(animate);
 
+  // movimento astronauta
+  astro.position.x += move;
+
+  // câmera segue
+  camera.position.x = astro.position.x;
+
+  // órbitas
   planets.forEach(p=>{
-    p.rotation.y += 0.01;
+    p.angle += p.speed;
+    p.mesh.position.x = Math.cos(p.angle)*p.radius;
+    p.mesh.position.y = Math.sin(p.angle)*p.radius;
   });
 
-  // leve movimento da câmera
-  camera.position.x = Math.sin(Date.now()*0.0005)*2;
+  // cometa
+  cometX += 0.2;
+  comet.position.set(cometX, 5, -5);
+  if(cometX > 20) cometX = -20;
 
-  renderer.render(scene, camera);
+  renderer.render(scene,camera);
 }
 animate();
-
-// RESPONSIVO
-window.addEventListener("resize", ()=>{
-  camera.aspect = innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-});
 </script>
 
 </body>
