@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ràvila Costa | Portfólio</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@700;800&display=swap"
+    rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -16,10 +18,13 @@
 
     /* SEÇÕES */
     .section {
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-sizing: border-box;
+      padding-top: 20px;
+      padding-bottom: 20px;
     }
 
     /* HERO */
@@ -30,8 +35,10 @@
     }
 
     .hero img {
-      height: 80%;
+      max-height: 80vh;
+      max-width: 50%;
       border-radius: 20px;
+      object-fit: cover;
     }
 
     .marquee {
@@ -66,12 +73,13 @@
     /* PROJETOS */
     .projects {
       display: flex;
+      align-items: stretch;
+      padding: 0;
     }
 
     .left,
     .right {
       width: 50%;
-      height: 100%;
     }
 
     .left {
@@ -104,6 +112,7 @@
       border-radius: 16px;
       position: relative;
     }
+
     .carousel-wrapper::before,
     .carousel-wrapper::after {
       content: '';
@@ -114,15 +123,26 @@
       z-index: 2;
       pointer-events: none;
     }
-    .carousel-wrapper::before { left: 0; background: linear-gradient(to right, #f8f9ff, transparent); }
-    .carousel-wrapper::after  { right: 0; background: linear-gradient(to left,  #f8f9ff, transparent); }
+
+    .carousel-wrapper::before {
+      left: 0;
+      background: linear-gradient(to right, #f8f9ff, transparent);
+    }
+
+    .carousel-wrapper::after {
+      right: 0;
+      background: linear-gradient(to left, #f8f9ff, transparent);
+    }
 
     .carousel-track {
       display: flex;
       animation: autoSlide 14s linear infinite;
       width: max-content;
     }
-    .carousel-track:hover { animation-play-state: paused; }
+
+    .carousel-track:hover {
+      animation-play-state: paused;
+    }
 
     .carousel-slide {
       width: 190px;
@@ -141,17 +161,20 @@
       cursor: pointer;
       transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
     }
+
     .carousel-slide:hover {
       transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 10px 28px rgba(33,150,243,0.22);
+      box-shadow: 0 10px 28px rgba(33, 150, 243, 0.22);
       border-color: #2196F3;
     }
+
     .carousel-slide img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
+
     .slide-placeholder {
       display: flex;
       flex-direction: column;
@@ -159,7 +182,11 @@
       gap: 6px;
       color: #90a4ae;
     }
-    .slide-placeholder span  { font-size: 2rem; }
+
+    .slide-placeholder span {
+      font-size: 2rem;
+    }
+
     .slide-placeholder p {
       font-size: 0.72rem;
       font-family: 'Montserrat', Arial, sans-serif;
@@ -170,8 +197,13 @@
     }
 
     @keyframes autoSlide {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
 
     .right {
@@ -366,9 +398,17 @@
     }
 
     @keyframes gradient {
-      0%   { background-position: 0% }
-      50%  { background-position: 100% }
-      100% { background-position: 0% }
+      0% {
+        background-position: 0%
+      }
+
+      50% {
+        background-position: 100%
+      }
+
+      100% {
+        background-position: 0%
+      }
     }
 
     /* TECH BADGES */
@@ -386,7 +426,7 @@
       gap: 10px;
       background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(255,255,255,0.9);
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
       border-radius: 50px;
       padding: 10px 20px;
       font-size: 14px;
@@ -394,13 +434,13 @@
       color: #1a1a2e;
       cursor: default;
       transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     }
 
     .tech-badge:hover {
       transform: translateY(-4px) scale(1.06);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-      background: rgba(255,255,255,0.95);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      background: rgba(255, 255, 255, 0.95);
     }
 
     .tech-badge img {
@@ -423,8 +463,8 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.12) 0%, transparent 70%),
-                  radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 60%);
+      background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
       pointer-events: none;
     }
 
@@ -449,7 +489,7 @@
       color: #fff;
       margin: 0;
       line-height: 1.2;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
     }
 
     .contact-inner h1 span {
@@ -473,9 +513,9 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      background: rgba(255,255,255,0.18);
+      background: rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(12px);
-      border: 1.5px solid rgba(255,255,255,0.35);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
       border-radius: 16px;
       padding: 16px 28px;
       text-decoration: none;
@@ -485,13 +525,13 @@
       font-size: 0.95rem;
       letter-spacing: 0.3px;
       transition: transform 0.22s, box-shadow 0.22s, background 0.22s;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
     }
 
     .contact-card:hover {
       transform: translateY(-5px) scale(1.04);
-      background: rgba(255,255,255,0.30);
-      box-shadow: 0 12px 36px rgba(0,0,0,0.20);
+      background: rgba(255, 255, 255, 0.30);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.20);
     }
 
     .contact-card svg {
@@ -524,12 +564,12 @@
       cursor: pointer;
       letter-spacing: 0.5px;
       transition: transform 0.22s, box-shadow 0.22s;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     }
 
     .contact-cv:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.22);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
     }
 
     /* RESPONSIVO */
@@ -541,11 +581,15 @@
       .left,
       .right {
         width: 100%;
-        height: 50%;
+        height: auto;
+        min-height: 50vh;
+        box-sizing: border-box;
       }
 
       .hero img {
-        height: 40%;
+        height: auto;
+        width: 90%;
+        margin-top: 20px;
       }
     }
 
@@ -570,8 +614,13 @@
     }
 
     @keyframes carousel-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
 
     .carousel-slide {
@@ -595,7 +644,7 @@
 
     .slide-placeholder:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(33,150,243,0.25);
+      box-shadow: 0 8px 24px rgba(33, 150, 243, 0.25);
     }
 
     .slide-placeholder span {
@@ -633,55 +682,36 @@
       <!-- CARROSSEL -->
       <div class="carousel-wrapper">
         <div class="carousel-track">
+          <div class="carousel-slide">
+            <img
+              src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_2vvzp32vvzp32vvz.png?raw=true"
+              alt="Gemini Generated Project">
+          </div>
           <!-- Slides originais -->
           <div class="carousel-slide">
-            <div class="slide-placeholder">
-              <span>🎫</span>
-              <p>Venda de Ingressos</p>
-            </div>
+            <img src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_688f61688f61688f.png?raw=true" alt="Venda de Ingressos">
           </div>
           <div class="carousel-slide">
-            <div class="slide-placeholder">
-              <span>📅</span>
-              <p>Agenda de Eventos</p>
-            </div>
+            <img src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_2vvzp32vvzp32vvz.png?raw=true" alt="Agenda de Eventos">
           </div>
           <div class="carousel-slide">
-            <div class="slide-placeholder">
-              <span>📦</span>
-              <p>Venda de Produtos</p>
-            </div>
+            <img src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_fy5a18fy5a18fy5a.png?raw=true" alt="Venda de Produtos">
           </div>
           <div class="carousel-slide">
-            <div class="slide-placeholder">
-              <span>🛍️</span>
-              <p>Loja Ecommerce</p>
-            </div>
+            <img src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_utb1lvutb1lvutb1.png?raw=true" alt="Loja Ecommerce">
           </div>
           <!-- Slides duplicados para loop suave -->
           <div class="carousel-slide">
-            <div class="slide-placeholder">
-              <span>🎫</span>
-              <p>Venda de Ingressos</p>
-            </div>
+            <img src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_688f61688f61688f.png?raw=true" alt="Venda de Ingressos">
           </div>
           <div class="carousel-slide">
-            <div class="slide-placeholder">
-              <span>📅</span>
-              <p>Agenda de Eventos</p>
-            </div>
+            <img src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_2vvzp32vvzp32vvz.png?raw=true" alt="Agenda de Eventos">
           </div>
           <div class="carousel-slide">
-            <div class="slide-placeholder">
-              <span>📦</span>
-              <p>Venda de Produtos</p>
-            </div>
+            <img src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_fy5a18fy5a18fy5a.png?raw=true" alt="Venda de Produtos">
           </div>
           <div class="carousel-slide">
-            <div class="slide-placeholder">
-              <span>🛍️</span>
-              <p>Loja Ecommerce</p>
-            </div>
+            <img src="https://github.com/ravilacosta/portifolio/blob/main/Gemini_Generated_Image_utb1lvutb1lvutb1.png?raw=true" alt="Loja Ecommerce">
           </div>
         </div>
       </div>
@@ -758,7 +788,8 @@
         </div>
 
         <div class="tech-badge">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript"> JavaScript
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+            alt="JavaScript"> JavaScript
         </div>
 
         <div class="tech-badge">
@@ -766,7 +797,8 @@
         </div>
 
         <div class="tech-badge">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
+            alt="PostgreSQL"> PostgreSQL
         </div>
 
         <div class="tech-badge">
@@ -778,7 +810,8 @@
         </div>
 
         <div class="tech-badge">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg"
+            alt="Bootstrap"> Bootstrap
         </div>
 
         <div class="tech-badge">
@@ -806,9 +839,10 @@
 
         <!-- Email -->
         <a class="contact-card" href="mailto:ravilameireles88@hotmail.com" id="contact-email">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="4" width="20" height="16" rx="2"/>
-            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
           </svg>
           <div>
             E-mail
@@ -817,9 +851,11 @@
         </a>
 
         <!-- LinkedIn -->
-        <a class="contact-card" href="https://www.linkedin.com/in/ravila-costa-315168347" target="_blank" rel="noopener noreferrer" id="contact-linkedin">
+        <a class="contact-card" href="https://www.linkedin.com/in/ravila-costa-315168347" target="_blank"
+          rel="noopener noreferrer" id="contact-linkedin">
           <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            <path
+              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
           </svg>
           <div>
             LinkedIn
@@ -830,13 +866,15 @@
       </div>
 
       <!-- Currículo -->
-      <a class="contact-cv" href="https://drive.google.com/file/d/1ke6Lq0nEh8nwv7kXOkTqcoa95_abo-Ln/view?usp=sharing" target="_blank" id="contact-cv">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-          <polyline points="10 9 9 9 8 9"/>
+      <a class="contact-cv" href="https://drive.google.com/file/d/1ke6Lq0nEh8nwv7kXOkTqcoa95_abo-Ln/view?usp=sharing"
+        target="_blank" id="contact-cv">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
         </svg>
         Ver meu Currículo
       </a>
@@ -848,30 +886,30 @@
   <script type="module">
     import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160/build/three.module.js";
 
-    const canvas  = document.getElementById('tech-canvas');
+    const canvas = document.getElementById('tech-canvas');
     const section = document.getElementById('tech-section');
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
 
-    const scene  = new THREE.Scene();
+    const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 200);
     camera.position.z = 14;
 
     // ─── Gradient colours that match the CSS animation ───────────────────────
     // CSS: 270deg, #4CAF50 → #2196F3 → #ffffff, 10s infinite
     const gradStops = [
-      { r: 0x4C/255, g: 0xAF/255, b: 0x50/255 },  // green
-      { r: 0x21/255, g: 0x96/255, b: 0xF3/255 },  // blue
-      { r: 1,        g: 1,        b: 1        },  // white
-      { r: 0x21/255, g: 0x96/255, b: 0xF3/255 },  // back to blue (cycle)
+      { r: 0x4C / 255, g: 0xAF / 255, b: 0x50 / 255 },  // green
+      { r: 0x21 / 255, g: 0x96 / 255, b: 0xF3 / 255 },  // blue
+      { r: 1, g: 1, b: 1 },  // white
+      { r: 0x21 / 255, g: 0x96 / 255, b: 0xF3 / 255 },  // back to blue (cycle)
     ];
 
     function lerpGradColor(t) {
       const stops = gradStops;
-      const seg   = (stops.length - 1) * t;
-      const i     = Math.min(Math.floor(seg), stops.length - 2);
-      const f     = seg - i;
+      const seg = (stops.length - 1) * t;
+      const i = Math.min(Math.floor(seg), stops.length - 2);
+      const f = seg - i;
       const a = stops[i], b = stops[i + 1];
       return new THREE.Color(
         a.r + (b.r - a.r) * f,
@@ -894,19 +932,19 @@
       'https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg',
     ];
 
-    const loader   = new THREE.TextureLoader();
-    const sprites  = [];
+    const loader = new THREE.TextureLoader();
+    const sprites = [];
 
     icons.forEach((url, i) => {
       loader.load(url, (tex) => {
-        const mat    = new THREE.SpriteMaterial({ map: tex, transparent: true });
+        const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
         const sprite = new THREE.Sprite(mat);
         sprite.scale.set(2.2, 2.2, 1);
 
         // Spread evenly in a wide orbit
-        const angle  = (i / icons.length) * Math.PI * 2;
+        const angle = (i / icons.length) * Math.PI * 2;
         const radius = 6 + Math.random() * 2;
-        const yOff   = (Math.random() - 0.5) * 5;
+        const yOff = (Math.random() - 0.5) * 5;
         sprite.position.set(
           Math.cos(angle) * radius,
           yOff,
@@ -915,13 +953,13 @@
 
         // Store orbit params
         sprite.userData = {
-          baseAngle : angle,
-          radius    : radius,
-          yBase     : yOff,
-          yAmp      : 0.4 + Math.random() * 0.6,
-          ySpeed    : 0.4 + Math.random() * 0.6,
+          baseAngle: angle,
+          radius: radius,
+          yBase: yOff,
+          yAmp: 0.4 + Math.random() * 0.6,
+          ySpeed: 0.4 + Math.random() * 0.6,
           orbitSpeed: 0.12 + Math.random() * 0.1,
-          phase     : Math.random() * Math.PI * 2,
+          phase: Math.random() * Math.PI * 2,
         };
 
         scene.add(sprite);
@@ -962,7 +1000,7 @@
         sp.position.y = d.yBase + Math.sin(t * d.ySpeed + d.phase) * d.yAmp;
 
         // Tint the sprite to match the complementary gradient accent
-        const tint = gradColor.clone().lerp(new THREE.Color(1,1,1), 0.55);
+        const tint = gradColor.clone().lerp(new THREE.Color(1, 1, 1), 0.55);
         sp.material.color = tint;
       });
 
